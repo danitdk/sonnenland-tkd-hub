@@ -34,22 +34,16 @@ import {
 } from "lucide-react";
 
 const GRADES = [
-  "KG1",
-  "KG2",
-  "Grade 1",
-  "Grade 2",
-  "Grade 3",
-  "Grade 4",
-  "Grade 5",
+  "KG 1",
+  "KG 2",
+  "KG 3",
 ];
 
 const UNIFORM_SIZES = [
-  { value: "100cm", label: "Size 100cm (KG1 / KG2, Height ~95-105cm)" },
-  { value: "110cm", label: "Size 110cm (KG2 / Grade 1, Height ~105-115cm)" },
-  { value: "120cm", label: "Size 120cm (Grade 1 / 2, Height ~115-125cm)" },
-  { value: "130cm", label: "Size 130cm (Grade 2 / 3, Height ~125-135cm)" },
-  { value: "140cm", label: "Size 140cm (Grade 4 / 5, Height ~135-145cm)" },
-  { value: "150cm+", label: "Size 150cm+ (Height 145cm and above)" },
+  { value: "100cm", label: "Size 100cm (KG 1, Height ~95-105cm)" },
+  { value: "110cm", label: "Size 110cm (KG 2, Height ~105-115cm)" },
+  { value: "120cm", label: "Size 120cm (KG 3, Height ~115-125cm)" },
+  { value: "130cm", label: "Size 130cm (Height ~125cm and above)" },
 ];
 
 const BANK_ACCOUNTS = [
@@ -108,7 +102,7 @@ export default function ParentRegistrationPage() {
   const [parentPhone, setParentPhone] = useState("");
   const [emergencyPhone, setEmergencyPhone] = useState("");
   const [includeUniform, setIncludeUniform] = useState(false);
-  const [uniformSize, setUniformSize] = useState("120cm");
+  const [uniformSize, setUniformSize] = useState("110cm");
 
   // Payment Proof Upload State
   const [receiptImage, setReceiptImage] = useState(null);
@@ -364,12 +358,12 @@ export default function ParentRegistrationPage() {
 
             {/* Title */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-              Sonnenland <span className="text-crimson">TKD</span> Hub
+              Sönnenland <span className="text-crimson">After-School</span> Taekwondo
             </h1>
 
             {/* Subtitle */}
             <p className="mt-3 text-base sm:text-2xl font-bold text-slate-700 dark:text-slate-200 max-w-3xl mx-auto leading-snug">
-              Official Taekwondo Training Registration – Led by Master Daniel
+              Specialized martial arts, discipline, and physical development exclusively for Sönnenland kindergarten students.
             </p>
 
             {/* Schedule Indicator */}
@@ -381,12 +375,12 @@ export default function ParentRegistrationPage() {
               <span className="hidden sm:inline text-slate-300 dark:text-slate-600">•</span>
               <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium text-xs sm:text-sm">
                 <MapPin className="h-4 w-4 text-crimson shrink-0" />
-                <span>SIS Main Gymnasium (Dojang Mat)</span>
+                <span>Sönnenland International Kindergarten (Dojang)</span>
               </div>
             </div>
 
             <p className="mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-              Open to Sonnenland International School students (KG1 to Grade 5).
+              Exclusively open to Sönnenland International Kindergarten students (KG 1, KG 2, KG 3).
               Please complete student details, choose uniform options, transfer fees, and upload your payment proof below.
             </p>
           </div>
@@ -455,7 +449,7 @@ export default function ParentRegistrationPage() {
                       {/* Grade / Class Level */}
                       <div id="grade">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Grade / Class Level <span className="text-crimson">*</span>
+                          Kindergarten Class Level <span className="text-crimson">*</span>
                         </label>
                         <div className="relative">
                           <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
@@ -472,7 +466,7 @@ export default function ParentRegistrationPage() {
                             }`}
                           >
                             <option value="" disabled className="text-slate-400">
-                              Select Student's Grade
+                              Select Kindergarten Class (KG 1, KG 2, KG 3)
                             </option>
                             {GRADES.map((g) => (
                               <option key={g} value={g} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -849,7 +843,7 @@ export default function ParentRegistrationPage() {
                     <h2 className="text-lg font-black text-slate-900 dark:text-white">Live Fee Summary</h2>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Sonnenland After-School Taekwondo
+                    Sönnenland Kindergarten After-School Program
                   </p>
 
                   <div className="mt-5 space-y-3.5 border-t border-slate-200 dark:border-slate-700/80 pt-5 text-sm">

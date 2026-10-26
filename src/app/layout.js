@@ -2,9 +2,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metadata = {
-  title: "Sonnenland TKD Hub | Taekwondo Registration & Payment Management",
+  title: "Sönnenland After-School Taekwondo Program | Kindergarten Portal",
   description:
-    "Official Taekwondo Registration and Payment Management portal for Sonnenland International School led by Master Daniel.",
+    "Official After-School Taekwondo Program for Sönnenland International Kindergarten led by Master Daniel.",
 };
 
 export const viewport = {

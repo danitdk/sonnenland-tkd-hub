@@ -13,7 +13,7 @@ export default function Footer() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/logo.png"
-                  alt="Sonnenland International School Logo"
+                  alt="Sönnenland International Kindergarten Logo"
                   className="h-full w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
@@ -26,7 +26,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-md leading-relaxed">
-              Official After-School Taekwondo Training Program at Sonnenland International School (SIS), led by certified Master Daniel. Dedicated to building physical discipline, confidence, respect, and martial arts excellence.
+              Official After-School Taekwondo Training Program at Sönnenland International Kindergarten, led by certified Master Daniel. Dedicated to building physical discipline, confidence, respect, and martial arts excellence.
             </p>
             {/* Clean English-only Tenets */}
             <div className="flex flex-wrap gap-2 pt-2">
@@ -85,7 +85,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
               <li className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 mt-0.5 text-crimson shrink-0" />
-                <span>Sonnenland International School Gymnasium, Main Campus (Bisrate Gabriel, Addis Ababa)</span>
+                <span>Sönnenland International Kindergarten Campus (Addis Ababa)</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Award className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
@@ -105,7 +105,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Sonnenland International School Taekwondo Program. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Sönnenland International Kindergarten Taekwondo Program. All rights reserved.</p>
           <p className="flex items-center gap-1.5">
             Designed for <span className="text-slate-800 dark:text-slate-200 font-semibold">Master Daniel</span> • Mobile-Friendly Web App
           </p>

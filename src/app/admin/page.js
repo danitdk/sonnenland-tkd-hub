@@ -44,13 +44,9 @@ import Badge from "@/components/Badge";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const GRADES = [
-  "KG1",
-  "KG2",
-  "Grade 1",
-  "Grade 2",
-  "Grade 3",
-  "Grade 4",
-  "Grade 5",
+  "KG 1",
+  "KG 2",
+  "KG 3",
 ];
 
 const UNIFORM_SIZES = [
@@ -58,20 +54,18 @@ const UNIFORM_SIZES = [
   "110cm",
   "120cm",
   "130cm",
-  "140cm",
-  "150cm+",
 ];
 
 const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1042",
     studentName: "Nahom Solomon",
-    grade: "Grade 3",
+    grade: "KG 3",
     parentName: "Solomon Haile",
     parentPhone: "0911223344",
     emergencyPhone: "0912345678",
     includeUniform: true,
-    uniformSize: "130cm",
+    uniformSize: "120cm",
     uniformStatus: "Needed",
     tuitionFee: 10000,
     uniformFee: 1500,
@@ -86,7 +80,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1043",
     studentName: "Selamawit Tadesse",
-    grade: "Grade 4",
+    grade: "KG 2",
     parentName: "Tadesse Bekele",
     parentPhone: "0912445566",
     emergencyPhone: "N/A",
@@ -105,7 +99,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1044",
     studentName: "Ephraim Yohannes",
-    grade: "KG2",
+    grade: "KG 2",
     parentName: "Yohannes Girma",
     parentPhone: "0918778899",
     emergencyPhone: "0911002233",
@@ -125,12 +119,12 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1045",
     studentName: "Liya Mekonnen",
-    grade: "Grade 1",
+    grade: "KG 1",
     parentName: "Mekonnen Tesfaye",
     parentPhone: "0920112233",
     emergencyPhone: "N/A",
     includeUniform: true,
-    uniformSize: "120cm",
+    uniformSize: "100cm",
     uniformStatus: "Delivered",
     tuitionFee: 10000,
     uniformFee: 1500,
@@ -144,7 +138,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1046",
     studentName: "Dawit Abebe",
-    grade: "Grade 5",
+    grade: "KG 3",
     parentName: "Abebe Kebede",
     parentPhone: "0911334455",
     emergencyPhone: "0911998877",
@@ -181,11 +175,11 @@ export default function InstructorAdminDashboard() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addForm, setAddForm] = useState({
     studentName: "",
-    grade: "Grade 1",
+    grade: "KG 1",
     parentName: "",
     parentPhone: "",
     includeUniform: false,
-    uniformSize: "120cm",
+    uniformSize: "110cm",
     paymentStatus: "Pending",
     notes: "",
   });
@@ -219,7 +213,7 @@ export default function InstructorAdminDashboard() {
           const normalized = parsed.map((item, idx) => ({
             id: item.id || `TKD-2026-${1000 + idx}`,
             studentName: item.studentName || "Unknown Student",
-            grade: item.grade || "Grade 1",
+            grade: item.grade || "KG 1",
             parentName: item.parentName || "Unknown Parent",
             parentPhone: item.parentPhone || "0911000000",
             emergencyPhone: item.emergencyPhone || "N/A",
@@ -415,11 +409,11 @@ export default function InstructorAdminDashboard() {
 
     setAddForm({
       studentName: "",
-      grade: "Grade 1",
+      grade: "KG 1",
       parentName: "",
       parentPhone: "",
       includeUniform: false,
-      uniformSize: "120cm",
+      uniformSize: "110cm",
       paymentStatus: "Pending",
       notes: "",
     });
@@ -463,9 +457,7 @@ export default function InstructorAdminDashboard() {
     }
 
     let matchesGrade = true;
-    if (filterGrade === "KG") {
-      matchesGrade = s.grade.startsWith("KG");
-    } else if (filterGrade !== "ALL") {
+    if (filterGrade !== "ALL") {
       matchesGrade = s.grade === filterGrade;
     }
 
@@ -554,7 +546,7 @@ export default function InstructorAdminDashboard() {
             Instructor Portal
           </h2>
           <p className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-400">
-            Master Daniel • Sonnenland International School
+            Master Daniel • Sönnenland International Kindergarten
           </p>
           <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
             Please enter the 4-digit Master PIN to unlock the enrollment administration dashboard.
@@ -689,7 +681,7 @@ export default function InstructorAdminDashboard() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/logo.png"
-                  alt="Sonnenland International School Logo"
+                  alt="Sönnenland International Kindergarten Logo"
                   className="h-full w-full object-contain"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
@@ -701,7 +693,7 @@ export default function InstructorAdminDashboard() {
                 <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-tight truncate">
                   Instructor Portal — Master Daniel
                 </h1>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Sonnenland International School (SIS)</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Sönnenland International Kindergarten (SIK)</p>
               </div>
             </div>
           </div>
@@ -766,7 +758,7 @@ export default function InstructorAdminDashboard() {
               </span>
               <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">Students</span>
             </div>
-            <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 truncate">KG1 to Grade 5</p>
+            <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 truncate">KG 1 to KG 3</p>
           </div>
 
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1E293B] p-4 sm:p-5 shadow-sm transition-all hover:border-emerald-400">
@@ -879,13 +871,10 @@ export default function InstructorAdminDashboard() {
                 onChange={(e) => setFilterGrade(e.target.value)}
                 className="min-h-[44px] col-span-2 sm:col-span-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:border-amber-600 focus:outline-none shadow-sm"
               >
-                <option value="ALL">All Grades</option>
-                <option value="KG">Kindergarten (KG1/KG2)</option>
-                <option value="Grade 1">Grade 1</option>
-                <option value="Grade 2">Grade 2</option>
-                <option value="Grade 3">Grade 3</option>
-                <option value="Grade 4">Grade 4</option>
-                <option value="Grade 5">Grade 5</option>
+                <option value="ALL">All Kindergarten Classes</option>
+                <option value="KG 1">KG 1</option>
+                <option value="KG 2">KG 2</option>
+                <option value="KG 3">KG 3</option>
               </select>
             </div>
 
@@ -1282,7 +1271,7 @@ export default function InstructorAdminDashboard() {
               Showing {filteredStudents.length} of {students.length} enrolled students
             </span>
             <span className="text-slate-600 dark:text-slate-300 font-medium">
-              Master Daniel • Sonnenland International School Taekwondo Program
+              Master Daniel • Sönnenland International Kindergarten After-School Taekwondo Program
             </span>
           </div>
         </div>
@@ -1515,7 +1504,7 @@ export default function InstructorAdminDashboard() {
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                    Grade / Class Level <span className="text-crimson">*</span>
+                    Kindergarten Class Level <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
                     <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -1627,7 +1616,7 @@ export default function InstructorAdminDashboard() {
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                      Check if student requires official SIS Taekwondo uniform.
+                      Check if student requires official Sönnenland Taekwondo uniform.
                     </p>
                   </div>
                 </label>

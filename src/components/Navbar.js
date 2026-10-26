@@ -18,7 +18,7 @@ export default function Navbar() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/logo.png"
-              alt="Sonnenland International School Logo"
+              alt="Sönnenland International Kindergarten Logo"
               className="h-full w-full object-contain"
               onError={(e) => {
                 e.currentTarget.onerror = null;
@@ -32,11 +32,11 @@ export default function Navbar() {
                 Sonnenland <span className="text-crimson">TKD</span> Hub
               </span>
               <span className="hidden sm:inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-400/30">
-                SIS Program
+                Kindergarten Program
               </span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              Master Daniel • Taekwondo
+              After-School Taekwondo • Master Daniel
             </p>
           </div>
         </Link>
