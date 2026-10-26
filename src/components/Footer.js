@@ -3,7 +3,7 @@ import { Mail, MapPin, Award } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-[#090D16] text-slate-600 dark:text-slate-400 transition-colors duration-200">
+    <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-[#0B0F17] text-slate-600 dark:text-slate-400 transition-colors duration-200">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Column 1: Brand & Philosophy */}

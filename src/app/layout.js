@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className="min-h-screen bg-[#F8FAFC] dark:bg-[#090D16] text-[#1E293B] dark:text-[#F8FAFC] antialiased selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
+      <body className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B0F17] text-[#1E293B] dark:text-[#F8FAFC] antialiased selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
         <ThemeProvider>
           {children}
         </ThemeProvider>

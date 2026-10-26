@@ -362,7 +362,7 @@ export default function ParentRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#090D16] text-slate-800 dark:text-slate-100 selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0B0F17] text-slate-800 dark:text-slate-100 selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
       {/* Top Navigation with Theme Switcher */}
       <Navbar />
 
@@ -370,34 +370,35 @@ export default function ParentRegistrationPage() {
         {/* ========================================================= */}
         {/* 1. HEADER / HERO SECTION                                  */}
         {/* ========================================================= */}
-        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800 bg-[#F8FAFC] dark:bg-[#090D16]">
+        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800/80 bg-[#F8FAFC] dark:bg-[#0B0F17]">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
             {/* Registration Status Badge */}
             <div className="inline-flex mb-4">
-              <Badge variant="gold" size="md" pulse={true}>
-                <Calendar className="h-4 w-4 text-amber-700 dark:text-amber-400 shrink-0" />
-                <span className="font-bold">Registration Open: October 26 - October 28</span>
-              </Badge>
+              <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 dark:bg-slate-800/70 px-4 py-1.5 text-xs font-semibold text-amber-800 dark:text-amber-400 border border-slate-200 dark:border-slate-700/80 shadow-xs">
+                <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+                <Calendar className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span>Registration Open: October 26 - October 28</span>
+              </span>
             </div>
 
             {/* Title */}
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
               Sönnenland After-School TKD Hub
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-3 text-base sm:text-2xl font-bold text-slate-700 dark:text-slate-200 max-w-3xl mx-auto leading-snug">
+            <p className="mt-3 text-base sm:text-lg font-medium text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
               Martial arts, discipline, and physical fitness exclusively for Sönnenland KG students.
             </p>
 
-            {/* Schedule Indicator */}
-            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-white dark:bg-slate-800/90 px-4 py-2.5 sm:px-5 sm:py-3 shadow-sm dark:shadow-md">
-              <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-xs sm:text-sm">
-                <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            {/* Schedule & Location Pills */}
+            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md px-4 py-2 sm:px-5 sm:py-2.5 shadow-sm">
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm">
+                <Clock className="h-4 w-4 text-amber-500 shrink-0" />
                 <span>Mon / Wed / Fri | 3:30 PM - 4:30 PM</span>
               </div>
-              <span className="hidden sm:inline text-slate-300 dark:text-slate-600">•</span>
-              <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium text-xs sm:text-sm">
+              <span className="hidden sm:inline text-slate-300 dark:text-slate-700">•</span>
+              <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 font-medium text-xs sm:text-sm">
                 <MapPin className="h-4 w-4 text-crimson shrink-0" />
                 <span>Sönnenland International Kindergarten</span>
               </div>
@@ -416,10 +417,10 @@ export default function ParentRegistrationPage() {
               <div className="lg:col-span-8 space-y-8">
                 
                 {/* 2. REGISTRATION FORM FIELDS */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-850/90 dark:bg-[#1E293B] p-5 sm:p-8 shadow-sm dark:shadow-md transition-colors">
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-700/80">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
+                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 dark:bg-red-500/15 text-crimson dark:text-red-400 border border-red-200 dark:border-red-500/30 shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-crimson dark:text-red-400 border border-red-500/20 shrink-0">
                         <User className="h-5 w-5" />
                       </div>
                       <div>
@@ -432,16 +433,16 @@ export default function ParentRegistrationPage() {
                     </span>
                   </div>
 
-                  <div className="mt-6 space-y-5">
+                  <div className="mt-6 space-y-6">
                     {/* 1. COMPACT SEGMENTED PILL DESIGN: STUDENT TYPE & TERM SELECTION */}
-                    <div className="space-y-3.5">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {/* Student Type Selector */}
                         <div>
-                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                             Student Type <span className="text-crimson">*</span>
                           </label>
-                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-800/60 p-1 border border-slate-200 dark:border-slate-700/80">
                             <button
                               type="button"
                               onClick={() => handleStudentTypeChange("new")}
@@ -469,10 +470,10 @@ export default function ParentRegistrationPage() {
 
                         {/* Term Selection */}
                         <div>
-                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                             Term Selection <span className="text-crimson">*</span>
                           </label>
-                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-800/60 p-1 border border-slate-200 dark:border-slate-700/80">
                             <button
                               type="button"
                               onClick={() => setTerm("Term 2")}
@@ -500,7 +501,7 @@ export default function ParentRegistrationPage() {
                       </div>
 
                       {/* 2. DYNAMIC & MINIMAL SUMMARY CARD (Strictly 2-3 concise lines) */}
-                      <div className="rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-900/70 p-3 sm:p-3.5 transition-all text-xs">
+                      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 p-3.5 transition-all text-xs">
                         {studentType === "new" ? (
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
@@ -509,11 +510,11 @@ export default function ParentRegistrationPage() {
                             </div>
                             <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                               <span>Official Dobok & Belt:</span>
-                              <span className="font-mono font-bold text-amber-700 dark:text-amber-400">+1,500 ETB</span>
+                              <span className="font-mono font-bold text-amber-600 dark:text-amber-400">+1,500 ETB</span>
                             </div>
-                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700 font-extrabold text-sm text-slate-900 dark:text-white">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700/80 font-extrabold text-sm text-slate-900 dark:text-white">
                               <span>Total Due:</span>
-                              <span className="font-mono font-black text-amber-600 dark:text-amber-400">11,500 ETB</span>
+                              <span className="font-mono font-black text-amber-500 dark:text-amber-400">11,500 ETB</span>
                             </div>
                           </div>
                         ) : (
@@ -522,9 +523,9 @@ export default function ParentRegistrationPage() {
                               <span>{term} Tuition (Training Fee):</span>
                               <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
                             </div>
-                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700 font-extrabold text-sm text-slate-900 dark:text-white">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700/80 font-extrabold text-sm text-slate-900 dark:text-white">
                               <span>Total Due:</span>
-                              <span className="font-mono font-black text-emerald-600 dark:text-emerald-400">10,000 ETB</span>
+                              <span className="font-mono font-black text-emerald-500 dark:text-emerald-400">10,000 ETB</span>
                             </div>
                           </div>
                         )}
@@ -548,10 +549,10 @@ export default function ParentRegistrationPage() {
                               setStudentName(e.target.value);
                               if (errors.studentName) setErrors((prev) => ({ ...prev, studentName: null }));
                             }}
-                            className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.studentName
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
                             }`}
                           />
                         </div>
@@ -576,10 +577,10 @@ export default function ParentRegistrationPage() {
                               setAge(e.target.value);
                               if (errors.age) setErrors((prev) => ({ ...prev, age: null }));
                             }}
-                            className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-10 py-3 text-base sm:text-sm text-slate-900 dark:text-white appearance-none transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-10 py-3 text-base sm:text-sm text-slate-900 dark:text-white appearance-none transition-colors focus:outline-none focus:ring-1 ${
                               errors.age
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
                             }`}
                           >
                             <option value="" disabled className="text-slate-400">
@@ -621,10 +622,10 @@ export default function ParentRegistrationPage() {
                               setParentName(e.target.value);
                               if (errors.parentName) setErrors((prev) => ({ ...prev, parentName: null }));
                             }}
-                            className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.parentName
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
                             }`}
                           />
                         </div>
@@ -651,10 +652,10 @@ export default function ParentRegistrationPage() {
                               setParentPhone(e.target.value);
                               if (errors.parentPhone) setErrors((prev) => ({ ...prev, parentPhone: null }));
                             }}
-                            className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.parentPhone
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
                             }`}
                           />
                         </div>
@@ -685,10 +686,10 @@ export default function ParentRegistrationPage() {
                             setEmergencyPhone(e.target.value);
                             if (errors.emergencyPhone) setErrors((prev) => ({ ...prev, emergencyPhone: null }));
                           }}
-                          className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                          className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                             errors.emergencyPhone
                               ? "border-crimson focus:border-crimson focus:ring-crimson"
-                              : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                              : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
                           }`}
                         />
                       </div>
@@ -715,7 +716,7 @@ export default function ParentRegistrationPage() {
                             <select
                               value={uniformSize}
                               onChange={(e) => setUniformSize(e.target.value)}
-                              className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
+                              className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-700/80 bg-white dark:bg-slate-800/50 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
                             >
                               {UNIFORM_SIZES.map((size) => (
                                 <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -750,7 +751,7 @@ export default function ParentRegistrationPage() {
                               <select
                                 value={uniformSize}
                                 onChange={(e) => setUniformSize(e.target.value)}
-                                className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
+                                className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-700/80 bg-white dark:bg-slate-800/50 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
                               >
                                 {UNIFORM_SIZES.map((size) => (
                                   <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -771,10 +772,10 @@ export default function ParentRegistrationPage() {
                 </div>
 
                 {/* 4. BANK & PAYMENT TRANSFER DETAILS SECTION */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-850/90 dark:bg-[#1E293B] p-5 sm:p-8 shadow-sm dark:shadow-md transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-700/80">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 dark:bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-400/30 shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
                         <CreditCard className="h-5 w-5" />
                       </div>
                       <div>
@@ -783,14 +784,14 @@ export default function ParentRegistrationPage() {
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 dark:bg-red-500/15 px-3 py-1.5 text-xs font-bold text-red-700 dark:text-red-400 border border-red-200 dark:border-red-500/30 self-start sm:self-auto shadow-xs">
+                    <div className="inline-flex items-center gap-1.5 rounded-lg bg-red-500/10 px-3 py-1.5 text-xs font-bold text-crimson dark:text-red-400 border border-red-500/20 self-start sm:self-auto shadow-xs">
                       <Clock className="h-3.5 w-3.5 text-crimson shrink-0" />
                       <span>Payment Deadline: Wednesday before 3:30 PM</span>
                     </div>
                   </div>
 
                   <p className="mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Transfer the total payable amount (<span className="text-amber-700 dark:text-amber-400 font-black">{totalAmount.toLocaleString()} ETB</span>) via Mobile Banking, CBE Birr, or Telebirr using any of Master Daniel's official accounts below:
+                    Transfer the total payable amount (<span className="text-amber-600 dark:text-amber-400 font-black">{totalAmount.toLocaleString()} ETB</span>) via Mobile Banking, CBE Birr, or Telebirr using any of Master Daniel's official accounts below:
                   </p>
 
                   {/* Account Cards - Responsive stacking for phones */}
@@ -802,7 +803,7 @@ export default function ParentRegistrationPage() {
                       return (
                         <div
                           key={acc.id}
-                          className={`rounded-2xl border ${acc.borderColor} bg-gradient-to-r ${acc.color} p-4 sm:p-5 transition-all hover:border-amber-400 shadow-sm`}
+                          className="rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/70 dark:bg-slate-800/40 p-4 sm:p-5 transition-all hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div className="flex items-start gap-3">
@@ -817,7 +818,7 @@ export default function ParentRegistrationPage() {
                                   </span>
                                 </div>
                                 <div className="mt-1">
-                                  <span className="text-base sm:text-lg font-mono font-black text-amber-700 dark:text-amber-400 tracking-wider select-all break-all">
+                                  <span className="text-base sm:text-lg font-mono font-black text-amber-600 dark:text-amber-400 tracking-wider select-all break-all">
                                     {acc.accountNumber}
                                   </span>
                                 </div>
@@ -826,7 +827,7 @@ export default function ParentRegistrationPage() {
                                 </p>
                                 <div className="flex items-center gap-1.5 mt-1">
                                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                                  <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
                                     Verified Official Account
                                   </span>
                                 </div>
@@ -840,7 +841,7 @@ export default function ParentRegistrationPage() {
                               className={`w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:self-center shrink-0 active:scale-95 ${
                                 isCopied
                                   ? "bg-emerald-600 text-white shadow-md"
-                                  : "border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-amber-500 hover:text-amber-800 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-slate-700"
+                                  : "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-700 dark:text-slate-200 hover:border-amber-500 hover:text-amber-800 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-slate-700/80"
                               }`}
                             >
                               {isCopied ? (
@@ -863,9 +864,9 @@ export default function ParentRegistrationPage() {
                 </div>
 
                 {/* 5. PAYMENT PROOF SCREENSHOT UPLOAD */}
-                <div id="receipt" className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-850/90 dark:bg-[#1E293B] p-5 sm:p-8 shadow-sm dark:shadow-md transition-colors">
-                  <div className="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-700/80">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-50 dark:bg-red-500/15 text-crimson dark:text-red-400 border border-red-200 dark:border-red-500/30 shrink-0">
+                <div id="receipt" className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
+                  <div className="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-crimson dark:text-red-400 border border-red-500/20 shrink-0">
                       <Upload className="h-5 w-5" />
                     </div>
                     <div>
@@ -889,10 +890,10 @@ export default function ParentRegistrationPage() {
                           setTransactionId(e.target.value);
                           if (errors.transactionId) setErrors((prev) => ({ ...prev, transactionId: null }));
                         }}
-                        className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-4 py-3 text-base sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                        className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                           errors.transactionId
                             ? "border-crimson focus:border-crimson focus:ring-crimson"
-                            : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                            : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
                         }`}
                       />
                     </div>
@@ -908,7 +909,7 @@ export default function ParentRegistrationPage() {
                   </div>
 
                   {/* Mandatory Field 2: Transfer Receipt Screenshot */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-700/80">
+                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                       Upload Bank / Telebirr Receipt <span className="text-crimson">*</span>
                     </label>
@@ -930,11 +931,11 @@ export default function ParentRegistrationPage() {
                         className={`group relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 sm:p-8 text-center cursor-pointer transition-all min-h-[160px] ${
                           errors.receipt
                             ? "border-crimson bg-red-50/60 dark:bg-red-950/20 hover:bg-red-50"
-                            : "border-slate-300 dark:border-slate-700 hover:border-amber-500 bg-slate-50 dark:bg-slate-900/60 hover:bg-slate-100/80 dark:hover:bg-slate-900/80"
+                            : "border-slate-300 dark:border-slate-700/80 hover:border-red-500 bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100/80 dark:hover:bg-slate-800/50"
                         }`}
                       >
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 group-hover:scale-110 transition-transform group-hover:border-amber-400 shadow-sm">
-                          <Upload className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 group-hover:scale-110 transition-transform group-hover:border-red-500 shadow-sm">
+                          <Upload className="h-6 w-6 text-amber-500 dark:text-amber-400" />
                         </div>
                         <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
                           Tap to select payment screenshot
@@ -942,14 +943,14 @@ export default function ParentRegistrationPage() {
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                           Supports PNG, JPG, or JPEG (Max 8MB)
                         </p>
-                        <span className="mt-3 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:border-amber-400 shadow-xs">
+                        <span className="mt-3 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:border-red-500 shadow-xs">
                           Select Image File
                         </span>
                       </div>
                     ) : (
                       /* Uploaded Preview with max-h-56 limit */
-                      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-4">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700 mb-3">
+                      <div className="rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/40 p-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700/80 mb-3">
                           <div className="flex items-center gap-2 min-w-0 flex-1 pr-2">
                             <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                             <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
@@ -968,7 +969,7 @@ export default function ParentRegistrationPage() {
                         </div>
 
                         {/* Image Preview limited to max-h-56 with object-contain */}
-                        <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 max-h-56 flex items-center justify-center bg-white dark:bg-slate-950 p-2">
+                        <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700/80 max-h-56 flex items-center justify-center bg-white dark:bg-slate-950 p-2">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={receiptImage}
@@ -994,20 +995,20 @@ export default function ParentRegistrationPage() {
               <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
                 
                 {/* 3. LIVE FEE SUMMARY CARD (DYNAMIC) */}
-                <div className="rounded-2xl border-2 border-amber-300 dark:border-amber-400/60 bg-white dark:bg-slate-850/95 dark:bg-[#1E293B] p-6 shadow-sm dark:shadow-glow-gold relative overflow-hidden transition-colors">
-                  <div className="absolute top-0 right-0 bg-amber-500 text-white font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl tracking-wider shadow-xs">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 dark:backdrop-blur-md p-6 sm:p-7 shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors">
+                  <div className="absolute top-0 right-0 bg-slate-100 dark:bg-slate-800 text-amber-700 dark:text-amber-400 font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl tracking-wider border-l border-b border-slate-200 dark:border-slate-700/80">
                     {term} • 2026
                   </div>
 
                   <div className="flex items-center gap-2">
                     <Shield className="h-5 w-5 text-crimson" />
-                    <h2 className="text-lg font-black text-slate-900 dark:text-white">Live Fee Summary</h2>
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">Live Fee Summary</h2>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     Sönnenland Kindergarten After-School Program
                   </p>
 
-                  <div className="mt-5 space-y-3.5 border-t border-slate-200 dark:border-slate-700/80 pt-5 text-sm">
+                  <div className="mt-5 space-y-3.5 border-t border-slate-200 dark:border-slate-800 pt-5 text-sm">
                     {/* Active Line Item 1: Training Fee */}
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                       <div>
@@ -1025,21 +1026,21 @@ export default function ParentRegistrationPage() {
                           {includeUniform ? `Size ${uniformSize} (${studentType === "new" ? "New Student Dobok" : "Replacement"})` : "Not needed (Returning Student)"}
                         </p>
                       </div>
-                      <span className={`font-mono font-bold ${includeUniform ? "text-amber-700 dark:text-amber-400" : "text-slate-400 dark:text-slate-500"}`}>
+                      <span className={`font-mono font-bold ${includeUniform ? "text-amber-600 dark:text-amber-400" : "text-slate-400 dark:text-slate-500"}`}>
                         {includeUniform ? "1,500 ETB" : "0 ETB"}
                       </span>
                     </div>
 
                     {/* Total: Strictly calculated from active items */}
-                    <div className="border-t border-slate-200 dark:border-slate-700/80 pt-4 mt-2 flex items-baseline justify-between">
+                    <div className="border-t border-slate-200 dark:border-slate-800 pt-4 mt-2 flex items-baseline justify-between">
                       <span className="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                         Total Payable ({term})
                       </span>
                       <div className="text-right">
-                        <span className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">
+                        <span className="text-2xl sm:text-3xl font-black text-amber-500 dark:text-amber-400 font-mono tracking-tight">
                           {totalAmount.toLocaleString()} ETB
                         </span>
-                        <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold">
+                        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">
                           {includeUniform ? "Training fee & official Dobok set" : "Training fee included"}
                         </p>
                       </div>
@@ -1047,11 +1048,11 @@ export default function ParentRegistrationPage() {
                   </div>
 
                   {/* SUBMIT ACTION BUTTON */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-700/80">
+                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full min-h-[50px] inline-flex items-center justify-center gap-2.5 rounded-xl bg-crimson hover:bg-crimson-dark px-6 py-3.5 text-base font-extrabold text-white shadow-sm transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full min-h-[52px] inline-flex items-center justify-center gap-2.5 rounded-xl bg-crimson hover:bg-red-600 px-6 py-4 text-base font-bold text-white shadow-lg shadow-red-950/40 hover:shadow-red-900/60 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
                     >
                       {isSubmitting ? (
                         <>
@@ -1060,7 +1061,7 @@ export default function ParentRegistrationPage() {
                         </>
                       ) : (
                         <>
-                          <Flame className="h-5 w-5 text-amber-300" />
+                          <Flame className="h-5 w-5 text-amber-300 group-hover:scale-110 transition-transform" />
                           <span>Complete Registration</span>
                         </>
                       )}
@@ -1073,31 +1074,31 @@ export default function ParentRegistrationPage() {
                 </div>
 
                 {/* Helpful Contact Box */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-850/90 dark:bg-[#1E293B] p-5 shadow-sm dark:shadow-md transition-colors">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 shadow-xl dark:shadow-2xl transition-colors">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
                     <Award className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                     <span>Instructor Inquiries</span>
                   </div>
-                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                     Have questions about sizing, dojang training, or medical clearance? Reach Master Daniel directly:
                   </p>
-                  <div className="mt-3 space-y-2 text-xs">
+                  <div className="mt-4 space-y-2.5 text-xs">
                     <a
                       href="tel:+251935368595"
-                      className="min-h-[44px] flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-crimson font-medium transition-colors"
+                      className="min-h-[44px] flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-crimson dark:hover:text-white font-medium transition-colors"
                     >
                       <Phone className="h-4 w-4 text-crimson shrink-0" />
                       <span className="font-mono font-bold">+251 935 368 595</span>
                     </a>
                     <a
                       href="mailto:danielteshome335@gmail.com"
-                      className="min-h-[44px] flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-crimson font-medium transition-colors"
+                      className="min-h-[44px] flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-crimson dark:hover:text-white font-medium transition-colors"
                     >
-                      <Mail className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                      <Mail className="h-4 w-4 text-amber-500 shrink-0" />
                       <span className="font-mono font-medium">danielteshome335@gmail.com</span>
                     </a>
-                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-                      <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <div className="flex items-center gap-2.5 text-slate-500 dark:text-slate-400">
+                      <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                       <span>Office hours: 8:00 AM – 5:00 PM</span>
                     </div>
                   </div>
@@ -1113,13 +1114,13 @@ export default function ParentRegistrationPage() {
       {/* ========================================================= */}
       {/* STICKY TOTAL DUE BAR ON MOBILE BOTTOM (< lg: screens)     */}
       {/* ========================================================= */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#090D16]/95 px-4 py-3 backdrop-blur-md shadow-lg safe-area-pb">
-        <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0B0F17]/95 px-5 py-3.5 backdrop-blur-md shadow-2xl safe-area-pb">
+        <div className="flex items-center justify-between gap-4 max-w-md mx-auto">
           <div>
-            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block leading-tight">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block leading-tight">
               Total Due ({term}):
             </span>
-            <span className="text-xl font-black text-amber-600 dark:text-amber-400 font-mono leading-none">
+            <span className="text-xl sm:text-2xl font-black text-amber-500 dark:text-amber-400 font-mono leading-none">
               {totalAmount.toLocaleString()} ETB
             </span>
           </div>
@@ -1129,10 +1130,10 @@ export default function ParentRegistrationPage() {
               const el = document.getElementById("receipt");
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
-            className="min-h-[44px] inline-flex items-center gap-2 rounded-xl bg-crimson px-5 py-2.5 text-xs font-extrabold text-white shadow-sm hover:bg-crimson-dark active:scale-95 transition-all"
+            className="min-h-[46px] inline-flex items-center gap-2 rounded-xl bg-crimson px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-red-950/40 hover:bg-red-600 active:scale-95 transition-all"
           >
             <span>Submit Proof</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -1141,8 +1142,8 @@ export default function ParentRegistrationPage() {
       {/* CELEBRATORY SUCCESS MODAL                                 */}
       {/* ========================================================= */}
       {showSuccessModal && submittedTicket && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-850 dark:bg-[#1E293B] p-6 sm:p-8 shadow-2xl text-left my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+          <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/95 dark:backdrop-blur-xl p-6 sm:p-8 shadow-2xl text-left my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900 dark:text-white">
             <button
               type="button"
               onClick={() => setShowSuccessModal(false)}
@@ -1164,12 +1165,12 @@ export default function ParentRegistrationPage() {
               </p>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 p-4 sm:p-5 space-y-3">
-              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+            <div className="mt-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-4 sm:p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Registration Ticket
                 </span>
-                <span className="font-mono text-xs font-black text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-2.5 py-0.5 rounded border border-amber-300 dark:border-amber-400/40">
+                <span className="font-mono text-xs font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/15 px-2.5 py-0.5 rounded border border-amber-200 dark:border-amber-400/30">
                   {submittedTicket.id}
                 </span>
               </div>
@@ -1187,7 +1188,7 @@ export default function ParentRegistrationPage() {
                 </div>
                 <div>
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Enrolled Term:</span>
-                  <p className="font-bold text-amber-700 dark:text-amber-400 mt-0.5">
+                  <p className="font-bold text-amber-600 dark:text-amber-400 mt-0.5">
                     {submittedTicket.term || "Term 2"}
                   </p>
                 </div>
@@ -1205,26 +1206,26 @@ export default function ParentRegistrationPage() {
                 </div>
                 <div>
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Uniform Option:</span>
-                  <p className="font-bold text-amber-700 dark:text-amber-400 mt-0.5">
+                  <p className="font-bold text-amber-600 dark:text-amber-400 mt-0.5">
                     {submittedTicket.includeUniform ? `Yes (${submittedTicket.uniformSize})` : "Not included"}
                   </p>
                 </div>
-                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
                   <span className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[11px]">Total Paid:</span>
-                  <p className="font-black text-amber-600 dark:text-amber-400 font-mono text-base">
+                  <p className="font-black text-amber-500 dark:text-amber-400 font-mono text-base">
                     {submittedTicket.totalAmount.toLocaleString()} ETB
                   </p>
                 </div>
-                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-700/80">
+                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Transaction ID / Reference:</span>
-                  <p className="font-mono font-bold text-amber-700 dark:text-amber-400 mt-0.5 text-xs sm:text-sm select-all">
+                  <p className="font-mono font-bold text-amber-600 dark:text-amber-400 mt-0.5 text-xs sm:text-sm select-all">
                     {submittedTicket.transactionId || "N/A"}
                   </p>
                 </div>
               </div>
 
               {submittedTicket.receiptImage && (
-                <div className="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center gap-3">
+                <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={submittedTicket.receiptImage}
@@ -1232,7 +1233,7 @@ export default function ParentRegistrationPage() {
                     className="h-12 w-12 rounded-lg object-cover border border-slate-200 dark:border-slate-700"
                   />
                   <div>
-                    <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+                    <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                       <Check className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                       Receipt Screenshot Attached
                     </span>

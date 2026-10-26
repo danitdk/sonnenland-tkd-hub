@@ -598,7 +598,7 @@ export default function InstructorAdminDashboard() {
   const modalTotalFee = 10000 + (addForm.includeUniform ? 1500 : 0);
 
   if (!hasCheckedSession) {
-    return <div className="min-h-screen bg-slate-50 dark:bg-[#090D16]" />;
+    return <div className="min-h-screen bg-slate-50 dark:bg-[#0B0F17]" />;
   }
 
   // =========================================================
@@ -606,7 +606,7 @@ export default function InstructorAdminDashboard() {
   // =========================================================
   if (!isUnlocked) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#090D16] px-4 py-8 selection:bg-crimson selection:text-white transition-colors duration-200">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-[#0B0F17] px-4 py-8 selection:bg-crimson selection:text-white transition-colors duration-200">
         
         {/* Top Floating Controls */}
         <div className="fixed top-4 right-4 z-20">
@@ -735,10 +735,10 @@ export default function InstructorAdminDashboard() {
   // UNLOCKED INSTRUCTOR DASHBOARD VIEW (Dark & Light Theme)
   // =========================================================
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#090D16] text-slate-800 dark:text-slate-100 flex flex-col selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B0F17] text-slate-800 dark:text-slate-100 flex flex-col selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
       
       {/* 1. HEADER & NAVIGATION WITH THEME SWITCHER */}
-      <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-md shadow-sm transition-colors duration-200">
+      <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0B0F17]/95 backdrop-blur-md shadow-sm transition-colors duration-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2.5 sm:gap-3">
             <Link
