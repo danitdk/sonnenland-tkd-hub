@@ -38,7 +38,10 @@ import {
   Send,
   FileSpreadsheet,
   Copy,
-  Globe
+  Globe,
+  XCircle,
+  Flag,
+  Hash
 } from "lucide-react";
 import Badge from "@/components/Badge";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -70,6 +73,7 @@ const SEED_REGISTRATIONS = [
     tuitionFee: 10000,
     uniformFee: 1500,
     totalAmount: 11500,
+    transactionId: "CBE-FT2629884102",
     paymentStatus: "Verified",
     receiptImage: null,
     receiptFileName: "cbe_receipt_1042.jpg",
@@ -90,6 +94,7 @@ const SEED_REGISTRATIONS = [
     tuitionFee: 10000,
     uniformFee: 0,
     totalAmount: 10000,
+    transactionId: "TB-0912445566-9921",
     paymentStatus: "Verified",
     receiptImage: null,
     receiptFileName: "telebirr_tx_445566.png",
@@ -109,6 +114,7 @@ const SEED_REGISTRATIONS = [
     tuitionFee: 10000,
     uniformFee: 1500,
     totalAmount: 11500,
+    transactionId: "AWASH-0132-7788",
     paymentStatus: "Pending",
     receiptImage: null,
     receiptFileName: "awash_app_screenshot.jpg",
@@ -129,6 +135,7 @@ const SEED_REGISTRATIONS = [
     tuitionFee: 10000,
     uniformFee: 1500,
     totalAmount: 11500,
+    transactionId: "CBE-FT2629910455",
     paymentStatus: "Verified",
     receiptImage: null,
     receiptFileName: "cbe_receipt_201122.png",
@@ -148,6 +155,7 @@ const SEED_REGISTRATIONS = [
     tuitionFee: 10000,
     uniformFee: 0,
     totalAmount: 10000,
+    transactionId: "TB-0911334455-8840",
     paymentStatus: "Pending",
     receiptImage: null,
     receiptFileName: "telebirr_payment_receipt.jpg",
@@ -178,6 +186,7 @@ export default function InstructorAdminDashboard() {
     grade: "KG 1",
     parentName: "",
     parentPhone: "",
+    transactionId: "",
     includeUniform: false,
     uniformSize: "110cm",
     paymentStatus: "Pending",
@@ -227,9 +236,12 @@ export default function InstructorAdminDashboard() {
             totalAmount:
               item.totalAmount ||
               (item.tuitionFee || 10000) + (item.includeUniform ? 1500 : 0),
+            transactionId: item.transactionId || item.txnId || "N/A",
             paymentStatus:
               item.paymentStatus === "Verified" || item.paymentStatus === "Paid"
                 ? "Verified"
+                : item.paymentStatus === "Invalid" || item.paymentStatus === "Rejected"
+                ? "Invalid"
                 : "Pending",
             receiptImage: item.receiptImage || null,
             receiptFileName: item.receiptFileName || "receipt_screenshot.png",
@@ -310,11 +322,10 @@ export default function InstructorAdminDashboard() {
     setPinError("");
   };
 
-  const handleTogglePayment = (studentId) => {
+  const handleSetPaymentStatus = (studentId, newStatus) => {
     const updated = students.map((s) => {
       if (s.id === studentId) {
-        const nextStatus = s.paymentStatus === "Verified" ? "Pending" : "Verified";
-        return { ...s, paymentStatus: nextStatus };
+        return { ...s, paymentStatus: newStatus };
       }
       return s;
     });
@@ -323,9 +334,25 @@ export default function InstructorAdminDashboard() {
     if (selectedReceiptStudent?.id === studentId) {
       setSelectedReceiptStudent((prev) => ({
         ...prev,
-        paymentStatus: prev.paymentStatus === "Verified" ? "Pending" : "Verified",
+        paymentStatus: newStatus,
       }));
     }
+
+    setToastMessage(
+      newStatus === "Verified"
+        ? "Payment marked as Verified!"
+        : newStatus === "Invalid"
+        ? "Payment flagged as Invalid (Rejected)."
+        : "Payment status reset to Pending."
+    );
+    setTimeout(() => setToastMessage(""), 3500);
+  };
+
+  const handleTogglePayment = (studentId) => {
+    const target = students.find((s) => s.id === studentId);
+    if (!target) return;
+    const nextStatus = target.paymentStatus === "Verified" ? "Pending" : "Verified";
+    handleSetPaymentStatus(studentId, nextStatus);
   };
 
   const handleToggleUniform = (studentId) => {
@@ -386,6 +413,9 @@ export default function InstructorAdminDashboard() {
       tuitionFee: 10000,
       uniformFee: addForm.includeUniform ? 1500 : 0,
       totalAmount,
+      transactionId:
+        addForm.transactionId?.trim() ||
+        (addForm.paymentStatus === "Verified" ? "CASH-RECORD" : "AWAITING-TXN"),
       paymentStatus: addForm.paymentStatus,
       receiptImage: null,
       receiptFileName:
@@ -412,6 +442,7 @@ export default function InstructorAdminDashboard() {
       grade: "KG 1",
       parentName: "",
       parentPhone: "",
+      transactionId: "",
       includeUniform: false,
       uniformSize: "110cm",
       paymentStatus: "Pending",
@@ -444,6 +475,7 @@ export default function InstructorAdminDashboard() {
       s.studentName.toLowerCase().includes(term) ||
       s.parentName.toLowerCase().includes(term) ||
       (s.parentPhone && s.parentPhone.includes(term)) ||
+      (s.transactionId && s.transactionId.toLowerCase().includes(term)) ||
       s.id.toLowerCase().includes(term);
 
     const matchesPayment =
@@ -470,6 +502,7 @@ export default function InstructorAdminDashboard() {
       "Grade",
       "Parent Name",
       "Parent Phone",
+      "Transaction ID / Ref",
       "Fee Amount (ETB)",
       "Payment Status",
       "Uniform Selection",
@@ -482,6 +515,7 @@ export default function InstructorAdminDashboard() {
       `"${s.grade || ""}"`,
       `"${(s.parentName || "").replace(/"/g, '""')}"`,
       `"${s.parentPhone || ""}"`,
+      `"${(s.transactionId || "").replace(/"/g, '""')}"`,
       s.totalAmount || 0,
       `"${s.paymentStatus || "Pending"}"`,
       s.includeUniform ? "Yes" : "No",
@@ -515,6 +549,9 @@ export default function InstructorAdminDashboard() {
   const pendingPaymentsETB = students
     .filter((s) => s.paymentStatus === "Pending")
     .reduce((sum, s) => sum + (s.totalAmount || 0), 0);
+  const invalidPaymentsCount = students.filter(
+    (s) => s.paymentStatus === "Invalid"
+  ).length;
   const uniformsNeededCount = students.filter(
     (s) => s.includeUniform && s.uniformStatus === "Needed"
   ).length;
@@ -796,6 +833,9 @@ export default function InstructorAdminDashboard() {
             </div>
             <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
               {students.filter((s) => s.paymentStatus === "Pending").length} awaiting
+              {invalidPaymentsCount > 0 && (
+                <span className="text-crimson font-semibold"> • {invalidPaymentsCount} flagged</span>
+              )}
             </p>
           </div>
 
@@ -828,7 +868,7 @@ export default function InstructorAdminDashboard() {
               <Search className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search by student name or parent phone..."
+                placeholder="Search by student, parent phone, or txn reference..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 pl-10 pr-9 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-amber-600 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-amber-600"
@@ -854,6 +894,7 @@ export default function InstructorAdminDashboard() {
                 <option value="ALL">Payment: All</option>
                 <option value="Verified">Verified (Paid)</option>
                 <option value="Pending">Pending</option>
+                <option value="Invalid">Invalid (Flagged)</option>
               </select>
 
               <select
@@ -972,77 +1013,167 @@ export default function InstructorAdminDashboard() {
                       </div>
                     )}
 
-                    {/* Status & Action Buttons Grid */}
+                    {/* Proof & Transaction Reference Snippet */}
+                    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-3 flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedReceiptStudent(student)}
+                          className="shrink-0 relative group"
+                          title="Tap to preview receipt"
+                        >
+                          {student.receiptImage ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img
+                              src={student.receiptImage}
+                              alt="Receipt"
+                              className="h-10 w-10 rounded-lg object-cover border border-slate-300 dark:border-slate-700 shadow-xs"
+                            />
+                          ) : (
+                            <div className="h-10 w-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                              <FileText className="h-5 w-5" />
+                            </div>
+                          )}
+                        </button>
+                        <div className="min-w-0 flex-1">
+                          <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">
+                            Txn Reference:
+                          </span>
+                          <span
+                            className="font-mono font-bold text-xs text-amber-700 dark:text-amber-400 truncate block select-all"
+                            title={student.transactionId || "N/A"}
+                          >
+                            {student.transactionId || "N/A"}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {student.transactionId && student.transactionId !== "N/A" && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(student.transactionId);
+                              setToastMessage(`Copied ref ${student.transactionId}`);
+                              setTimeout(() => setToastMessage(""), 2500);
+                            }}
+                            className="min-h-[36px] min-w-[36px] flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-600"
+                            title="Copy reference"
+                          >
+                            <Copy className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedReceiptStudent(student)}
+                          className="min-h-[36px] px-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-amber-600 flex items-center gap-1"
+                        >
+                          <Eye className="h-3.5 w-3.5 text-amber-600" />
+                          <span>Proof</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Payment Status Row with 3 States */}
+                    <div className="flex items-center justify-between text-xs pt-1">
+                      <span className="font-bold text-slate-500 dark:text-slate-400">Payment Status:</span>
+                      {student.paymentStatus === "Verified" ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-500/20 px-2.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                          <span>Verified (Paid)</span>
+                        </span>
+                      ) : student.paymentStatus === "Invalid" ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-red-50 dark:bg-red-500/20 px-2.5 py-1 text-xs font-bold text-crimson dark:text-red-400 border border-red-300 dark:border-red-500/40">
+                          <XCircle className="h-3.5 w-3.5 text-crimson dark:text-red-400" />
+                          <span>Invalid / Flagged</span>
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-500/20 px-2.5 py-1 text-xs font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                          <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                          <span>Pending Approval</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* 1-Click Verification Action Buttons (Verify / Flag) */}
                     <div className="grid grid-cols-2 gap-2 pt-1">
-                      {/* Payment Toggle */}
                       <button
                         type="button"
-                        onClick={() => handleTogglePayment(student.id)}
+                        onClick={() => handleSetPaymentStatus(student.id, "Verified")}
                         className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all border shadow-sm active:scale-95 ${
-                          isVerified
-                            ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
-                            : "bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/40 hover:bg-amber-100"
+                          student.paymentStatus === "Verified"
+                            ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
+                            : "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
                         }`}
                       >
-                        {isVerified ? (
-                          <>
-                            <CheckCircle2 className="h-4 w-4" />
-                            <span>Verified</span>
-                          </>
-                        ) : (
-                          <>
-                            <Clock className="h-4 w-4" />
-                            <span>Pending</span>
-                          </>
-                        )}
+                        <Check className="h-4 w-4" />
+                        <span>{student.paymentStatus === "Verified" ? "Verified ✓" : "Verify"}</span>
                       </button>
 
-                      {/* Reminder Button if Pending */}
-                      {!isVerified ? (
+                      <button
+                        type="button"
+                        onClick={() => handleSetPaymentStatus(student.id, "Invalid")}
+                        className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all border shadow-sm active:scale-95 ${
+                          student.paymentStatus === "Invalid"
+                            ? "bg-crimson text-white border-crimson shadow-md"
+                            : "bg-red-50 dark:bg-red-500/20 text-crimson dark:text-red-400 border-red-300 dark:border-red-500/40 hover:bg-red-100"
+                        }`}
+                      >
+                        <XCircle className="h-4 w-4" />
+                        <span>{student.paymentStatus === "Invalid" ? "Flagged ✕" : "Flag / Reject"}</span>
+                      </button>
+                    </div>
+
+                    {/* Uniform & Reminder Row */}
+                    <div className="grid grid-cols-2 gap-2 pt-1">
+                      {student.includeUniform ? (
+                        <button
+                          type="button"
+                          onClick={() => handleToggleUniform(student.id)}
+                          className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-bold border active:scale-95 transition-colors shadow-sm ${
+                            isUniformDelivered
+                              ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
+                              : "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40 hover:bg-purple-100"
+                          }`}
+                        >
+                          <Shirt className="h-4 w-4 shrink-0" />
+                          <span className="truncate">{student.uniformSize} – {isUniformDelivered ? "Delivered" : "Needed"}</span>
+                        </button>
+                      ) : (
+                        <div className="min-h-[44px] flex items-center justify-center text-xs text-slate-400 dark:text-slate-500 italic rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60">
+                          No Uniform
+                        </div>
+                      )}
+
+                      {student.paymentStatus === "Pending" ? (
                         <button
                           type="button"
                           onClick={() => {
                             setReminderStudent(student);
                             setReminderLang("am");
                           }}
-                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-3 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/30 active:scale-95 transition-all shadow-sm"
+                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-3 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 active:scale-95 transition-all shadow-sm"
                         >
                           <MessageSquare className="h-4 w-4" />
                           <span>Send Reminder</span>
                         </button>
                       ) : (
-                        /* Uniform Toggle if Verified */
-                        student.includeUniform ? (
-                          <button
-                            type="button"
-                            onClick={() => handleToggleUniform(student.id)}
-                            className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-bold border active:scale-95 transition-colors shadow-sm ${
-                              isUniformDelivered
-                                ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
-                                : "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40 hover:bg-purple-100"
-                            }`}
-                          >
-                            <Shirt className="h-4 w-4 shrink-0" />
-                            <span className="truncate">{student.uniformSize} – {isUniformDelivered ? "Delivered" : "Needed"}</span>
-                          </button>
-                        ) : (
-                          <div className="min-h-[44px] flex items-center justify-center text-xs text-slate-400 dark:text-slate-500 italic rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60">
-                            No Uniform
-                          </div>
-                        )
+                        <button
+                          type="button"
+                          onClick={() => handleSetPaymentStatus(student.id, "Pending")}
+                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 active:scale-95 transition-all"
+                        >
+                          <Clock className="h-3.5 w-3.5" />
+                          <span>Reset to Pending</span>
+                        </button>
                       )}
                     </div>
 
                     {/* Secondary Actions Row */}
                     <div className="flex items-center justify-between pt-1 text-xs border-t border-slate-100 dark:border-slate-800">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedReceiptStudent(student)}
-                        className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-amber-700 dark:hover:text-amber-400"
-                      >
-                        <Eye className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                        <span>View Proof / Details</span>
-                      </button>
+                      <span className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
+                        {student.displayDate}
+                      </span>
 
                       <button
                         type="button"
@@ -1076,16 +1207,15 @@ export default function InstructorAdminDashboard() {
                   <th scope="col" className="px-5 py-3.5 font-bold">1. Student & Grade</th>
                   <th scope="col" className="px-5 py-3.5 font-bold">2. Parent & Phone</th>
                   <th scope="col" className="px-5 py-3.5 font-bold">3. Total Fee</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">4. Payment Status & Reminder</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">5. Uniform</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold text-center">6. Proof Receipt</th>
+                  <th scope="col" className="px-5 py-3.5 font-bold">4. Payment Status</th>
+                  <th scope="col" className="px-5 py-3.5 font-bold">5. Proof & Txn Ref</th>
+                  <th scope="col" className="px-5 py-3.5 font-bold">6. Uniform</th>
                   <th scope="col" className="px-5 py-3.5 font-bold text-right">7. Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {filteredStudents.length > 0 ? (
                   filteredStudents.map((student) => {
-                    const isVerified = student.paymentStatus === "Verified";
                     const isUniformDelivered = student.uniformStatus === "Delivered";
 
                     return (
@@ -1147,48 +1277,86 @@ export default function InstructorAdminDashboard() {
                           </div>
                         </td>
 
+                        {/* Column 4: Payment Status (3 states) */}
                         <td className="px-5 py-4">
-                          <div className="flex flex-wrap items-center gap-2">
+                          {student.paymentStatus === "Verified" ? (
+                            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                              <span>Verified</span>
+                            </span>
+                          ) : student.paymentStatus === "Invalid" ? (
+                            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold bg-red-50 dark:bg-red-500/20 text-crimson dark:text-red-400 border border-red-300 dark:border-red-500/40">
+                              <XCircle className="h-3.5 w-3.5 text-crimson dark:text-red-400" />
+                              <span>Invalid</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                              <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                              <span>Pending</span>
+                            </span>
+                          )}
+                        </td>
+
+                        {/* Column 5: Proof & Txn Reference */}
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-2.5">
+                            {/* Receipt Preview Thumbnail */}
                             <button
                               type="button"
-                              onClick={() => handleTogglePayment(student.id)}
-                              title="Click to toggle Payment Status"
-                              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-all border shadow-sm ${
-                                isVerified
-                                  ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
-                                  : "bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/40 hover:bg-amber-100"
-                              }`}
+                              onClick={() => setSelectedReceiptStudent(student)}
+                              className="group relative shrink-0"
+                              title="Click to view receipt proof"
                             >
-                              {isVerified ? (
-                                <>
-                                  <CheckCircle2 className="h-3.5 w-3.5" />
-                                  <span>Verified</span>
-                                </>
+                              {student.receiptImage ? (
+                                /* eslint-disable-next-line @next/next/no-img-element */
+                                <img
+                                  src={student.receiptImage}
+                                  alt="Receipt"
+                                  className="h-10 w-10 rounded-lg object-cover border border-slate-300 dark:border-slate-700 shadow-xs group-hover:scale-105 group-hover:border-amber-400 transition-all"
+                                />
                               ) : (
-                                <>
-                                  <Clock className="h-3.5 w-3.5" />
-                                  <span>Pending</span>
-                                </>
+                                <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:border-amber-400 transition-all">
+                                  <FileText className="h-5 w-5" />
+                                </div>
                               )}
                             </button>
 
-                            {!isVerified && (
+                            {/* Transaction Reference Number right next to thumbnail */}
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-1">
+                                <span
+                                  className="font-mono font-bold text-xs text-amber-700 dark:text-amber-400 select-all truncate max-w-[130px] block"
+                                  title={student.transactionId || "N/A"}
+                                >
+                                  {student.transactionId || "N/A"}
+                                </span>
+                                {student.transactionId && student.transactionId !== "N/A" && (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(student.transactionId);
+                                      setToastMessage(`Copied ref ${student.transactionId}`);
+                                      setTimeout(() => setToastMessage(""), 2500);
+                                    }}
+                                    title="Copy Transaction Ref"
+                                    className="text-slate-400 hover:text-amber-600 p-0.5 shrink-0"
+                                  >
+                                    <Copy className="h-3 w-3" />
+                                  </button>
+                                )}
+                              </div>
                               <button
                                 type="button"
-                                onClick={() => {
-                                  setReminderStudent(student);
-                                  setReminderLang("am");
-                                }}
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-2.5 py-1 text-[11px] font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/30 transition-all shadow-sm"
-                                title="Open Polite Reminder Generator Modal"
+                                onClick={() => setSelectedReceiptStudent(student)}
+                                className="text-[10px] text-slate-500 dark:text-slate-400 hover:text-amber-700 dark:hover:text-amber-400 font-medium block mt-0.5 hover:underline"
                               >
-                                <MessageSquare className="h-3.5 w-3.5 shrink-0" />
-                                <span>Send Reminder</span>
+                                View Proof →
                               </button>
-                            )}
+                            </div>
                           </div>
                         </td>
 
+                        {/* Column 6: Uniform */}
                         <td className="px-5 py-4">
                           {student.includeUniform ? (
                             <button
@@ -1213,27 +1381,74 @@ export default function InstructorAdminDashboard() {
                           )}
                         </td>
 
-                        <td className="px-5 py-4 text-center">
-                          <button
-                            type="button"
-                            onClick={() => setSelectedReceiptStudent(student)}
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 hover:border-amber-400 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/30 dark:hover:bg-slate-700 transition-colors shadow-sm"
-                            title="View receipt proof or details"
-                          >
-                            <Eye className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                            <span>Proof</span>
-                          </button>
-                        </td>
-
+                        {/* Column 7: Actions */}
                         <td className="px-5 py-4 text-right">
-                          <button
-                            type="button"
-                            onClick={() => setStudentToDelete(student)}
-                            className="inline-flex items-center justify-center rounded-lg p-1.5 text-slate-400 hover:text-crimson dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-                            title="Delete Registration"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
+                          <div className="flex items-center justify-end gap-1.5 flex-wrap">
+                            {/* Verify Button (marks payment as Verified, green badge) */}
+                            {student.paymentStatus !== "Verified" && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetPaymentStatus(student.id, "Verified")}
+                                title="Mark payment as Verified"
+                                className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 text-xs font-bold transition-all shadow-xs active:scale-95"
+                              >
+                                <Check className="h-3.5 w-3.5" />
+                                <span>Verify</span>
+                              </button>
+                            )}
+
+                            {/* Flag / Reject Button (marks payment as Invalid, red badge) */}
+                            {student.paymentStatus !== "Invalid" && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetPaymentStatus(student.id, "Invalid")}
+                                title="Flag or Reject payment as Invalid"
+                                className="inline-flex items-center gap-1 rounded-lg border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 text-crimson dark:text-red-400 px-2 py-1.5 text-xs font-bold transition-all shadow-xs active:scale-95"
+                              >
+                                <XCircle className="h-3.5 w-3.5" />
+                                <span>Flag / Reject</span>
+                              </button>
+                            )}
+
+                            {/* Option to Reset to Pending */}
+                            {student.paymentStatus !== "Pending" && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetPaymentStatus(student.id, "Pending")}
+                                title="Reset status to Pending"
+                                className="inline-flex items-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-600 dark:text-slate-300 px-2 py-1.5 text-[11px] font-semibold transition-all shadow-xs"
+                              >
+                                <Clock className="h-3 w-3" />
+                                <span>Pending</span>
+                              </button>
+                            )}
+
+                            {/* Polite Reminder Button if Pending */}
+                            {student.paymentStatus === "Pending" && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setReminderStudent(student);
+                                  setReminderLang("am");
+                                }}
+                                className="inline-flex items-center gap-1 rounded-lg border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-2 py-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition-all shadow-xs"
+                                title="Send Polite Reminder"
+                              >
+                                <MessageSquare className="h-3.5 w-3.5" />
+                                <span>Remind</span>
+                              </button>
+                            )}
+
+                            {/* Delete Registration */}
+                            <button
+                              type="button"
+                              onClick={() => setStudentToDelete(student)}
+                              className="inline-flex items-center justify-center rounded-lg p-1.5 text-slate-400 hover:text-crimson hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                              title="Delete Registration"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );
@@ -1592,6 +1807,28 @@ export default function InstructorAdminDashboard() {
                 </div>
               </div>
 
+              {/* Optional Transaction ID / Reference Code */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                  Transaction ID / Reference Number <span className="text-slate-500 dark:text-slate-400 text-[11px] font-normal">(Optional)</span>
+                </label>
+                <div className="relative">
+                  <Hash className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="e.g. CBE txn code, Telebirr ref, or leave blank for CASH"
+                    value={addForm.transactionId}
+                    onChange={(e) =>
+                      setAddForm((prev) => ({ ...prev, transactionId: e.target.value }))
+                    }
+                    className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 pl-10 pr-3 py-2.5 text-base sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson shadow-sm"
+                  />
+                </div>
+                <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                  Optional. If student paid in cash or via phone, you can leave this blank (defaults to CASH-RECORD).
+                </p>
+              </div>
+
               <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 p-4 space-y-3">
                 <label className="flex items-start gap-3 cursor-pointer select-none min-h-[44px]">
                   <input
@@ -1790,7 +2027,7 @@ export default function InstructorAdminDashboard() {
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div>
                 <span className="text-slate-500 dark:text-slate-400">Total Payable:</span>
                 <p className="font-extrabold text-amber-700 dark:text-amber-400 font-mono text-sm mt-0.5">
@@ -1803,7 +2040,12 @@ export default function InstructorAdminDashboard() {
                   {selectedReceiptStudent.paymentStatus === "Verified" ? (
                     <span className="text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      Verified
+                      Verified (Paid)
+                    </span>
+                  ) : selectedReceiptStudent.paymentStatus === "Invalid" ? (
+                    <span className="text-crimson dark:text-red-400 flex items-center gap-1">
+                      <XCircle className="h-3.5 w-3.5" />
+                      Invalid (Flagged)
                     </span>
                   ) : (
                     <span className="text-amber-700 dark:text-amber-400 flex items-center gap-1">
@@ -1824,6 +2066,33 @@ export default function InstructorAdminDashboard() {
                 <p className="font-medium text-slate-900 dark:text-white mt-0.5">
                   {selectedReceiptStudent.displayDate}
                 </p>
+              </div>
+
+              {/* Transaction Reference Number prominently displayed with copy button */}
+              <div className="col-span-2 pt-2.5 mt-1 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between gap-2">
+                <div>
+                  <span className="text-slate-500 dark:text-slate-400 block text-[11px] font-medium">
+                    Transaction ID / Reference Number:
+                  </span>
+                  <span className="font-mono font-bold text-amber-700 dark:text-amber-400 text-xs sm:text-sm select-all">
+                    {selectedReceiptStudent.transactionId || "N/A"}
+                  </span>
+                </div>
+                {selectedReceiptStudent.transactionId && selectedReceiptStudent.transactionId !== "N/A" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(selectedReceiptStudent.transactionId);
+                      setToastMessage(`Copied ref ${selectedReceiptStudent.transactionId}`);
+                      setTimeout(() => setToastMessage(""), 2500);
+                    }}
+                    className="inline-flex items-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-amber-600 transition-colors shadow-xs"
+                    title="Copy Transaction Ref"
+                  >
+                    <Copy className="h-3.5 w-3.5 text-amber-600" />
+                    <span>Copy</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1857,7 +2126,7 @@ export default function InstructorAdminDashboard() {
                         : "Mobile Banking / CBE Birr / Telebirr"}
                     </span>
                     <h4 className="mt-1 text-xs font-bold text-slate-900 dark:text-white font-mono">
-                      Ref: {selectedReceiptStudent.receiptFileName || "DIRECT-RECORD"}
+                      Ref: {selectedReceiptStudent.transactionId || selectedReceiptStudent.receiptFileName || "DIRECT-RECORD"}
                     </h4>
                     <p className="text-[11px] text-slate-600 dark:text-slate-300">
                       Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.grade}
@@ -1870,38 +2139,57 @@ export default function InstructorAdminDashboard() {
               )}
             </div>
 
-            <div className="mt-5 flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-3 border-t border-slate-200 dark:border-slate-700">
+            <div className="mt-5 flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
               <button
                 type="button"
                 onClick={() => setSelectedReceiptStudent(null)}
-                className="w-full sm:w-auto min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                className="min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
               >
                 Close
               </button>
 
-              {selectedReceiptStudent.paymentStatus !== "Verified" ? (
+              {/* Set to Pending if not pending */}
+              {selectedReceiptStudent.paymentStatus !== "Pending" && (
                 <button
                   type="button"
                   onClick={() => {
-                    handleTogglePayment(selectedReceiptStudent.id);
+                    handleSetPaymentStatus(selectedReceiptStudent.id, "Pending");
                     setSelectedReceiptStudent(null);
                   }}
-                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700 shadow-sm transition-colors active:scale-95"
-                >
-                  <CheckCircle2 className="h-4 w-4" />
-                  <span>Approve Payment (Mark Verified)</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleTogglePayment(selectedReceiptStudent.id);
-                    setSelectedReceiptStudent(null);
-                  }}
-                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl border border-amber-300 dark:border-amber-500/50 bg-amber-50 dark:bg-amber-500/20 px-5 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/30 transition-colors active:scale-95"
+                  className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-amber-300 dark:border-amber-500/50 bg-amber-50 dark:bg-amber-500/20 px-3.5 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition-colors active:scale-95"
                 >
                   <Clock className="h-4 w-4" />
-                  <span>Revert to Pending</span>
+                  <span>Set Pending</span>
+                </button>
+              )}
+
+              {/* Flag as Invalid Button */}
+              {selectedReceiptStudent.paymentStatus !== "Invalid" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSetPaymentStatus(selectedReceiptStudent.id, "Invalid");
+                    setSelectedReceiptStudent(null);
+                  }}
+                  className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/40 px-3.5 py-2 text-xs font-bold text-crimson dark:text-red-400 hover:bg-red-100 transition-colors active:scale-95"
+                >
+                  <XCircle className="h-4 w-4" />
+                  <span>Flag as Invalid</span>
+                </button>
+              )}
+
+              {/* Verify Button */}
+              {selectedReceiptStudent.paymentStatus !== "Verified" && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSetPaymentStatus(selectedReceiptStudent.id, "Verified");
+                    setSelectedReceiptStudent(null);
+                  }}
+                  className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700 shadow-sm transition-colors active:scale-95"
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>Approve & Verify</span>
                 </button>
               )}
             </div>

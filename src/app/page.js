@@ -30,7 +30,8 @@ import {
   ExternalLink,
   Flame,
   Award,
-  Mail
+  Mail,
+  Hash
 } from "lucide-react";
 
 const GRADES = [
@@ -103,6 +104,7 @@ export default function ParentRegistrationPage() {
   const [emergencyPhone, setEmergencyPhone] = useState("");
   const [includeUniform, setIncludeUniform] = useState(false);
   const [uniformSize, setUniformSize] = useState("110cm");
+  const [transactionId, setTransactionId] = useState("");
 
   // Payment Proof Upload State
   const [receiptImage, setReceiptImage] = useState(null);
@@ -242,6 +244,11 @@ export default function ParentRegistrationPage() {
         "Enter a valid emergency phone number (e.g. 0912345678)";
     }
 
+    if (!transactionId.trim()) {
+      newErrors.transactionId =
+        "Please enter the reference number from your bank or Telebirr SMS/receipt to confirm your payment.";
+    }
+
     if (!receiptImage) {
       newErrors.receipt =
         "Please upload a screenshot or photo of your payment transfer receipt";
@@ -276,6 +283,7 @@ export default function ParentRegistrationPage() {
       tuitionFee: TUITION_FEE,
       uniformFee: includeUniform ? UNIFORM_FEE : 0,
       totalAmount,
+      transactionId: transactionId.trim(),
       paymentStatus: "Pending",
       receiptImage,
       receiptFileName,
@@ -316,6 +324,7 @@ export default function ParentRegistrationPage() {
       `🥋 *Sonnenland TKD Hub Registration Confirmation*\n` +
         `-----------------------------------------\n` +
         `*Reference ID:* ${ticket.id}\n` +
+        `*Transaction / Ref:* ${ticket.transactionId || "N/A"}\n` +
         `*Student:* ${ticket.studentName} (${ticket.grade})\n` +
         `*Parent:* ${ticket.parentName} (${ticket.parentPhone})\n` +
         `*Uniform:* ${ticket.includeUniform ? `Yes (${ticket.uniformSize})` : "No"}\n` +
@@ -329,7 +338,7 @@ export default function ParentRegistrationPage() {
   const getTelegramShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 Sonnenland TKD Registration\nRef: ${ticket.id}\nStudent: ${ticket.studentName} (${ticket.grade})\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
+      `🥋 Sonnenland TKD Registration\nRef: ${ticket.id}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.grade})\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
     );
     return `https://t.me/share/url?url=https://sonnenland.school/tkd&text=${text}`;
   };
@@ -745,16 +754,53 @@ export default function ParentRegistrationPage() {
                       <Upload className="h-5 w-5" />
                     </div>
                     <div>
-                      <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Upload Payment Receipt Proof</h2>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">Step 3: Verification Screenshot</p>
+                      <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Payment Verification & Proof</h2>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Step 3: Reference Number & Transfer Screenshot</p>
                     </div>
                   </div>
 
-                  <p className="mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Upload screenshot of your CBE Birr, Telebirr, or Mobile Banking receipt.
-                  </p>
+                  {/* Mandatory Field 1: Transaction ID / Reference Number */}
+                  <div id="transactionId" className="mt-5">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Transaction ID / Reference Number <span className="text-crimson">*</span>
+                    </label>
+                    <div className="relative">
+                      <Hash className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
+                      <input
+                        type="text"
+                        placeholder="e.g. FT26298XXXXX or Telebirr transaction reference"
+                        value={transactionId}
+                        onChange={(e) => {
+                          setTransactionId(e.target.value);
+                          if (errors.transactionId) setErrors((prev) => ({ ...prev, transactionId: null }));
+                        }}
+                        className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-4 py-3 text-base sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                          errors.transactionId
+                            ? "border-crimson focus:border-crimson focus:ring-crimson"
+                            : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
+                        }`}
+                      />
+                    </div>
+                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+                      Please enter the reference number from your bank or Telebirr SMS/receipt to confirm your payment.
+                    </p>
+                    {errors.transactionId && (
+                      <p className="mt-1.5 flex items-center gap-1 text-xs text-crimson font-medium">
+                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                        {errors.transactionId}
+                      </p>
+                    )}
+                  </div>
 
-                  <div className="mt-5">
+                  {/* Mandatory Field 2: Transfer Receipt Screenshot */}
+                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-700/80">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Upload Transfer Receipt Screenshot <span className="text-crimson">*</span>
+                    </label>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
+                      Upload screenshot of your CBE Birr, Telebirr, or Mobile Banking receipt.
+                    </p>
+
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -1046,6 +1092,12 @@ export default function ParentRegistrationPage() {
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Total Paid:</span>
                   <p className="font-bold text-slate-900 dark:text-white mt-0.5 text-sm">
                     {submittedTicket.totalAmount.toLocaleString()} ETB
+                  </p>
+                </div>
+                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-700/80">
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Transaction ID / Reference:</span>
+                  <p className="font-mono font-bold text-amber-700 dark:text-amber-400 mt-0.5 text-xs sm:text-sm select-all">
+                    {submittedTicket.transactionId || "N/A"}
                   </p>
                 </div>
               </div>
