@@ -29,14 +29,14 @@ export default function Navbar() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold tracking-tight text-slate-900 dark:text-white text-base sm:text-lg">
-                Sönnenland <span className="text-crimson">TKD</span> Hub
+                Sönnenland <span className="text-crimson">After-School TKD</span>
               </span>
               <span className="hidden sm:inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-400/30">
                 Kindergarten
               </span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              Sönnenland International Kindergarten After-School TKD Hub
+              Sönnenland International Kindergarten
             </p>
           </div>
         </Link>

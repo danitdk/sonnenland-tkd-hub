@@ -236,7 +236,7 @@ export default function ParentRegistrationPage() {
     }
 
     if (!age) {
-      newErrors.age = "Please select student's age / እድሜ ይምረጡ";
+      newErrors.age = "Please select student's age";
     }
 
     if (!parentName.trim()) {
@@ -284,7 +284,7 @@ export default function ParentRegistrationPage() {
     const registrationData = {
       id: referenceId,
       studentName: studentName.trim(),
-      studentType: studentType === "new" ? "New Student" : "Returning Student",
+      studentType: studentType === "new" ? "New Student" : "Returning Student (2nd Term)",
       age,
       grade: age,
       parentName: parentName.trim(),
@@ -376,30 +376,30 @@ export default function ParentRegistrationPage() {
             <div className="inline-flex mb-4">
               <Badge variant="gold" size="md" pulse={true}>
                 <Calendar className="h-4 w-4 text-amber-700 dark:text-amber-400 shrink-0" />
-                <span className="font-bold">Oct 26 – Oct 28 Registration Open</span>
+                <span className="font-bold">Registration Open: October 26 - October 28</span>
               </Badge>
             </div>
 
             {/* Title */}
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-              Sönnenland International Kindergarten <span className="text-crimson">After-School TKD Hub</span>
+              Sönnenland <span className="text-crimson">After-School TKD Hub</span>
             </h1>
 
             {/* Subtitle */}
             <p className="mt-3 text-base sm:text-2xl font-bold text-slate-700 dark:text-slate-200 max-w-3xl mx-auto leading-snug">
-              Specialized martial arts, discipline, and physical development exclusively for Sönnenland kindergarten students (Ages 3 to 6).
+              Martial arts, discipline, and physical fitness exclusively for Sönnenland KG students.
             </p>
 
             {/* Schedule Indicator */}
             <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-white dark:bg-slate-800/90 px-4 py-2.5 sm:px-5 sm:py-3 shadow-sm dark:shadow-md">
               <div className="flex items-center gap-2 text-amber-800 dark:text-amber-300 font-bold text-xs sm:text-sm">
                 <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span>Mon / Wed / Fri – 3:30 PM to 4:30 PM</span>
+                <span>Mon / Wed / Fri | 3:30 PM - 4:30 PM</span>
               </div>
               <span className="hidden sm:inline text-slate-300 dark:text-slate-600">•</span>
               <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium text-xs sm:text-sm">
                 <MapPin className="h-4 w-4 text-crimson shrink-0" />
-                <span>Sönnenland International Kindergarten (Dojang)</span>
+                <span>Sönnenland International Kindergarten</span>
               </div>
             </div>
 
@@ -438,10 +438,10 @@ export default function ParentRegistrationPage() {
                   </div>
 
                   <div className="mt-6 space-y-5">
-                    {/* Student Enrollment Type Selector: አዲስ ተማሪ vs ነባር ተማሪ */}
+                    {/* Student Type Selector */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                        Student Enrollment Type / የተማሪው አይነት <span className="text-crimson">*</span>
+                        Student Type <span className="text-crimson">*</span>
                       </label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label
@@ -463,14 +463,14 @@ export default function ParentRegistrationPage() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
                               <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                                አዲስ ተማሪ (New Student)
+                                New Student
                               </span>
                               <span className="text-[11px] font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/25 px-2 py-0.5 rounded-md border border-amber-300 dark:border-amber-500/40">
                                 11,500 ETB
                               </span>
                             </div>
                             <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
-                              Training Fee (10,000 ETB) + Official Dobok & Belt (1,500 ETB)
+                              Training Fee (10,000 ETB) + Uniform/Dobok (1,500 ETB)
                             </p>
                           </div>
                         </label>
@@ -494,14 +494,14 @@ export default function ParentRegistrationPage() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
                               <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                                ነባር ተማሪ / 2nd Term (Returning)
+                                Returning Student (2nd Term)
                               </span>
                               <span className="text-[11px] font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/25 px-2 py-0.5 rounded-md border border-emerald-300 dark:border-emerald-500/40">
                                 10,000 ETB
                               </span>
                             </div>
                             <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
-                              Training Fee only (10,000 ETB) • Already has Dobok uniform
+                              Training Fee Only (10,000 ETB)
                             </p>
                           </div>
                         </label>
@@ -540,10 +540,10 @@ export default function ParentRegistrationPage() {
                         )}
                       </div>
 
-                      {/* Age / እድሜ Selection */}
+                      {/* Age Selection */}
                       <div id="age">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Age / እድሜ <span className="text-crimson">*</span>
+                          Age <span className="text-crimson">*</span>
                         </label>
                         <div className="relative">
                           <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
@@ -560,7 +560,7 @@ export default function ParentRegistrationPage() {
                             }`}
                           >
                             <option value="" disabled className="text-slate-400">
-                              Select Student Age / እድሜ ይምረጡ
+                              Select Age
                             </option>
                             {AGES.map((a) => (
                               <option key={a} value={a} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -583,10 +583,10 @@ export default function ParentRegistrationPage() {
 
                     {/* Row 2: Parent Name & Phone */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                      {/* Parent Full Name */}
+                      {/* Parent / Guardian Name */}
                       <div id="parentName">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Parent / Guardian Full Name <span className="text-crimson">*</span>
+                          Parent / Guardian Name <span className="text-crimson">*</span>
                         </label>
                         <div className="relative">
                           <User className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -692,7 +692,7 @@ export default function ParentRegistrationPage() {
                               <div className="flex flex-wrap items-center justify-between gap-2">
                                 <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                   <Shirt className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                                  Official TKD Uniform (Dobok) + White Belt (የደንብ ልብስ)
+                                  Official TKD Uniform (Dobok) + White Belt
                                 </span>
                                 <span className="text-xs font-black text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-300 dark:border-amber-500/30">
                                   +1,500 ETB (Included)
@@ -795,8 +795,8 @@ export default function ParentRegistrationPage() {
                         <CreditCard className="h-5 w-5" />
                       </div>
                       <div>
-                        <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Bank & Payment Transfer Details</h2>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Step 2: Transfer Required Fee</p>
+                        <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Select Payment Method</h2>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Step 2: Bank & Mobile Transfer (CBE, Telebirr, Awash)</p>
                       </div>
                     </div>
 
@@ -886,7 +886,7 @@ export default function ParentRegistrationPage() {
                       <Upload className="h-5 w-5" />
                     </div>
                     <div>
-                      <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Payment Verification & Proof</h2>
+                      <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Upload Bank / Telebirr Receipt</h2>
                       <p className="text-xs text-slate-500 dark:text-slate-400">Step 3: Reference Number & Transfer Screenshot</p>
                     </div>
                   </div>
@@ -927,7 +927,7 @@ export default function ParentRegistrationPage() {
                   {/* Mandatory Field 2: Transfer Receipt Screenshot */}
                   <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-700/80">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                      Upload Transfer Receipt Screenshot <span className="text-crimson">*</span>
+                      Upload Bank / Telebirr Receipt <span className="text-crimson">*</span>
                     </label>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
                       Upload screenshot of your CBE Birr, Telebirr, or Mobile Banking receipt.
@@ -1028,7 +1028,7 @@ export default function ParentRegistrationPage() {
                     {/* Active Line Item 1: Training Fee */}
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                       <div>
-                        <span className="font-bold text-slate-900 dark:text-white">Training Fee (የትምህርት ክፍያ)</span>
+                        <span className="font-bold text-slate-900 dark:text-white">Training Fee</span>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400">1 Term (Mon / Wed / Fri)</p>
                       </div>
                       <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
@@ -1037,7 +1037,7 @@ export default function ParentRegistrationPage() {
                     {/* Active Line Item 2: Uniform / Dobok */}
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                       <div>
-                        <span className="font-bold text-slate-900 dark:text-white">Uniform / የደንብ ልብስ (Dobok + Belt)</span>
+                        <span className="font-bold text-slate-900 dark:text-white">Uniform (Dobok) + Belt</span>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
                           {includeUniform ? `Size ${uniformSize} (${studentType === "new" ? "New Student Dobok" : "Replacement"})` : "Not needed (Returning Student)"}
                         </p>
@@ -1050,7 +1050,7 @@ export default function ParentRegistrationPage() {
                     {/* Total: Strictly calculated from active items */}
                     <div className="border-t border-slate-200 dark:border-slate-700/80 pt-4 mt-2 flex items-baseline justify-between">
                       <span className="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-                        Total Payable:
+                        Total Payable
                       </span>
                       <div className="text-right">
                         <span className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">
@@ -1078,7 +1078,7 @@ export default function ParentRegistrationPage() {
                       ) : (
                         <>
                           <Flame className="h-5 w-5 text-amber-300" />
-                          <span>Complete Registration & Submit Proof</span>
+                          <span>Complete Registration</span>
                         </>
                       )}
                     </button>
@@ -1174,10 +1174,10 @@ export default function ParentRegistrationPage() {
                 <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
               <h3 className="mt-3 text-2xl font-black text-slate-900 dark:text-white">
-                Registration Submitted!
+                Registration Complete!
               </h3>
               <p className="mt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300">
-                Payment receipt received. Master Daniel will confirm your student roster spot.
+                Thank you! {submittedTicket.studentName} has been successfully registered. See you at Sönnenland when classes start!
               </p>
             </div>
 
@@ -1203,7 +1203,7 @@ export default function ParentRegistrationPage() {
                   </p>
                 </div>
                 <div>
-                  <span className="text-slate-500 dark:text-slate-400 font-medium">Age / እድሜ:</span>
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Age:</span>
                   <p className="font-bold text-slate-900 dark:text-white mt-0.5">{submittedTicket.age || submittedTicket.grade}</p>
                 </div>
                 <div>
@@ -1282,9 +1282,9 @@ export default function ParentRegistrationPage() {
               <button
                 type="button"
                 onClick={() => setShowSuccessModal(false)}
-                className="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors py-2"
+                className="w-full min-h-[44px] inline-flex items-center justify-center rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 text-sm font-bold hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors"
               >
-                Dismiss & Return to Portal
+                Close
               </button>
             </div>
           </div>

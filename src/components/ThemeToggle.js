@@ -26,8 +26,8 @@ export default function ThemeToggle({
     <button
       type="button"
       onClick={toggleTheme}
-      aria-label={isDark ? "Switch to Light Mode (ፀሐይ)" : "Switch to Dark Mode (ጨለማ)"}
-      title={isDark ? "ወደ ፀሐይ (Light Mode) ቀይር" : "ወደ ጨለማ (Dark Mode) ቀይር"}
+      aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
       className={`group relative inline-flex items-center gap-2 rounded-xl border transition-all active:scale-95 select-none ${
         isDark
           ? "border-slate-700/80 bg-slate-800/90 text-slate-100 hover:border-amber-400/60 hover:bg-slate-700/90 shadow-sm"
@@ -47,23 +47,17 @@ export default function ThemeToggle({
         )}
       </span>
 
-      {/* Label showing Amharic + English mode name */}
+      {/* Label showing English mode name */}
       {showLabel && (
-        <span className="flex items-center gap-1.5 font-bold tracking-tight">
+        <span className="flex items-center gap-1.5 font-bold tracking-tight text-xs">
           {isDark ? (
-            <>
-              <span className="text-amber-300 font-black">ፀሐይ</span>
-              <span className="text-[11px] text-slate-400 font-semibold hidden sm:inline">
-                Light
-              </span>
-            </>
+            <span className="text-amber-400 font-bold">
+              Light
+            </span>
           ) : (
-            <>
-              <span className="text-slate-800 font-black">ጨለማ</span>
-              <span className="text-[11px] text-slate-500 font-semibold hidden sm:inline">
-                Dark
-              </span>
-            </>
+            <span className="text-slate-800 font-bold">
+              Dark
+            </span>
           )}
         </span>
       )}

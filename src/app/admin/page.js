@@ -213,7 +213,6 @@ export default function InstructorAdminDashboard() {
   const [addFormErrors, setAddFormErrors] = useState({});
 
   const [reminderStudent, setReminderStudent] = useState(null);
-  const [reminderLang, setReminderLang] = useState("am");
   const [reminderText, setReminderText] = useState("");
   const [isCopiedReminder, setIsCopiedReminder] = useState(false);
 
@@ -292,17 +291,11 @@ export default function InstructorAdminDashboard() {
       return;
     }
     const total = reminderStudent.totalAmount?.toLocaleString() || "10,000";
-    if (reminderLang === "am") {
-      setReminderText(
-        `ሰላም ${reminderStudent.parentName}፣ የ${reminderStudent.studentName} የሶነንላንድ ቴኳንዶ ስልጠና ክፍያን በተመለከተ ነው። የልምምድ ቦታውን ለማረጋገጥ የTerm ስልጠና ክፍያ ${total} ብር እስከ ረቡዕ ከቀኑ 9:30 በፊት በCBE ወይም በTelebirr እንዲያጠናቅቁ በአክብሮት እናሳስባለን። ክፍያውን ሲፈጽሙ ደረሰኙን በዚህ ቁጥር ይላኩልን። እናመሰግናለን! - Master Daniel`
-      );
-    } else {
-      setReminderText(
-        `Hello ${reminderStudent.parentName}, this is Master Daniel regarding ${reminderStudent.studentName}'s enrollment in Sonnenland Taekwondo. To secure their spot, kindly finalize the term training fee of ${total} ETB before Wednesday 3:30 PM. Please share the transfer receipt once completed. Thank you!`
-      );
-    }
+    setReminderText(
+      `Hello ${reminderStudent.parentName}, this is Master Daniel regarding ${reminderStudent.studentName}'s enrollment in Sönnenland Taekwondo. To secure their spot, kindly finalize the term training fee of ${total} ETB before Wednesday 3:30 PM. Please share the transfer receipt once completed. Thank you!`
+    );
     setIsCopiedReminder(false);
-  }, [reminderStudent, reminderLang]);
+  }, [reminderStudent]);
 
   const persistStudents = (updatedStudents) => {
     setStudents(updatedStudents);
@@ -946,7 +939,7 @@ export default function InstructorAdminDashboard() {
                 onChange={(e) => setFilterAge(e.target.value)}
                 className="min-h-[44px] col-span-2 sm:col-span-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:border-amber-600 focus:outline-none shadow-sm"
               >
-                <option value="ALL">All Ages / ሁሉም እድሜዎች</option>
+                <option value="ALL">All Ages</option>
                 {AGES.map((a) => (
                   <option key={a} value={a}>
                     {a}
@@ -1192,7 +1185,6 @@ export default function InstructorAdminDashboard() {
                           type="button"
                           onClick={() => {
                             setReminderStudent(student);
-                            setReminderLang("am");
                           }}
                           className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-3 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 active:scale-95 transition-all shadow-sm"
                         >
@@ -1474,7 +1466,6 @@ export default function InstructorAdminDashboard() {
                                 type="button"
                                 onClick={() => {
                                   setReminderStudent(student);
-                                  setReminderLang("am");
                                 }}
                                 className="inline-flex items-center gap-1 rounded-lg border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-2 py-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition-all shadow-xs"
                                 title="Send Polite Reminder"
@@ -1601,38 +1592,7 @@ export default function InstructorAdminDashboard() {
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                Select Language:
-              </span>
-              <div className="inline-flex rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 p-1">
-                <button
-                  type="button"
-                  onClick={() => setReminderLang("am")}
-                  className={`min-h-[38px] rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-                    reminderLang === "am"
-                      ? "bg-amber-500 text-white shadow-sm"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  አማርኛ (Amharic)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setReminderLang("en")}
-                  className={`min-h-[38px] rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
-                    reminderLang === "en"
-                      ? "bg-amber-500 text-white shadow-sm"
-                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                  }`}
-                >
-                  English
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-3">
+            <div className="mt-4">
               <label className="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-1.5">
                 Generated Message (Editable):
               </label>
@@ -1733,10 +1693,10 @@ export default function InstructorAdminDashboard() {
 
             <form onSubmit={handleSaveManualStudent} className="mt-5 space-y-4" noValidate>
               
-              {/* Student Enrollment Type: New Student vs Returning Student */}
+              {/* Student Type: New Student vs Returning Student */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                  Student Enrollment Type / የተማሪው አይነት <span className="text-crimson">*</span>
+                  Student Type <span className="text-crimson">*</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <label
@@ -1758,13 +1718,13 @@ export default function InstructorAdminDashboard() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          አዲስ ተማሪ (New)
+                          New Student
                         </span>
                         <span className="text-[10px] font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/30 px-1.5 py-0.5 rounded">
                           11,500 ETB
                         </span>
                       </div>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee + Dobok uniform</p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee (10,000 ETB) + Uniform/Dobok (1,500 ETB)</p>
                     </div>
                   </label>
 
@@ -1787,13 +1747,13 @@ export default function InstructorAdminDashboard() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          ነባር ተማሪ (2nd Term)
+                          Returning Student (2nd Term)
                         </span>
                         <span className="text-[10px] font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/30 px-1.5 py-0.5 rounded">
                           10,000 ETB
                         </span>
                       </div>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee only</p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee Only (10,000 ETB)</p>
                     </div>
                   </label>
                 </div>
@@ -1833,7 +1793,7 @@ export default function InstructorAdminDashboard() {
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                    Age / እድሜ <span className="text-crimson">*</span>
+                    Age <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
                     <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -1861,7 +1821,7 @@ export default function InstructorAdminDashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                    Parent / Guardian Full Name <span className="text-crimson">*</span>
+                    Parent / Guardian Name <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
                     <User className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
