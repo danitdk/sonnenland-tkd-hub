@@ -6,10 +6,10 @@ export default function Badge({
   pulse = false,
 }) {
   const variantStyles = {
-    gold: "bg-gold/15 text-gold border-gold/40 shadow-glow-gold",
-    crimson: "bg-crimson/15 text-crimson-light border-crimson/40 shadow-glow-crimson",
-    dark: "bg-surface-card text-gray-300 border-surface-border",
-    emerald: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+    gold: "bg-amber-50 text-amber-800 border-amber-300 shadow-sm",
+    crimson: "bg-red-50 text-red-700 border-red-200 shadow-sm",
+    dark: "bg-slate-100 text-slate-700 border-slate-200",
+    emerald: "bg-emerald-50 text-emerald-700 border-emerald-300 shadow-sm",
   };
 
   const sizeStyles = {
@@ -20,7 +20,7 @@ export default function Badge({
 
   return (
     <span
-      className={`inline-flex items-center gap-2 rounded-full border backdrop-blur-sm transition-all ${
+      className={`inline-flex items-center gap-2 rounded-full border transition-all ${
         variantStyles[variant] || variantStyles.gold
       } ${sizeStyles[size] || sizeStyles.md} ${className}`}
     >
@@ -28,12 +28,12 @@ export default function Badge({
         <span className="relative flex h-2 w-2">
           <span
             className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-              variant === "crimson" ? "bg-crimson" : "bg-gold"
+              variant === "crimson" ? "bg-red-600" : "bg-amber-500"
             }`}
           />
           <span
             className={`relative inline-flex rounded-full h-2 w-2 ${
-              variant === "crimson" ? "bg-crimson" : "bg-gold"
+              variant === "crimson" ? "bg-red-600" : "bg-amber-500"
             }`}
           />
         </span>

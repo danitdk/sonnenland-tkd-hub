@@ -14,8 +14,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body className="min-h-screen bg-[#0B0F19] text-gray-100 antialiased selection:bg-crimson selection:text-white overflow-x-hidden">
+    <html lang="en" className="scroll-smooth">
+      <body className="min-h-screen bg-[#F8FAFC] text-[#1E293B] antialiased selection:bg-crimson selection:text-white overflow-x-hidden">
         {children}
       </body>
     </html>

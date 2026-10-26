@@ -529,27 +529,27 @@ export default function InstructorAdminDashboard() {
   const modalTotalFee = 10000 + (addForm.includeUniform ? 1500 : 0);
 
   if (!hasCheckedSession) {
-    return <div className="min-h-screen bg-background-deep" />;
+    return <div className="min-h-screen bg-slate-50" />;
   }
 
   // =========================================================
-  // SECURITY PIN PROTECTION GATE
+  // SECURITY PIN PROTECTION GATE (Light Theme)
   // =========================================================
   if (!isUnlocked) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background-deep px-4 py-8 selection:bg-crimson selection:text-white">
-        <div className="relative w-full max-w-md rounded-3xl border-2 border-surface-border bg-surface-card p-6 sm:p-8 shadow-2xl text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-crimson to-crimson-dark shadow-glow-crimson border border-crimson/40">
-            <KeyRound className="h-8 w-8 text-white" />
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-8 selection:bg-crimson selection:text-white">
+        <div className="relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xl text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-crimson to-red-700 shadow-md text-white border border-crimson/20">
+            <KeyRound className="h-8 w-8" />
           </div>
 
-          <h2 className="mt-5 text-2xl font-black text-white tracking-tight">
+          <h2 className="mt-5 text-2xl font-black text-slate-900 tracking-tight">
             Instructor Portal
           </h2>
-          <p className="mt-1 text-sm font-semibold text-gold">
+          <p className="mt-1 text-sm font-bold text-amber-700">
             Master Daniel • Sonnenland International School
           </p>
-          <p className="mt-2 text-xs text-gray-400">
+          <p className="mt-2 text-xs text-slate-500">
             Please enter the 4-digit Master PIN to unlock the enrollment administration dashboard.
           </p>
 
@@ -565,12 +565,12 @@ export default function InstructorAdminDashboard() {
                   setPinInput(e.target.value);
                   if (pinError) setPinError("");
                 }}
-                className="w-full min-h-[48px] text-center text-3xl font-mono tracking-[0.5em] rounded-2xl border border-surface-border bg-background-deep px-4 py-3 text-white placeholder-gray-600 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="w-full min-h-[48px] text-center text-3xl font-mono tracking-[0.5em] rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-slate-900 placeholder-slate-400 focus:border-amber-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-600"
               />
             </div>
 
             {pinError && (
-              <p className="flex items-center justify-center gap-1.5 text-xs text-crimson-light font-medium animate-fade-in">
+              <p className="flex items-center justify-center gap-1.5 text-xs text-crimson font-medium animate-fade-in">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{pinError}</span>
               </p>
@@ -591,7 +591,7 @@ export default function InstructorAdminDashboard() {
                       }
                     }
                   }}
-                  className="min-h-[48px] rounded-xl border border-surface-border bg-background-deep py-3 text-lg font-bold text-gray-200 hover:border-gold hover:text-gold hover:bg-surface-elevated active:scale-95 transition-all"
+                  className="min-h-[48px] rounded-xl border border-slate-200 bg-white py-3 text-lg font-bold text-slate-800 hover:border-amber-500 hover:text-amber-700 hover:bg-amber-50/50 active:scale-95 transition-all shadow-sm"
                 >
                   {num}
                 </button>
@@ -599,7 +599,7 @@ export default function InstructorAdminDashboard() {
               <button
                 type="button"
                 onClick={() => setPinInput("")}
-                className="min-h-[48px] rounded-xl border border-surface-border bg-background-deep py-3 text-xs font-semibold text-gray-400 hover:text-white active:scale-95"
+                className="min-h-[48px] rounded-xl border border-slate-200 bg-slate-50 py-3 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 active:scale-95"
               >
                 Clear
               </button>
@@ -615,14 +615,14 @@ export default function InstructorAdminDashboard() {
                     }
                   }
                 }}
-                className="min-h-[48px] rounded-xl border border-surface-border bg-background-deep py-3 text-lg font-bold text-gray-200 hover:border-gold hover:text-gold hover:bg-surface-elevated active:scale-95 transition-all"
+                className="min-h-[48px] rounded-xl border border-slate-200 bg-white py-3 text-lg font-bold text-slate-800 hover:border-amber-500 hover:text-amber-700 hover:bg-amber-50/50 active:scale-95 transition-all shadow-sm"
               >
                 0
               </button>
               <button
                 type="button"
                 onClick={() => setPinInput((prev) => prev.slice(0, -1))}
-                className="min-h-[48px] rounded-xl border border-surface-border bg-background-deep py-3 text-sm font-semibold text-crimson-light hover:bg-crimson/15 active:scale-95"
+                className="min-h-[48px] rounded-xl border border-red-200 bg-red-50 py-3 text-sm font-semibold text-crimson hover:bg-red-100 active:scale-95"
               >
                 ⌫
               </button>
@@ -630,22 +630,22 @@ export default function InstructorAdminDashboard() {
 
             <button
               type="submit"
-              className="w-full min-h-[48px] mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-crimson to-crimson-dark px-6 py-3.5 text-sm font-extrabold text-white shadow-glow-crimson hover:brightness-110 active:scale-95 transition-all"
+              className="w-full min-h-[48px] mt-3 inline-flex items-center justify-center gap-2 rounded-xl bg-crimson px-6 py-3.5 text-sm font-extrabold text-white shadow-md hover:bg-red-700 active:scale-95 transition-all"
             >
               <Unlock className="h-4 w-4" />
               <span>Unlock Admin Dashboard</span>
             </button>
           </form>
 
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-surface-elevated px-3 py-1.5 text-[11px] text-gray-300 border border-surface-border">
-            <Lock className="h-3 w-3 text-gold" />
-            <span>Default PIN: <strong className="text-gold font-mono">1234</strong></span>
+          <div className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-1.5 text-[11px] text-amber-800 border border-amber-200">
+            <Lock className="h-3 w-3 text-amber-700" />
+            <span>Default PIN: <strong className="text-amber-900 font-mono">1234</strong></span>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-surface-border">
+          <div className="mt-6 pt-4 border-t border-slate-200">
             <Link
               href="/"
-              className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-white transition-colors"
+              className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-crimson transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Back to Public Registration Page</span>
@@ -657,35 +657,35 @@ export default function InstructorAdminDashboard() {
   }
 
   // =========================================================
-  // UNLOCKED INSTRUCTOR DASHBOARD VIEW
+  // UNLOCKED INSTRUCTOR DASHBOARD VIEW (Light Theme)
   // =========================================================
   return (
-    <div className="min-h-screen bg-background-deep text-gray-100 flex flex-col selection:bg-crimson selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col selection:bg-crimson selection:text-white overflow-x-hidden">
       
       {/* 1. HEADER & NAVIGATION */}
-      <header className="sticky top-0 z-40 border-b border-surface-border bg-background-rich/95 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2.5 sm:gap-3">
             <Link
               href="/"
-              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-surface-border bg-surface-card px-3 py-2 text-xs font-semibold text-gray-300 hover:text-white hover:border-gold transition-colors"
+              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:text-crimson hover:border-crimson/50 hover:bg-slate-50 transition-colors shadow-sm"
             >
               <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
               <span className="hidden sm:inline">Public Registration</span>
               <span className="sm:hidden">Back</span>
             </Link>
 
-            <div className="h-5 w-[1px] bg-surface-border hidden sm:block" />
+            <div className="h-5 w-[1px] bg-slate-200 hidden sm:block" />
 
             <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-crimson shadow-glow-crimson shrink-0">
-                <Shield className="h-5 w-5 text-white" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-crimson text-white shadow-sm shrink-0">
+                <Shield className="h-5 w-5" />
               </div>
               <div className="min-w-0">
-                <h1 className="text-sm sm:text-base font-black text-white leading-tight truncate">
+                <h1 className="text-sm sm:text-base font-black text-slate-900 leading-tight truncate">
                   Instructor Portal — Master Daniel
                 </h1>
-                <p className="text-[11px] text-gray-400 hidden sm:block">Sonnenland International School (SIS)</p>
+                <p className="text-[11px] text-slate-500 hidden sm:block">Sonnenland International School (SIS)</p>
               </div>
             </div>
           </div>
@@ -695,10 +695,10 @@ export default function InstructorAdminDashboard() {
             <button
               type="button"
               onClick={handleExportCSV}
-              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-surface-border bg-surface-card px-3 py-2 text-xs font-bold text-gray-200 hover:border-emerald-500 hover:text-emerald-400 hover:bg-surface-elevated transition-all"
+              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50/50 transition-all shadow-sm"
               title="Export filtered roster to CSV for Director Betty"
             >
-              <FileSpreadsheet className="h-4 w-4 text-emerald-400 shrink-0" />
+              <FileSpreadsheet className="h-4 w-4 text-emerald-600 shrink-0" />
               <span className="hidden md:inline">Export CSV</span>
             </button>
 
@@ -706,7 +706,7 @@ export default function InstructorAdminDashboard() {
             <button
               type="button"
               onClick={() => setIsAddModalOpen(true)}
-              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-gold to-gold-dark px-3 py-2 sm:px-4 sm:py-2 text-xs font-black text-gray-950 shadow-glow-gold hover:brightness-110 active:scale-95 transition-all"
+              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl bg-crimson px-3 py-2 sm:px-4 sm:py-2 text-xs font-black text-white shadow-md hover:bg-red-700 active:scale-95 transition-all"
             >
               <PhoneCall className="h-4 w-4 shrink-0" />
               <span className="whitespace-nowrap">+ Add Student</span>
@@ -717,9 +717,9 @@ export default function InstructorAdminDashboard() {
               type="button"
               onClick={handleLock}
               title="Lock Admin Session"
-              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl border border-surface-border bg-surface-card p-2 text-xs font-semibold text-gray-300 hover:text-crimson-light hover:border-crimson/40 transition-colors"
+              className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white p-2 text-xs font-semibold text-slate-600 hover:text-crimson hover:border-red-300 hover:bg-red-50/40 transition-colors shadow-sm"
             >
-              <Lock className="h-4 w-4 text-gray-400" />
+              <Lock className="h-4 w-4 text-slate-500" />
             </button>
           </div>
         </div>
@@ -731,101 +731,101 @@ export default function InstructorAdminDashboard() {
         {/* 2. SUMMARY METRIC KPI CARDS */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           
-          <div className="rounded-2xl border border-surface-border bg-surface-card p-4 sm:p-5 shadow-card transition-all hover:border-crimson/40">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all hover:border-crimson/40">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">
                 Total Enrolled
               </span>
-              <div className="rounded-xl bg-crimson/15 p-2 text-crimson-light border border-crimson/30">
+              <div className="rounded-xl bg-red-50 p-2 text-crimson border border-red-200">
                 <Users className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
             </div>
             <div className="mt-2 sm:mt-3 flex items-baseline gap-2">
-              <span className="text-2xl sm:text-4xl font-black text-white">
+              <span className="text-2xl sm:text-4xl font-black text-slate-900">
                 {totalStudents}
               </span>
-              <span className="text-[11px] font-semibold text-emerald-400">Students</span>
+              <span className="text-[11px] font-semibold text-emerald-700">Students</span>
             </div>
-            <p className="mt-1 text-[11px] text-gray-400 truncate">KG1 to Grade 5</p>
+            <p className="mt-1 text-[11px] text-slate-500 truncate">KG1 to Grade 5</p>
           </div>
 
-          <div className="rounded-2xl border border-surface-border bg-surface-card p-4 sm:p-5 shadow-card transition-all hover:border-emerald-500/40">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all hover:border-emerald-400">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">
                 Verified (ETB)
               </span>
-              <div className="rounded-xl bg-emerald-500/15 p-2 text-emerald-400 border border-emerald-500/30">
+              <div className="rounded-xl bg-emerald-50 p-2 text-emerald-700 border border-emerald-200">
                 <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
             </div>
             <div className="mt-2 sm:mt-3">
-              <span className="text-xl sm:text-3xl font-black text-emerald-400 font-mono truncate block">
+              <span className="text-xl sm:text-3xl font-black text-emerald-700 font-mono truncate block">
                 {verifiedPaymentsETB.toLocaleString()} ETB
               </span>
             </div>
-            <p className="mt-1 text-[11px] text-gray-400">
+            <p className="mt-1 text-[11px] text-slate-500">
               {students.filter((s) => s.paymentStatus === "Verified").length} confirmed
             </p>
           </div>
 
-          <div className="rounded-2xl border border-surface-border bg-surface-card p-4 sm:p-5 shadow-card transition-all hover:border-gold/40">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all hover:border-amber-400">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">
                 Pending (ETB)
               </span>
-              <div className="rounded-xl bg-gold/15 p-2 text-gold border border-gold/30">
+              <div className="rounded-xl bg-amber-50 p-2 text-amber-700 border border-amber-200">
                 <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
             </div>
             <div className="mt-2 sm:mt-3">
-              <span className="text-xl sm:text-3xl font-black text-gold font-mono truncate block">
+              <span className="text-xl sm:text-3xl font-black text-amber-700 font-mono truncate block">
                 {pendingPaymentsETB.toLocaleString()} ETB
               </span>
             </div>
-            <p className="mt-1 text-[11px] text-gray-400">
+            <p className="mt-1 text-[11px] text-slate-500">
               {students.filter((s) => s.paymentStatus === "Pending").length} awaiting
             </p>
           </div>
 
-          <div className="rounded-2xl border border-surface-border bg-surface-card p-4 sm:p-5 shadow-card transition-all hover:border-purple-500/40">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all hover:border-purple-300">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gray-400">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">
                 Uniforms Needed
               </span>
-              <div className="rounded-xl bg-purple-500/15 p-2 text-purple-400 border border-purple-500/30">
+              <div className="rounded-xl bg-purple-50 p-2 text-purple-700 border border-purple-200">
                 <Shirt className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
             </div>
             <div className="mt-2 sm:mt-3 flex items-baseline gap-2">
-              <span className="text-2xl sm:text-4xl font-black text-purple-300">
+              <span className="text-2xl sm:text-4xl font-black text-purple-900">
                 {uniformsNeededCount}
               </span>
-              <span className="text-[11px] font-semibold text-purple-400">To Deliver</span>
+              <span className="text-[11px] font-semibold text-purple-700">To Deliver</span>
             </div>
-            <p className="mt-1 text-[11px] text-gray-400 truncate">Official Dobok sets</p>
+            <p className="mt-1 text-[11px] text-slate-500 truncate">Official Dobok sets</p>
           </div>
 
         </div>
 
         {/* 3. FILTER & SEARCH CONTROLS */}
-        <div className="rounded-2xl border border-surface-border bg-surface-card p-4 shadow-card">
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 sm:gap-4">
             
             {/* Search Input */}
             <div className="relative flex-1 min-w-[200px]">
-              <Search className="h-4 w-4 absolute left-3.5 top-3.5 text-gray-400" />
+              <Search className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search by student name or parent phone..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full min-h-[44px] rounded-xl border border-surface-border bg-background-deep pl-10 pr-9 py-2.5 text-base sm:text-sm text-white placeholder-gray-500 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="w-full min-h-[44px] rounded-xl border border-slate-300 bg-slate-50 pl-10 pr-9 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:border-amber-600 focus:bg-white focus:outline-none focus:ring-1 focus:ring-amber-600"
               />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-white"
+                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-700"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -837,7 +837,7 @@ export default function InstructorAdminDashboard() {
               <select
                 value={filterPayment}
                 onChange={(e) => setFilterPayment(e.target.value)}
-                className="min-h-[44px] rounded-xl border border-surface-border bg-background-deep px-3 py-2 text-xs font-medium text-white focus:border-gold focus:outline-none"
+                className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-800 focus:border-amber-600 focus:outline-none shadow-sm"
               >
                 <option value="ALL">Payment: All</option>
                 <option value="Verified">Verified (Paid)</option>
@@ -847,7 +847,7 @@ export default function InstructorAdminDashboard() {
               <select
                 value={filterUniform}
                 onChange={(e) => setFilterUniform(e.target.value)}
-                className="min-h-[44px] rounded-xl border border-surface-border bg-background-deep px-3 py-2 text-xs font-medium text-white focus:border-gold focus:outline-none"
+                className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-800 focus:border-amber-600 focus:outline-none shadow-sm"
               >
                 <option value="ALL">Uniform: All</option>
                 <option value="Needed">Needed</option>
@@ -857,7 +857,7 @@ export default function InstructorAdminDashboard() {
               <select
                 value={filterGrade}
                 onChange={(e) => setFilterGrade(e.target.value)}
-                className="min-h-[44px] col-span-2 sm:col-span-1 rounded-xl border border-surface-border bg-background-deep px-3 py-2 text-xs font-medium text-white focus:border-gold focus:outline-none"
+                className="min-h-[44px] col-span-2 sm:col-span-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-800 focus:border-amber-600 focus:outline-none shadow-sm"
               >
                 <option value="ALL">All Grades</option>
                 <option value="KG">Kindergarten (KG1/KG2)</option>
@@ -873,24 +873,24 @@ export default function InstructorAdminDashboard() {
         </div>
 
         {/* 4. STUDENTS DATA DISPLAY */}
-        <div className="rounded-2xl border border-surface-border bg-surface-card shadow-card overflow-hidden">
+        <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
           
-          <div className="p-4 border-b border-surface-border flex items-center justify-between bg-background-rich">
+          <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
             <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-white">Enrollment Roster</h2>
-              <span className="rounded-md bg-background-deep px-2 py-0.5 text-xs font-mono font-semibold text-gold border border-surface-border">
+              <h2 className="text-sm font-bold text-slate-900">Enrollment Roster</h2>
+              <span className="rounded-md bg-amber-50 px-2 py-0.5 text-xs font-mono font-bold text-amber-800 border border-amber-300">
                 {filteredStudents.length} Students
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[11px] text-gray-400 hidden sm:inline">
+              <span className="text-[11px] text-slate-500 hidden sm:inline">
                 Swipe horizontally or tap cards to manage
               </span>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(true)}
-                className="min-h-[36px] inline-flex items-center gap-1.5 text-xs font-bold text-gold hover:underline"
+                className="min-h-[36px] inline-flex items-center gap-1.5 text-xs font-bold text-crimson hover:underline"
               >
                 <Plus className="h-3.5 w-3.5" />
                 <span>Add via Call</span>
@@ -901,64 +901,64 @@ export default function InstructorAdminDashboard() {
           {/* ========================================================= */}
           {/* MOBILE CARD VIEW (< md: screens)                          */}
           {/* ========================================================= */}
-          <div className="md:hidden divide-y divide-surface-border">
+          <div className="md:hidden divide-y divide-slate-200">
             {filteredStudents.length > 0 ? (
               filteredStudents.map((student) => {
                 const isVerified = student.paymentStatus === "Verified";
                 const isUniformDelivered = student.uniformStatus === "Delivered";
 
                 return (
-                  <div key={student.id} className="p-4 space-y-3 bg-surface-card hover:bg-surface-elevated/30 transition-colors">
+                  <div key={student.id} className="p-4 space-y-3 bg-white hover:bg-slate-50/70 transition-colors">
                     {/* Header Row: Student Name, Grade & ID */}
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-1.5">
-                          <span className="font-extrabold text-white text-base">
+                          <span className="font-extrabold text-slate-900 text-base">
                             {student.studentName}
                           </span>
                           {student.registrationType === "Phone Call" && (
-                            <span className="inline-flex items-center gap-0.5 rounded bg-gold/15 px-1.5 py-0.5 text-[10px] font-bold text-gold border border-gold/30">
+                            <span className="inline-flex items-center gap-0.5 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 border border-amber-200">
                               <PhoneCall className="h-2.5 w-2.5" />
                               <span>Call</span>
                             </span>
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="rounded-md bg-surface-elevated px-2 py-0.5 text-[11px] font-semibold text-gray-200 border border-surface-border">
+                          <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700 border border-slate-200">
                             {student.grade}
                           </span>
-                          <span className="font-mono text-xs text-gray-400">
+                          <span className="font-mono text-xs text-slate-500">
                             {student.id}
                           </span>
                         </div>
                       </div>
 
                       <div className="text-right">
-                        <span className="font-mono font-black text-gold text-lg">
+                        <span className="font-mono font-black text-amber-700 text-lg">
                           {student.totalAmount?.toLocaleString()} ETB
                         </span>
                       </div>
                     </div>
 
                     {/* Parent Contact Card (min-h-[44px] touch target) */}
-                    <div className="rounded-xl border border-surface-border bg-background-deep p-3 flex items-center justify-between gap-2">
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 flex items-center justify-between gap-2">
                       <div className="text-xs truncate">
-                        <span className="text-gray-400">Parent: </span>
-                        <span className="font-bold text-white">{student.parentName}</span>
+                        <span className="text-slate-500">Parent: </span>
+                        <span className="font-bold text-slate-900">{student.parentName}</span>
                       </div>
                       <a
                         href={`tel:${student.parentPhone}`}
-                        className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono font-bold text-gold hover:underline bg-surface-card px-3 py-1.5 rounded-lg border border-surface-border shrink-0"
+                        className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-700 hover:underline bg-white px-3 py-1.5 rounded-lg border border-slate-300 shadow-sm shrink-0"
                       >
-                        <Phone className="h-3.5 w-3.5 text-gold shrink-0" />
+                        <Phone className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                         <span>{student.parentPhone}</span>
                       </a>
                     </div>
 
                     {/* Notes if present */}
                     {student.notes && (
-                      <div className="flex items-center gap-1.5 text-[11px] text-amber-300/95 italic bg-amber-500/10 p-2 rounded-lg border border-amber-500/20">
-                        <FileText className="h-3.5 w-3.5 text-gold shrink-0" />
+                      <div className="flex items-center gap-1.5 text-[11px] text-amber-900 italic bg-amber-50 p-2 rounded-lg border border-amber-200">
+                        <FileText className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                         <span className="truncate">{student.notes}</span>
                       </div>
                     )}
@@ -971,8 +971,8 @@ export default function InstructorAdminDashboard() {
                         onClick={() => handleTogglePayment(student.id)}
                         className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all border shadow-sm active:scale-95 ${
                           isVerified
-                            ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/40"
-                            : "bg-gold/15 text-gold border-gold/40"
+                            ? "bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100"
+                            : "bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100"
                         }`}
                       >
                         {isVerified ? (
@@ -996,7 +996,7 @@ export default function InstructorAdminDashboard() {
                             setReminderStudent(student);
                             setReminderLang("am");
                           }}
-                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-500/40 bg-amber-500/20 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-amber-500 hover:text-gray-950 active:scale-95 transition-all"
+                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-800 hover:bg-amber-100 active:scale-95 transition-all shadow-sm"
                         >
                           <MessageSquare className="h-4 w-4" />
                           <span>Send Reminder</span>
@@ -1007,17 +1007,17 @@ export default function InstructorAdminDashboard() {
                           <button
                             type="button"
                             onClick={() => handleToggleUniform(student.id)}
-                            className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-bold border active:scale-95 transition-colors ${
+                            className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-bold border active:scale-95 transition-colors shadow-sm ${
                               isUniformDelivered
-                                ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/40"
-                                : "bg-purple-500/15 text-purple-300 border-purple-500/40"
+                                ? "bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100"
+                                : "bg-purple-50 text-purple-800 border-purple-300 hover:bg-purple-100"
                             }`}
                           >
                             <Shirt className="h-4 w-4 shrink-0" />
                             <span className="truncate">{student.uniformSize} – {isUniformDelivered ? "Delivered" : "Needed"}</span>
                           </button>
                         ) : (
-                          <div className="min-h-[44px] flex items-center justify-center text-xs text-gray-500 italic rounded-xl border border-surface-border bg-background-deep">
+                          <div className="min-h-[44px] flex items-center justify-center text-xs text-slate-400 italic rounded-xl border border-slate-200 bg-slate-50">
                             No Uniform
                           </div>
                         )
@@ -1025,20 +1025,20 @@ export default function InstructorAdminDashboard() {
                     </div>
 
                     {/* Secondary Actions Row */}
-                    <div className="flex items-center justify-between pt-1 text-xs border-t border-surface-border/60">
+                    <div className="flex items-center justify-between pt-1 text-xs border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => setSelectedReceiptStudent(student)}
-                        className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-semibold text-gray-200 hover:text-gold"
+                        className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-amber-700"
                       >
-                        <Eye className="h-4 w-4 text-gold shrink-0" />
+                        <Eye className="h-4 w-4 text-amber-600 shrink-0" />
                         <span>View Proof / Details</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => setStudentToDelete(student)}
-                        className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl text-gray-400 hover:text-crimson-light active:scale-95"
+                        className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl text-slate-400 hover:text-crimson active:scale-95"
                         title="Delete registration"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -1048,9 +1048,9 @@ export default function InstructorAdminDashboard() {
                 );
               })
             ) : (
-              <div className="p-8 text-center text-gray-400">
-                <Users className="h-8 w-8 text-gray-600 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-gray-300">
+              <div className="p-8 text-center text-slate-500">
+                <Users className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <p className="text-sm font-semibold text-slate-700">
                   No student registrations match your filter.
                 </p>
               </div>
@@ -1061,8 +1061,8 @@ export default function InstructorAdminDashboard() {
           {/* DESKTOP TABLE VIEW (>= md: screens)                       */}
           {/* ========================================================= */}
           <div className="hidden md:block overflow-x-auto slim-scrollbar">
-            <table className="w-full text-left text-xs text-gray-300">
-              <thead className="bg-background-deep/70 uppercase tracking-wider text-[11px] text-gray-400 border-b border-surface-border">
+            <table className="w-full text-left text-xs text-slate-700">
+              <thead className="bg-slate-50 uppercase tracking-wider text-[11px] text-slate-600 border-b border-slate-200">
                 <tr>
                   <th scope="col" className="px-5 py-3.5 font-bold">1. Student & Grade</th>
                   <th scope="col" className="px-5 py-3.5 font-bold">2. Parent & Phone</th>
@@ -1073,7 +1073,7 @@ export default function InstructorAdminDashboard() {
                   <th scope="col" className="px-5 py-3.5 font-bold text-right">7. Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-surface-border">
+              <tbody className="divide-y divide-slate-100">
                 {filteredStudents.length > 0 ? (
                   filteredStudents.map((student) => {
                     const isVerified = student.paymentStatus === "Verified";
@@ -1082,17 +1082,17 @@ export default function InstructorAdminDashboard() {
                     return (
                       <tr
                         key={student.id}
-                        className="hover:bg-surface-elevated/40 transition-colors"
+                        className="hover:bg-slate-50/80 transition-colors"
                       >
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-white text-sm">
+                            <span className="font-extrabold text-slate-900 text-sm">
                               {student.studentName}
                             </span>
                             {student.registrationType === "Phone Call" && (
                               <span
                                 title="Enrolled via Phone Call"
-                                className="inline-flex items-center gap-1 rounded bg-gold/15 px-1.5 py-0.5 text-[10px] font-bold text-gold border border-gold/30"
+                                className="inline-flex items-center gap-1 rounded bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 border border-amber-200"
                               >
                                 <PhoneCall className="h-2.5 w-2.5" />
                                 <span>Call</span>
@@ -1100,16 +1100,16 @@ export default function InstructorAdminDashboard() {
                             )}
                           </div>
                           <div className="flex items-center gap-2 mt-0.5">
-                            <span className="inline-flex rounded-md bg-surface-elevated px-2 py-0.5 text-[11px] font-semibold text-gray-200 border border-surface-border">
+                            <span className="inline-flex rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-700 border border-slate-200">
                               {student.grade}
                             </span>
-                            <span className="font-mono text-[10px] text-gray-400">
+                            <span className="font-mono text-[10px] text-slate-500">
                               {student.id}
                             </span>
                           </div>
                           {student.notes && (
-                            <div className="mt-1 flex items-center gap-1 text-[11px] text-amber-300/90 italic">
-                              <FileText className="h-3 w-3 shrink-0" />
+                            <div className="mt-1 flex items-center gap-1 text-[11px] text-amber-900 italic">
+                              <FileText className="h-3 w-3 shrink-0 text-amber-600" />
                               <span className="truncate max-w-[200px]" title={student.notes}>
                                 Note: {student.notes}
                               </span>
@@ -1118,22 +1118,22 @@ export default function InstructorAdminDashboard() {
                         </td>
 
                         <td className="px-5 py-4">
-                          <div className="font-medium text-white">{student.parentName}</div>
+                          <div className="font-medium text-slate-900">{student.parentName}</div>
                           <a
                             href={`tel:${student.parentPhone}`}
-                            className="inline-flex items-center gap-1.5 mt-1 text-[11px] font-mono text-gold hover:underline hover:text-gold-light transition-colors"
+                            className="inline-flex items-center gap-1.5 mt-1 text-[11px] font-mono text-amber-700 hover:underline hover:text-amber-800 transition-colors"
                             title={`Call parent: ${student.parentPhone}`}
                           >
-                            <Phone className="h-3 w-3 text-gold shrink-0" />
+                            <Phone className="h-3 w-3 text-amber-600 shrink-0" />
                             <span>{student.parentPhone}</span>
                           </a>
                         </td>
 
                         <td className="px-5 py-4">
-                          <div className="font-extrabold text-white font-mono text-sm">
+                          <div className="font-extrabold text-slate-900 font-mono text-sm">
                             {student.totalAmount?.toLocaleString()} ETB
                           </div>
-                          <div className="text-[10px] text-gray-400">
+                          <div className="text-[10px] text-slate-500">
                             {student.includeUniform ? "10,000 + 1,500 Dobok" : "10,000 Tuition"}
                           </div>
                         </td>
@@ -1146,8 +1146,8 @@ export default function InstructorAdminDashboard() {
                               title="Click to toggle Payment Status"
                               className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-all border shadow-sm ${
                                 isVerified
-                                  ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/25"
-                                  : "bg-gold/15 text-gold border-gold/40 hover:bg-gold/25"
+                                  ? "bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100"
+                                  : "bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100"
                               }`}
                             >
                               {isVerified ? (
@@ -1170,7 +1170,7 @@ export default function InstructorAdminDashboard() {
                                   setReminderStudent(student);
                                   setReminderLang("am");
                                 }}
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-amber-500/40 bg-amber-500/15 px-2.5 py-1 text-[11px] font-bold text-amber-300 hover:bg-amber-500 hover:text-gray-950 transition-all shadow-sm"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-800 hover:bg-amber-100 transition-all shadow-sm"
                                 title="Open Polite Reminder Generator Modal"
                               >
                                 <MessageSquare className="h-3.5 w-3.5 shrink-0" />
@@ -1186,10 +1186,10 @@ export default function InstructorAdminDashboard() {
                               type="button"
                               onClick={() => handleToggleUniform(student.id)}
                               title="Click to toggle Delivery Status"
-                              className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors ${
+                              className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors shadow-sm ${
                                 isUniformDelivered
-                                  ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/25"
-                                  : "bg-purple-500/15 text-purple-300 border-purple-500/40 hover:bg-purple-500/25"
+                                  ? "bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100"
+                                  : "bg-purple-50 text-purple-800 border-purple-300 hover:bg-purple-100"
                               }`}
                             >
                               <Shirt className="h-3 w-3" />
@@ -1198,7 +1198,7 @@ export default function InstructorAdminDashboard() {
                               </span>
                             </button>
                           ) : (
-                            <span className="text-gray-500 italic text-[11px]">
+                            <span className="text-slate-400 italic text-[11px]">
                               No Uniform
                             </span>
                           )}
@@ -1208,10 +1208,10 @@ export default function InstructorAdminDashboard() {
                           <button
                             type="button"
                             onClick={() => setSelectedReceiptStudent(student)}
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-surface-border bg-surface-elevated px-2.5 py-1.5 text-[11px] font-semibold text-gray-200 hover:border-gold hover:text-gold transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 hover:border-amber-400 hover:text-amber-700 hover:bg-amber-50/30 transition-colors shadow-sm"
                             title="View receipt proof or details"
                           >
-                            <Eye className="h-3.5 w-3.5 text-gold" />
+                            <Eye className="h-3.5 w-3.5 text-amber-600" />
                             <span>Proof</span>
                           </button>
                         </td>
@@ -1220,7 +1220,7 @@ export default function InstructorAdminDashboard() {
                           <button
                             type="button"
                             onClick={() => setStudentToDelete(student)}
-                            className="inline-flex items-center justify-center rounded-lg p-1.5 text-gray-400 hover:text-crimson-light hover:bg-crimson/15 transition-colors"
+                            className="inline-flex items-center justify-center rounded-lg p-1.5 text-slate-400 hover:text-crimson hover:bg-red-50 transition-colors"
                             title="Delete Registration"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -1231,9 +1231,9 @@ export default function InstructorAdminDashboard() {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={7} className="px-5 py-12 text-center text-gray-400">
-                      <Users className="h-8 w-8 text-gray-600 mx-auto mb-2" />
-                      <p className="text-sm font-semibold text-gray-300">
+                    <td colSpan={7} className="px-5 py-12 text-center text-slate-500">
+                      <Users className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                      <p className="text-sm font-semibold text-slate-700">
                         No student registrations match your filter.
                       </p>
                       <button
@@ -1244,7 +1244,7 @@ export default function InstructorAdminDashboard() {
                           setFilterUniform("ALL");
                           setFilterGrade("ALL");
                         }}
-                        className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-gold hover:underline"
+                        className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 hover:underline"
                       >
                         <RefreshCw className="h-3 w-3" />
                         <span>Reset all filters</span>
@@ -1257,11 +1257,11 @@ export default function InstructorAdminDashboard() {
           </div>
 
           {/* Table Footer */}
-          <div className="p-4 border-t border-surface-border bg-background-rich flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
+          <div className="p-4 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
             <span>
               Showing {filteredStudents.length} of {students.length} enrolled students
             </span>
-            <span className="text-gray-300">
+            <span className="text-slate-600 font-medium">
               Master Daniel • Sonnenland International School Taekwondo Program
             </span>
           </div>
@@ -1270,78 +1270,78 @@ export default function InstructorAdminDashboard() {
       </main>
 
       {/* ========================================================= */}
-      {/* 2. POLITE REMINDER GENERATOR MODAL                        */}
+      {/* 2. POLITE REMINDER GENERATOR MODAL (Light Theme)          */}
       {/* ========================================================= */}
       {reminderStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-xl rounded-3xl border-2 border-gold/40 bg-surface-card p-5 sm:p-8 shadow-2xl my-8 max-h-[90vh] overflow-y-auto slim-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="relative w-full max-w-xl rounded-3xl border border-slate-200 bg-white p-5 sm:p-8 shadow-2xl my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900">
             {/* Close button with 44px touch target */}
             <button
               type="button"
               onClick={() => setReminderStudent(null)}
-              className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2 text-gray-400 hover:bg-surface-elevated hover:text-white transition-colors"
+              className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors"
               aria-label="Close modal"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <div className="flex items-center gap-3 pb-4 border-b border-surface-border">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 shadow-glow-gold shrink-0">
+            <div className="flex items-center gap-3 pb-4 border-b border-slate-200">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 border border-amber-200 shrink-0">
                 <MessageSquare className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-black text-white">
+                <h3 className="text-base sm:text-lg font-black text-slate-900">
                   Polite Reminder Generator
                 </h3>
-                <p className="text-xs text-gray-300">
+                <p className="text-xs text-slate-500">
                   Personalized message for Master Daniel to remind parent
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 rounded-2xl border border-surface-border bg-background-deep p-3.5 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
               <div>
-                <span className="text-gray-400">Student:</span>
-                <p className="font-extrabold text-white text-sm mt-0.5">
+                <span className="text-slate-500">Student:</span>
+                <p className="font-extrabold text-slate-900 text-sm mt-0.5">
                   {reminderStudent.studentName}
                 </p>
-                <p className="text-[11px] text-gray-400">{reminderStudent.grade}</p>
+                <p className="text-[11px] text-slate-500">{reminderStudent.grade}</p>
               </div>
               <div>
-                <span className="text-gray-400">Parent & Phone:</span>
-                <p className="font-bold text-white mt-0.5">{reminderStudent.parentName}</p>
+                <span className="text-slate-500">Parent & Phone:</span>
+                <p className="font-bold text-slate-900 mt-0.5">{reminderStudent.parentName}</p>
                 <a
                   href={`tel:${reminderStudent.parentPhone}`}
-                  className="text-[11px] font-mono text-gold hover:underline flex items-center gap-1 mt-0.5"
+                  className="text-[11px] font-mono text-amber-700 hover:underline flex items-center gap-1 mt-0.5"
                 >
-                  <Phone className="h-3 w-3 text-gold" />
+                  <Phone className="h-3 w-3 text-amber-600" />
                   {reminderStudent.parentPhone}
                 </a>
               </div>
               <div className="col-span-2 sm:col-span-1">
-                <span className="text-gray-400">Total Fee Due:</span>
-                <p className="font-extrabold text-gold font-mono text-base mt-0.5">
+                <span className="text-slate-500">Total Fee Due:</span>
+                <p className="font-extrabold text-amber-700 font-mono text-base mt-0.5">
                   {reminderStudent.totalAmount?.toLocaleString()} ETB
                 </p>
-                <span className="text-[10px] text-amber-400 font-semibold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                <span className="text-[10px] text-amber-800 font-semibold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
                   Payment Pending
                 </span>
               </div>
             </div>
 
             <div className="mt-4 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
-                <Globe className="h-3.5 w-3.5 text-gold" />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <Globe className="h-3.5 w-3.5 text-amber-600" />
                 Select Language:
               </span>
-              <div className="inline-flex rounded-xl border border-surface-border bg-background-deep p-1">
+              <div className="inline-flex rounded-xl border border-slate-200 bg-slate-100 p-1">
                 <button
                   type="button"
                   onClick={() => setReminderLang("am")}
                   className={`min-h-[38px] rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
                     reminderLang === "am"
-                      ? "bg-gold text-gray-950 shadow-glow-gold"
-                      : "text-gray-400 hover:text-white"
+                      ? "bg-amber-500 text-white shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   አማርኛ (Amharic)
@@ -1351,8 +1351,8 @@ export default function InstructorAdminDashboard() {
                   onClick={() => setReminderLang("en")}
                   className={`min-h-[38px] rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
                     reminderLang === "en"
-                      ? "bg-gold text-gray-950 shadow-glow-gold"
-                      : "text-gray-400 hover:text-white"
+                      ? "bg-amber-500 text-white shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   English
@@ -1361,25 +1361,25 @@ export default function InstructorAdminDashboard() {
             </div>
 
             <div className="mt-3">
-              <label className="block text-[11px] font-semibold text-gray-400 mb-1.5">
+              <label className="block text-[11px] font-semibold text-slate-600 mb-1.5">
                 Generated Message (Editable):
               </label>
               <textarea
                 rows={5}
                 value={reminderText}
                 onChange={(e) => setReminderText(e.target.value)}
-                className="w-full rounded-2xl border border-surface-border bg-background-deep p-3.5 text-xs sm:text-sm text-gray-100 leading-relaxed focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                className="w-full rounded-2xl border border-slate-300 bg-white p-3.5 text-xs sm:text-sm text-slate-900 leading-relaxed focus:border-amber-600 focus:outline-none focus:ring-1 focus:ring-amber-600 shadow-sm"
               />
             </div>
 
-            <div className="mt-5 flex flex-wrap items-center gap-2.5 pt-4 border-t border-surface-border">
+            <div className="mt-5 flex flex-wrap items-center gap-2.5 pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={handleCopyReminder}
                 className={`min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all shadow-sm flex-1 sm:flex-initial ${
                   isCopiedReminder
-                    ? "bg-emerald-500 text-white"
-                    : "border border-surface-border bg-surface-elevated text-white hover:border-gold hover:text-gold"
+                    ? "bg-emerald-600 text-white"
+                    : "border border-slate-300 bg-white text-slate-800 hover:border-amber-500 hover:text-amber-700 hover:bg-slate-50"
                 }`}
               >
                 {isCopiedReminder ? (
@@ -1389,7 +1389,7 @@ export default function InstructorAdminDashboard() {
                   </>
                 ) : (
                   <>
-                    <Copy className="h-4 w-4 text-gold" />
+                    <Copy className="h-4 w-4 text-amber-600" />
                     <span>Copy Message</span>
                   </>
                 )}
@@ -1399,7 +1399,7 @@ export default function InstructorAdminDashboard() {
                 href={`https://t.me/share/url?text=${encodeURIComponent(reminderText)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-500 transition-colors shadow-sm flex-1 sm:flex-initial"
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700 transition-colors shadow-sm flex-1 sm:flex-initial"
               >
                 <Send className="h-3.5 w-3.5" />
                 <span>Send via Telegram</span>
@@ -1408,7 +1408,7 @@ export default function InstructorAdminDashboard() {
 
               <a
                 href={`sms:${reminderStudent.parentPhone}?body=${encodeURIComponent(reminderText)}`}
-                className="min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-500 transition-colors shadow-sm flex-1 sm:flex-initial"
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 transition-colors shadow-sm flex-1 sm:flex-initial"
               >
                 <Smartphone className="h-3.5 w-3.5" />
                 <span>Send via SMS</span>
@@ -1417,7 +1417,7 @@ export default function InstructorAdminDashboard() {
               <button
                 type="button"
                 onClick={() => setReminderStudent(null)}
-                className="min-h-[44px] rounded-xl border border-surface-border bg-background-deep px-4 py-2.5 text-xs font-semibold text-gray-300 hover:text-white transition-colors ml-auto w-full sm:w-auto"
+                className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors ml-auto w-full sm:w-auto"
               >
                 Close
               </button>
@@ -1428,32 +1428,32 @@ export default function InstructorAdminDashboard() {
       )}
 
       {/* ========================================================= */}
-      {/* MANUAL STUDENT ENTRY MODAL                                */}
+      {/* MANUAL STUDENT ENTRY MODAL (Light Theme)                  */}
       {/* ========================================================= */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-xl rounded-3xl border-2 border-gold/40 bg-surface-card p-5 sm:p-8 shadow-2xl my-8 max-h-[90vh] overflow-y-auto slim-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="relative w-full max-w-xl rounded-3xl border border-slate-200 bg-white p-5 sm:p-8 shadow-2xl my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900">
             <button
               type="button"
               onClick={() => {
                 setIsAddModalOpen(false);
                 setAddFormErrors({});
               }}
-              className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2 text-gray-400 hover:bg-surface-elevated hover:text-white transition-colors"
+              className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors"
               aria-label="Close modal"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <div className="flex items-center gap-3 pb-4 border-b border-surface-border">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-gold to-gold-dark text-gray-950 shadow-glow-gold shrink-0">
+            <div className="flex items-center gap-3 pb-4 border-b border-slate-200">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-50 text-crimson border border-red-200 shrink-0">
                 <PhoneCall className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-black text-white">
+                <h3 className="text-base sm:text-lg font-black text-slate-900">
                   Register Student (Phone Call)
                 </h3>
-                <p className="text-xs text-gray-300">
+                <p className="text-xs text-slate-500">
                   Manual enrollment entry by Master Daniel for direct phone registrations
                 </p>
               </div>
@@ -1463,11 +1463,11 @@ export default function InstructorAdminDashboard() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Student Full Name <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
-                    <User className="h-4 w-4 absolute left-3.5 top-3.5 text-gray-400" />
+                    <User className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
                     <input
                       type="text"
                       placeholder="e.g. Abenezer Getachew"
@@ -1478,15 +1478,15 @@ export default function InstructorAdminDashboard() {
                           setAddFormErrors((prev) => ({ ...prev, studentName: null }));
                         }
                       }}
-                      className={`w-full min-h-[44px] rounded-xl border bg-background-deep pl-10 pr-3 py-2.5 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 ${
+                      className={`w-full min-h-[44px] rounded-xl border bg-white pl-10 pr-3 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 shadow-sm ${
                         addFormErrors.studentName
                           ? "border-crimson focus:border-crimson focus:ring-crimson"
-                          : "border-surface-border focus:border-gold focus:ring-gold"
+                          : "border-slate-300 focus:border-crimson focus:ring-crimson"
                       }`}
                     />
                   </div>
                   {addFormErrors.studentName && (
-                    <p className="mt-1 text-[11px] text-crimson-light font-medium flex items-center gap-1">
+                    <p className="mt-1 text-[11px] text-crimson font-medium flex items-center gap-1">
                       <AlertCircle className="h-3 w-3 shrink-0" />
                       {addFormErrors.studentName}
                     </p>
@@ -1494,20 +1494,20 @@ export default function InstructorAdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Grade / Class Level <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
-                    <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-gray-400" />
+                    <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
                     <select
                       value={addForm.grade}
                       onChange={(e) =>
                         setAddForm((prev) => ({ ...prev, grade: e.target.value }))
                       }
-                      className="w-full min-h-[44px] rounded-xl border border-surface-border bg-background-deep pl-10 pr-3 py-2.5 text-base sm:text-sm text-white focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                      className="w-full min-h-[44px] rounded-xl border border-slate-300 bg-white pl-10 pr-3 py-2.5 text-base sm:text-sm text-slate-900 focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson shadow-sm"
                     >
                       {GRADES.map((g) => (
-                        <option key={g} value={g} className="bg-surface-card text-white">
+                        <option key={g} value={g} className="bg-white text-slate-900">
                           {g}
                         </option>
                       ))}
@@ -1518,11 +1518,11 @@ export default function InstructorAdminDashboard() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Parent / Guardian Full Name <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
-                    <User className="h-4 w-4 absolute left-3.5 top-3.5 text-gray-400" />
+                    <User className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
                     <input
                       type="text"
                       placeholder="e.g. Getachew Alemu"
@@ -1533,15 +1533,15 @@ export default function InstructorAdminDashboard() {
                           setAddFormErrors((prev) => ({ ...prev, parentName: null }));
                         }
                       }}
-                      className={`w-full min-h-[44px] rounded-xl border bg-background-deep pl-10 pr-3 py-2.5 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 ${
+                      className={`w-full min-h-[44px] rounded-xl border bg-white pl-10 pr-3 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 shadow-sm ${
                         addFormErrors.parentName
                           ? "border-crimson focus:border-crimson focus:ring-crimson"
-                          : "border-surface-border focus:border-gold focus:ring-gold"
+                          : "border-slate-300 focus:border-crimson focus:ring-crimson"
                       }`}
                     />
                   </div>
                   {addFormErrors.parentName && (
-                    <p className="mt-1 text-[11px] text-crimson-light font-medium flex items-center gap-1">
+                    <p className="mt-1 text-[11px] text-crimson font-medium flex items-center gap-1">
                       <AlertCircle className="h-3 w-3 shrink-0" />
                       {addFormErrors.parentName}
                     </p>
@@ -1549,11 +1549,11 @@ export default function InstructorAdminDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                     Parent Phone Number <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
-                    <Phone className="h-4 w-4 absolute left-3.5 top-3.5 text-gray-400" />
+                    <Phone className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
                     <input
                       type="tel"
                       placeholder="0911223344"
@@ -1564,18 +1564,18 @@ export default function InstructorAdminDashboard() {
                           setAddFormErrors((prev) => ({ ...prev, parentPhone: null }));
                         }
                       }}
-                      className={`w-full min-h-[44px] rounded-xl border bg-background-deep pl-10 pr-3 py-2.5 text-base sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 ${
+                      className={`w-full min-h-[44px] rounded-xl border bg-white pl-10 pr-3 py-2.5 text-base sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 shadow-sm ${
                         addFormErrors.parentPhone
                           ? "border-crimson focus:border-crimson focus:ring-crimson"
-                          : "border-surface-border focus:border-gold focus:ring-gold"
+                          : "border-slate-300 focus:border-crimson focus:ring-crimson"
                       }`}
                     />
                   </div>
-                  <p className="mt-1 text-[11px] text-gray-400">
+                  <p className="mt-1 text-[11px] text-slate-500">
                     e.g., 0911223344 or 0711223344
                   </p>
                   {addFormErrors.parentPhone && (
-                    <p className="mt-1 text-[11px] text-crimson-light font-medium flex items-center gap-1">
+                    <p className="mt-1 text-[11px] text-crimson font-medium flex items-center gap-1">
                       <AlertCircle className="h-3 w-3 shrink-0" />
                       {addFormErrors.parentPhone}
                     </p>
@@ -1583,7 +1583,7 @@ export default function InstructorAdminDashboard() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-surface-border bg-background-deep p-4 space-y-3">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 space-y-3">
                 <label className="flex items-start gap-3 cursor-pointer select-none min-h-[44px]">
                   <input
                     type="checkbox"
@@ -1594,27 +1594,27 @@ export default function InstructorAdminDashboard() {
                         includeUniform: e.target.checked,
                       }))
                     }
-                    className="mt-1 h-5 w-5 rounded border-surface-border bg-surface-card text-gold focus:ring-gold shrink-0"
+                    className="mt-1 h-5 w-5 rounded border-slate-300 text-crimson focus:ring-crimson shrink-0"
                   />
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                        <Shirt className="h-3.5 w-3.5 text-gold" />
+                      <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                        <Shirt className="h-3.5 w-3.5 text-amber-600" />
                         Uniform Requested (Dobok + White Belt)
                       </span>
-                      <span className="text-[11px] font-extrabold text-gold bg-gold/15 px-2 py-0.5 rounded border border-gold/30">
+                      <span className="text-[11px] font-extrabold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-300">
                         +1,500 ETB
                       </span>
                     </div>
-                    <p className="text-[11px] text-gray-400 mt-1">
+                    <p className="text-[11px] text-slate-500 mt-1">
                       Check if student requires official SIS Taekwondo uniform.
                     </p>
                   </div>
                 </label>
 
                 {addForm.includeUniform && (
-                  <div className="pt-3 border-t border-surface-border/60 animate-fade-in">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gold mb-1.5">
+                  <div className="pt-3 border-t border-slate-200 animate-fade-in">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-amber-800 mb-1.5">
                       Uniform Size
                     </label>
                     <select
@@ -1622,10 +1622,10 @@ export default function InstructorAdminDashboard() {
                       onChange={(e) =>
                         setAddForm((prev) => ({ ...prev, uniformSize: e.target.value }))
                       }
-                      className="w-full min-h-[44px] rounded-xl border border-gold/40 bg-surface-card px-3 py-2 text-base sm:text-sm text-white focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                      className="w-full min-h-[44px] rounded-xl border border-amber-300 bg-white px-3 py-2 text-base sm:text-sm text-slate-900 focus:border-amber-600 focus:outline-none focus:ring-1 focus:ring-amber-600 shadow-sm"
                     >
                       {UNIFORM_SIZES.map((size) => (
-                        <option key={size} value={size} className="bg-surface-card text-white">
+                        <option key={size} value={size} className="bg-white text-slate-900">
                           Size {size}
                         </option>
                       ))}
@@ -1635,15 +1635,15 @@ export default function InstructorAdminDashboard() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-2">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">
                   Initial Payment Status
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <label
                     className={`min-h-[44px] flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all ${
                       addForm.paymentStatus === "Pending"
-                        ? "border-gold bg-gold/10 text-white"
-                        : "border-surface-border bg-background-deep text-gray-400 hover:text-white"
+                        ? "border-amber-400 bg-amber-50/70 text-slate-900 shadow-sm"
+                        : "border-slate-200 bg-white text-slate-600 hover:text-slate-900"
                     }`}
                   >
                     <input
@@ -1654,22 +1654,22 @@ export default function InstructorAdminDashboard() {
                       onChange={() =>
                         setAddForm((prev) => ({ ...prev, paymentStatus: "Pending" }))
                       }
-                      className="text-gold focus:ring-gold h-4 w-4"
+                      className="text-amber-600 focus:ring-amber-500 h-4 w-4"
                     />
                     <div>
-                      <div className="text-xs font-bold text-gold flex items-center gap-1">
+                      <div className="text-xs font-bold text-amber-800 flex items-center gap-1">
                         <Clock className="h-3.5 w-3.5" />
                         Pending
                       </div>
-                      <p className="text-[10px] text-gray-400">Awaiting bank transfer</p>
+                      <p className="text-[10px] text-slate-500">Awaiting bank transfer</p>
                     </div>
                   </label>
 
                   <label
                     className={`min-h-[44px] flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all ${
                       addForm.paymentStatus === "Verified"
-                        ? "border-emerald-500 bg-emerald-500/10 text-white"
-                        : "border-surface-border bg-background-deep text-gray-400 hover:text-white"
+                        ? "border-emerald-400 bg-emerald-50/70 text-slate-900 shadow-sm"
+                        : "border-slate-200 bg-white text-slate-600 hover:text-slate-900"
                     }`}
                   >
                     <input
@@ -1680,22 +1680,22 @@ export default function InstructorAdminDashboard() {
                       onChange={() =>
                         setAddForm((prev) => ({ ...prev, paymentStatus: "Verified" }))
                       }
-                      className="text-emerald-500 focus:ring-emerald-500 h-4 w-4"
+                      className="text-emerald-600 focus:ring-emerald-500 h-4 w-4"
                     />
                     <div>
-                      <div className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                      <div className="text-xs font-bold text-emerald-800 flex items-center gap-1">
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         Verified / Paid Cash
                       </div>
-                      <p className="text-[10px] text-gray-400">Paid directly or confirmed</p>
+                      <p className="text-[10px] text-slate-500">Paid directly or confirmed</p>
                     </div>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-300 mb-1.5">
-                  Notes / Remarks <span className="text-gray-400 text-[11px] font-normal">(Optional)</span>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                  Notes / Remarks <span className="text-slate-500 text-[11px] font-normal">(Optional)</span>
                 </label>
                 <textarea
                   rows={2}
@@ -1704,40 +1704,40 @@ export default function InstructorAdminDashboard() {
                   onChange={(e) =>
                     setAddForm((prev) => ({ ...prev, notes: e.target.value }))
                   }
-                  className="w-full rounded-xl border border-surface-border bg-background-deep px-3 py-2 text-xs sm:text-sm text-white placeholder-gray-500 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson shadow-sm"
                 />
               </div>
 
-              <div className="rounded-xl border border-surface-border bg-background-deep p-3.5 flex items-center justify-between">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
                     Calculated Total Fee
                   </span>
-                  <p className="text-[11px] text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-slate-500 mt-0.5">
                     10,000 Tuition {addForm.includeUniform ? "+ 1,500 Uniform" : "+ 0 Uniform"}
                   </p>
                 </div>
                 <div className="text-right">
-                  <span className="text-xl font-black text-gold font-mono tracking-tight">
+                  <span className="text-xl font-black text-amber-700 font-mono tracking-tight">
                     {modalTotalFee.toLocaleString()} ETB
                   </span>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-surface-border flex items-center justify-end gap-3">
+              <div className="pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => {
                     setIsAddModalOpen(false);
                     setAddFormErrors({});
                   }}
-                  className="min-h-[44px] rounded-xl border border-surface-border bg-background-deep px-5 py-2.5 text-xs font-semibold text-gray-300 hover:text-white transition-colors"
+                  className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="min-h-[44px] inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-gold to-gold-dark px-6 py-2.5 text-xs font-black text-gray-950 shadow-glow-gold hover:brightness-105 active:scale-95 transition-all"
+                  className="min-h-[44px] inline-flex items-center gap-2 rounded-xl bg-crimson px-6 py-2.5 text-xs font-black text-white shadow-md hover:bg-red-700 active:scale-95 transition-all"
                 >
                   <UserPlus className="h-4 w-4" />
                   <span>Save Student</span>
@@ -1750,54 +1750,54 @@ export default function InstructorAdminDashboard() {
       )}
 
       {/* ========================================================= */}
-      {/* 5. RECEIPT SCREENSHOT VIEWER MODAL                        */}
+      {/* 5. RECEIPT SCREENSHOT VIEWER MODAL (Light Theme)          */}
       {/* ========================================================= */}
       {selectedReceiptStudent && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-lg rounded-3xl border-2 border-gold/40 bg-surface-card p-5 sm:p-7 shadow-2xl my-8 max-h-[90vh] overflow-y-auto slim-scrollbar">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-5 sm:p-7 shadow-2xl my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900">
             <button
               type="button"
               onClick={() => setSelectedReceiptStudent(null)}
-              className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2 text-gray-400 hover:bg-surface-elevated hover:text-white transition-colors"
+              className="absolute top-4 right-4 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <div className="flex items-center gap-3 pb-3 border-b border-surface-border">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold/20 text-gold border border-gold/40 shrink-0">
+            <div className="flex items-center gap-3 pb-3 border-b border-slate-200">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700 border border-amber-200 shrink-0">
                 <CreditCard className="h-5 w-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white">
+                <h3 className="text-base font-bold text-slate-900">
                   Payment Proof Screenshot / Details
                 </h3>
-                <p className="text-xs text-gray-300">
+                <p className="text-xs text-slate-500">
                   {selectedReceiptStudent.studentName} ({selectedReceiptStudent.grade}) • Ref:{" "}
-                  <span className="font-mono text-gold font-bold">
+                  <span className="font-mono text-amber-700 font-bold">
                     {selectedReceiptStudent.id}
                   </span>
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 text-xs bg-background-deep p-3 rounded-xl border border-surface-border">
+            <div className="mt-4 grid grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200">
               <div>
-                <span className="text-gray-400">Total Payable:</span>
-                <p className="font-extrabold text-gold font-mono text-sm mt-0.5">
+                <span className="text-slate-500">Total Payable:</span>
+                <p className="font-extrabold text-amber-700 font-mono text-sm mt-0.5">
                   {selectedReceiptStudent.totalAmount?.toLocaleString()} ETB
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Current Status:</span>
+                <span className="text-slate-500">Current Status:</span>
                 <p className="mt-0.5 font-bold">
                   {selectedReceiptStudent.paymentStatus === "Verified" ? (
-                    <span className="text-emerald-400 flex items-center gap-1">
+                    <span className="text-emerald-700 flex items-center gap-1">
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       Verified
                     </span>
                   ) : (
-                    <span className="text-gold flex items-center gap-1">
+                    <span className="text-amber-700 flex items-center gap-1">
                       <Clock className="h-3.5 w-3.5" />
                       Pending Approval
                     </span>
@@ -1805,67 +1805,67 @@ export default function InstructorAdminDashboard() {
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Parent Contact:</span>
-                <p className="font-medium text-white mt-0.5">
+                <span className="text-slate-500">Parent Contact:</span>
+                <p className="font-medium text-slate-900 mt-0.5">
                   {selectedReceiptStudent.parentName} ({selectedReceiptStudent.parentPhone})
                 </p>
               </div>
               <div>
-                <span className="text-gray-400">Submission Date:</span>
-                <p className="font-medium text-white mt-0.5">
+                <span className="text-slate-500">Submission Date:</span>
+                <p className="font-medium text-slate-900 mt-0.5">
                   {selectedReceiptStudent.displayDate}
                 </p>
               </div>
             </div>
 
             {selectedReceiptStudent.notes && (
-              <div className="mt-3 p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-xs text-amber-200 flex items-start gap-2">
-                <FileText className="h-4 w-4 text-gold shrink-0 mt-0.5" />
+              <div className="mt-3 p-3 rounded-xl border border-amber-200 bg-amber-50 text-xs text-amber-900 flex items-start gap-2">
+                <FileText className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-gold">Instructor Note:</span>{" "}
+                  <span className="font-bold text-amber-800">Instructor Note:</span>{" "}
                   {selectedReceiptStudent.notes}
                 </div>
               </div>
             )}
 
-            <div className="mt-4 rounded-2xl border border-surface-border bg-background-deep p-3 flex flex-col items-center justify-center min-h-[180px] max-h-[300px] overflow-hidden">
+            <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3 flex flex-col items-center justify-center min-h-[180px] max-h-[300px] overflow-hidden">
               {selectedReceiptStudent.receiptImage ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={selectedReceiptStudent.receiptImage}
                   alt="Uploaded Payment Receipt Screenshot"
-                  className="w-auto h-auto max-h-[280px] rounded-lg object-contain"
+                  className="w-auto h-auto max-h-[280px] rounded-lg object-contain shadow-sm"
                 />
               ) : (
-                <div className="w-full rounded-xl border border-surface-border bg-gradient-to-br from-background-rich to-background-deep p-4 text-center space-y-2">
-                  <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-surface-card border border-gold/40 text-gold">
+                <div className="w-full rounded-xl border border-slate-200 bg-white p-4 text-center space-y-2 shadow-sm">
+                  <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 border border-slate-200 text-amber-600">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                       {selectedReceiptStudent.registrationType === "Phone Call"
                         ? "Phone Call Registration Record"
                         : "Mobile Banking / CBE Birr / Telebirr"}
                     </span>
-                    <h4 className="mt-1 text-xs font-bold text-white font-mono">
+                    <h4 className="mt-1 text-xs font-bold text-slate-900 font-mono">
                       Ref: {selectedReceiptStudent.receiptFileName || "DIRECT-RECORD"}
                     </h4>
-                    <p className="text-[11px] text-gray-300">
+                    <p className="text-[11px] text-slate-600">
                       Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.grade}
                     </p>
                   </div>
-                  <div className="text-base font-black text-gold font-mono">
+                  <div className="text-base font-black text-amber-700 font-mono">
                     {selectedReceiptStudent.totalAmount?.toLocaleString()} ETB
                   </div>
                 </div>
               )}
             </div>
 
-            <div className="mt-5 flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-3 border-t border-surface-border">
+            <div className="mt-5 flex flex-col sm:flex-row items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
               <button
                 type="button"
                 onClick={() => setSelectedReceiptStudent(null)}
-                className="w-full sm:w-auto min-h-[44px] rounded-xl border border-surface-border bg-background-deep px-5 py-2 text-xs font-semibold text-gray-300 hover:text-white transition-colors"
+                className="w-full sm:w-auto min-h-[44px] rounded-xl border border-slate-300 bg-white px-5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 Close
               </button>
@@ -1877,7 +1877,7 @@ export default function InstructorAdminDashboard() {
                     handleTogglePayment(selectedReceiptStudent.id);
                     setSelectedReceiptStudent(null);
                   }}
-                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-500 shadow-md transition-colors active:scale-95"
+                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700 shadow-sm transition-colors active:scale-95"
                 >
                   <CheckCircle2 className="h-4 w-4" />
                   <span>Approve Payment (Mark Verified)</span>
@@ -1889,7 +1889,7 @@ export default function InstructorAdminDashboard() {
                     handleTogglePayment(selectedReceiptStudent.id);
                     setSelectedReceiptStudent(null);
                   }}
-                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl border border-gold/40 bg-gold/10 px-5 py-2 text-xs font-bold text-gold hover:bg-gold hover:text-gray-950 transition-colors active:scale-95"
+                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-5 py-2 text-xs font-bold text-amber-800 hover:bg-amber-100 transition-colors active:scale-95"
                 >
                   <Clock className="h-4 w-4" />
                   <span>Revert to Pending</span>
@@ -1901,33 +1901,33 @@ export default function InstructorAdminDashboard() {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal (Light Theme) */}
       {studentToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-md rounded-2xl border border-surface-border bg-surface-card p-6 shadow-2xl text-center max-h-[90vh] overflow-y-auto">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-crimson/20 text-crimson-light border border-crimson/40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl text-center max-h-[90vh] overflow-y-auto">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 text-crimson border border-red-200">
               <Trash2 className="h-6 w-6" />
             </div>
-            <h3 className="mt-3 text-lg font-bold text-white">
+            <h3 className="mt-3 text-lg font-bold text-slate-900">
               Remove Registration?
             </h3>
-            <p className="mt-2 text-xs text-gray-300">
+            <p className="mt-2 text-xs text-slate-600">
               Are you sure you want to delete the registration for{" "}
-              <strong className="text-white">{studentToDelete.studentName}</strong> ({studentToDelete.id})? This action will remove the record from your roster.
+              <strong className="text-slate-900">{studentToDelete.studentName}</strong> ({studentToDelete.id})? This action will remove the record from your roster.
             </p>
 
             <div className="mt-6 flex items-center justify-center gap-3">
               <button
                 type="button"
                 onClick={() => setStudentToDelete(null)}
-                className="min-h-[44px] rounded-xl border border-surface-border bg-background-deep px-4 py-2 text-xs font-semibold text-gray-300 hover:text-white"
+                className="min-h-[44px] rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleDeleteStudent}
-                className="min-h-[44px] rounded-xl bg-crimson px-5 py-2 text-xs font-bold text-white hover:bg-crimson-dark transition-colors"
+                className="min-h-[44px] rounded-xl bg-crimson px-5 py-2 text-xs font-bold text-white hover:bg-red-700 transition-colors shadow-sm"
               >
                 Confirm Delete
               </button>
@@ -1936,17 +1936,17 @@ export default function InstructorAdminDashboard() {
         </div>
       )}
 
-      {/* Floating Toast Notification */}
+      {/* Floating Toast Notification (Light Theme) */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-500/40 bg-surface-card px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-2xl shadow-black/80 animate-fade-in max-w-sm">
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500 text-white shrink-0">
+        <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-200 bg-white px-4 py-3 text-xs sm:text-sm font-bold text-slate-900 shadow-xl animate-fade-in max-w-sm">
+          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-600 text-white shrink-0">
             <Check className="h-3.5 w-3.5" />
           </div>
           <span className="truncate">{toastMessage}</span>
           <button
             type="button"
             onClick={() => setToastMessage("")}
-            className="ml-auto min-w-[32px] min-h-[32px] flex items-center justify-center text-gray-400 hover:text-white"
+            className="ml-auto min-w-[32px] min-h-[32px] flex items-center justify-center text-slate-400 hover:text-slate-700"
             aria-label="Close notification"
           >
             <X className="h-4 w-4" />
