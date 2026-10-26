@@ -2,11 +2,13 @@ import { Shield, CheckCircle2, CreditCard, ChevronRight } from "lucide-react";
 
 export default function RegistrationCard({
   title = "Term Registration",
-  price = "$240",
-  term = "Fall / Winter Trimester",
+  price = "10,000 ETB",
+  term = "Fall / Term 1 Trimester",
   features = [
-    "20 Guided Training Sessions with Master Daniel",
-    "Official Sonnenland TKD Uniform (Dobok) & White Belt",
+    "Mon / Wed / Fri (3:30 PM - 4:30 PM) Training with Master Daniel",
+    "Optional Official Uniform (Dobok) & White Belt (+1,500 ETB)",
+    "Direct Mobile Payment: CBE (1000530983459), Telebirr (0935368595), Awash (013201241104400)",
+    "Official Account Name: Daniel Teshome",
     "Digital Belt Progress & Attendance Tracking",
     "Eligible for Term-End Belt Promotion Examination",
   ],

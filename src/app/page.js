@@ -55,22 +55,22 @@ const BANK_ACCOUNTS = [
   {
     id: "cbe",
     bankName: "Commercial Bank of Ethiopia (CBE)",
-    shortName: "CBE",
-    accountNumber: "1000456789123",
-    accountHolder: "Sonnenland TKD / Master Daniel",
-    branch: "Finfinnee Branch",
+    shortName: "CBE Account",
+    accountNumber: "1000530983459",
+    accountHolder: "Daniel Teshome",
+    copyLabel: "Copy Account",
     icon: Building2,
     color: "from-purple-900/40 to-surface-card",
     borderColor: "border-purple-500/30",
-    badge: "Most Popular",
+    badge: "Official Account",
   },
   {
     id: "telebirr",
-    bankName: "Telebirr SuperApp / Mobile",
-    shortName: "Telebirr",
-    accountNumber: "0911223344",
-    accountHolder: "Master Daniel (Sonnenland TKD)",
-    branch: "Merchant / Mobile Account",
+    bankName: "Telebirr",
+    shortName: "Telebirr Number",
+    accountNumber: "0935368595",
+    accountHolder: "Daniel Teshome",
+    copyLabel: "Copy Number",
     icon: Smartphone,
     color: "from-blue-900/40 to-surface-card",
     borderColor: "border-blue-500/30",
@@ -78,15 +78,15 @@ const BANK_ACCOUNTS = [
   },
   {
     id: "awash",
-    bankName: "Awash International Bank",
-    shortName: "Awash Bank",
-    accountNumber: "01320876543200",
-    accountHolder: "Sonnenland Taekwondo Club",
-    branch: "Bole Medhanialem Branch",
+    bankName: "Awash Bank",
+    shortName: "Awash Account",
+    accountNumber: "013201241104400",
+    accountHolder: "Daniel Teshome",
+    copyLabel: "Copy Account",
     icon: CreditCard,
     color: "from-amber-900/40 to-surface-card",
     borderColor: "border-amber-500/30",
-    badge: "Available",
+    badge: "Official Account",
   },
 ];
 
@@ -125,17 +125,49 @@ export default function ParentRegistrationPage() {
     return /^(?:\+251|0)[97]\d{8}$/.test(cleaned);
   };
 
-  // Copy bank details helper
+  // Copy bank details helper with resilient clipboard & mobile fallback
   const handleCopy = (id, text, label) => {
-    navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setCopiedToast(`Copied ${label || "account"} to clipboard!`);
-    setTimeout(() => {
-      setCopiedId(null);
-    }, 2500);
-    setTimeout(() => {
-      setCopiedToast("");
-    }, 3500);
+    const copySuccess = () => {
+      setCopiedId(id);
+      setCopiedToast(`Copied ${label || "account"} (${text}) to clipboard!`);
+      setTimeout(() => {
+        setCopiedId(null);
+      }, 2500);
+      setTimeout(() => {
+        setCopiedToast("");
+      }, 3500);
+    };
+
+    if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(text)
+        .then(copySuccess)
+        .catch(() => {
+          fallbackCopyText(text);
+          copySuccess();
+        });
+    } else {
+      fallbackCopyText(text);
+      copySuccess();
+    }
+  };
+
+  const fallbackCopyText = (text) => {
+    try {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+    } catch (err) {
+      console.warn("Fallback copy failed:", err);
+    }
   };
 
   // File Upload Handler
@@ -288,7 +320,7 @@ export default function ParentRegistrationPage() {
         `*Date:* ${ticket.displayDate}\n\n` +
         `Hello Master Daniel, I have registered my child for the Sonnenland After-School Taekwondo program and submitted my payment receipt. Thank you!`
     );
-    return `https://wa.me/251911223344?text=${text}`;
+    return `https://wa.me/251935368595?text=${text}`;
   };
 
   const getTelegramShareUrl = (ticket) => {
@@ -661,11 +693,16 @@ export default function ParentRegistrationPage() {
                                 <p className="text-xs text-gray-300 mt-0.5">
                                   Account Name: <span className="font-semibold text-white">{acc.accountHolder}</span>
                                 </p>
-                                <p className="text-[11px] text-gray-400">{acc.branch}</p>
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                                  <span className="text-[11px] font-medium text-emerald-400/90">
+                                    Verified Official Account
+                                  </span>
+                                </div>
                               </div>
                             </div>
 
-                            {/* 1-Click Copy Account Button - Full width touch target on mobile */}
+                            {/* 1-Click Copy Button - Full width touch target on mobile */}
                             <button
                               type="button"
                               onClick={() => handleCopy(acc.id, acc.accountNumber, acc.shortName)}
@@ -683,7 +720,7 @@ export default function ParentRegistrationPage() {
                               ) : (
                                 <>
                                   <Copy className="h-3.5 w-3.5 text-gold" />
-                                  <span>Copy Account</span>
+                                  <span>{acc.copyLabel || "Copy Account"}</span>
                                 </>
                               )}
                             </button>
