@@ -64,6 +64,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1042",
     studentName: "Nahom Solomon",
+    studentType: "New Student",
     age: "5 Years Old",
     grade: "5 Years Old",
     parentName: "Solomon Haile",
@@ -72,6 +73,7 @@ const SEED_REGISTRATIONS = [
     includeUniform: true,
     uniformSize: "120cm",
     uniformStatus: "Needed",
+    trainingFee: 10000,
     tuitionFee: 10000,
     uniformFee: 1500,
     totalAmount: 11500,
@@ -86,6 +88,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1043",
     studentName: "Selamawit Tadesse",
+    studentType: "Returning Student",
     age: "4 Years Old",
     grade: "4 Years Old",
     parentName: "Tadesse Bekele",
@@ -94,6 +97,7 @@ const SEED_REGISTRATIONS = [
     includeUniform: false,
     uniformSize: "None",
     uniformStatus: "None",
+    trainingFee: 10000,
     tuitionFee: 10000,
     uniformFee: 0,
     totalAmount: 10000,
@@ -107,6 +111,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1044",
     studentName: "Ephraim Yohannes",
+    studentType: "New Student",
     age: "4 Years Old",
     grade: "4 Years Old",
     parentName: "Yohannes Girma",
@@ -115,6 +120,7 @@ const SEED_REGISTRATIONS = [
     includeUniform: true,
     uniformSize: "110cm",
     uniformStatus: "Needed",
+    trainingFee: 10000,
     tuitionFee: 10000,
     uniformFee: 1500,
     totalAmount: 11500,
@@ -129,6 +135,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1045",
     studentName: "Liya Mekonnen",
+    studentType: "New Student",
     age: "3 Years Old",
     grade: "3 Years Old",
     parentName: "Mekonnen Tesfaye",
@@ -137,6 +144,7 @@ const SEED_REGISTRATIONS = [
     includeUniform: true,
     uniformSize: "100cm",
     uniformStatus: "Delivered",
+    trainingFee: 10000,
     tuitionFee: 10000,
     uniformFee: 1500,
     totalAmount: 11500,
@@ -150,6 +158,7 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1046",
     studentName: "Dawit Abebe",
+    studentType: "Returning Student",
     age: "6 Years Old",
     grade: "6 Years Old",
     parentName: "Abebe Kebede",
@@ -158,6 +167,7 @@ const SEED_REGISTRATIONS = [
     includeUniform: false,
     uniformSize: "None",
     uniformStatus: "None",
+    trainingFee: 10000,
     tuitionFee: 10000,
     uniformFee: 0,
     totalAmount: 10000,
@@ -189,12 +199,13 @@ export default function InstructorAdminDashboard() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addForm, setAddForm] = useState({
     studentName: "",
+    studentType: "New Student", // "New Student" | "Returning Student"
     age: "3 Years Old",
     grade: "3 Years Old",
     parentName: "",
     parentPhone: "",
     transactionId: "",
-    includeUniform: false,
+    includeUniform: true,
     uniformSize: "110cm",
     paymentStatus: "Pending",
     notes: "",
@@ -229,6 +240,7 @@ export default function InstructorAdminDashboard() {
           const normalized = parsed.map((item, idx) => ({
             id: item.id || `TKD-2026-${1000 + idx}`,
             studentName: item.studentName || "Unknown Student",
+            studentType: item.studentType || (item.includeUniform ? "New Student" : "Returning Student"),
             age: item.age || item.grade || "3 Years Old",
             grade: item.age || item.grade || "3 Years Old",
             parentName: item.parentName || "Unknown Parent",
@@ -239,11 +251,12 @@ export default function InstructorAdminDashboard() {
             uniformStatus:
               item.uniformStatus ||
               (item.includeUniform ? "Needed" : "None"),
-            tuitionFee: item.tuitionFee || 10000,
-            uniformFee: item.uniformFee || (item.includeUniform ? 1500 : 0),
+            trainingFee: item.trainingFee || item.tuitionFee || 10000,
+            tuitionFee: item.trainingFee || item.tuitionFee || 10000,
+            uniformFee: item.uniformFee !== undefined ? item.uniformFee : (item.includeUniform ? 1500 : 0),
             totalAmount:
               item.totalAmount ||
-              (item.tuitionFee || 10000) + (item.includeUniform ? 1500 : 0),
+              (item.trainingFee || item.tuitionFee || 10000) + (item.includeUniform ? 1500 : 0),
             transactionId: item.transactionId || item.txnId || "N/A",
             paymentStatus:
               item.paymentStatus === "Verified" || item.paymentStatus === "Paid"
@@ -281,11 +294,11 @@ export default function InstructorAdminDashboard() {
     const total = reminderStudent.totalAmount?.toLocaleString() || "10,000";
     if (reminderLang === "am") {
       setReminderText(
-        `ሰላም ${reminderStudent.parentName}፣ የ${reminderStudent.studentName} የሶነንላንድ ቴኳንዶ ምዝገባን በተመለከተ ነው። የልምምድ ቦታውን ለማረጋገጥ እና ዩኒፎርም ለማዘጋጀት የTerm ክፍያ ${total} ብር እስከ ረቡዕ ከቀኑ 9:30 በፊት በCBE ወይም በTelebirr እንዲያጠናቅቁ በአክብሮት እናሳስባለን። ክፍያውን ሲፈጽሙ ደረሰኙን በዚህ ቁጥር ይላኩልን። እናመሰግናለን! - Master Daniel`
+        `ሰላም ${reminderStudent.parentName}፣ የ${reminderStudent.studentName} የሶነንላንድ ቴኳንዶ ስልጠና ክፍያን በተመለከተ ነው። የልምምድ ቦታውን ለማረጋገጥ የTerm ስልጠና ክፍያ ${total} ብር እስከ ረቡዕ ከቀኑ 9:30 በፊት በCBE ወይም በTelebirr እንዲያጠናቅቁ በአክብሮት እናሳስባለን። ክፍያውን ሲፈጽሙ ደረሰኙን በዚህ ቁጥር ይላኩልን። እናመሰግናለን! - Master Daniel`
       );
     } else {
       setReminderText(
-        `Hello ${reminderStudent.parentName}, this is Master Daniel regarding ${reminderStudent.studentName}'s registration for Sonnenland Taekwondo. To secure their spot and prepare their uniform, kindly finalize the term fee of ${total} ETB before Wednesday 3:30 PM. Please share the transfer receipt once completed. Thank you!`
+        `Hello ${reminderStudent.parentName}, this is Master Daniel regarding ${reminderStudent.studentName}'s enrollment in Sonnenland Taekwondo. To secure their spot, kindly finalize the term training fee of ${total} ETB before Wednesday 3:30 PM. Please share the transfer receipt once completed. Thank you!`
       );
     }
     setIsCopiedReminder(false);
@@ -411,6 +424,7 @@ export default function InstructorAdminDashboard() {
     const newStudent = {
       id: newId,
       studentName: addForm.studentName.trim(),
+      studentType: addForm.studentType || (addForm.includeUniform ? "New Student" : "Returning Student"),
       age: addForm.age || addForm.grade || "3 Years Old",
       grade: addForm.age || addForm.grade || "3 Years Old",
       parentName: addForm.parentName.trim(),
@@ -419,6 +433,7 @@ export default function InstructorAdminDashboard() {
       includeUniform: addForm.includeUniform,
       uniformSize: addForm.includeUniform ? addForm.uniformSize : "None",
       uniformStatus: addForm.includeUniform ? "Needed" : "None",
+      trainingFee: 10000,
       tuitionFee: 10000,
       uniformFee: addForm.includeUniform ? 1500 : 0,
       totalAmount,
@@ -448,12 +463,13 @@ export default function InstructorAdminDashboard() {
 
     setAddForm({
       studentName: "",
+      studentType: "New Student",
       age: "3 Years Old",
       grade: "3 Years Old",
       parentName: "",
       parentPhone: "",
       transactionId: "",
-      includeUniform: false,
+      includeUniform: true,
       uniformSize: "110cm",
       paymentStatus: "Pending",
       notes: "",
@@ -509,11 +525,14 @@ export default function InstructorAdminDashboard() {
   const handleExportCSV = () => {
     const headers = [
       "Student Name",
+      "Student Type",
       "Age",
       "Parent Name",
       "Parent Phone",
       "Transaction ID / Ref",
-      "Fee Amount (ETB)",
+      "Training Fee (ETB)",
+      "Uniform Fee (ETB)",
+      "Total Amount (ETB)",
       "Payment Status",
       "Uniform Selection",
       "Uniform Size",
@@ -522,10 +541,13 @@ export default function InstructorAdminDashboard() {
 
     const rows = filteredStudents.map((s) => [
       `"${(s.studentName || "").replace(/"/g, '""')}"`,
+      `"${s.studentType || (s.includeUniform ? "New Student" : "Returning Student")}"`,
       `"${s.age || s.grade || ""}"`,
       `"${(s.parentName || "").replace(/"/g, '""')}"`,
       `"${s.parentPhone || ""}"`,
       `"${(s.transactionId || "").replace(/"/g, '""')}"`,
+      s.trainingFee || s.tuitionFee || 10000,
+      s.uniformFee !== undefined ? s.uniformFee : (s.includeUniform ? 1500 : 0),
       s.totalAmount || 0,
       `"${s.paymentStatus || "Pending"}"`,
       s.includeUniform ? "Yes" : "No",
@@ -1001,6 +1023,12 @@ export default function InstructorAdminDashboard() {
                         <span className="font-mono font-black text-amber-700 dark:text-amber-400 text-lg">
                           {student.totalAmount?.toLocaleString()} ETB
                         </span>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                          {student.includeUniform ? "10,000 + 1,500 Dobok" : "10,000 Training"}
+                        </div>
+                        <span className="inline-block mt-0.5 text-[9px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+                          {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")}
+                        </span>
                       </div>
                     </div>
 
@@ -1287,8 +1315,11 @@ export default function InstructorAdminDashboard() {
                             {student.totalAmount?.toLocaleString()} ETB
                           </div>
                           <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                            {student.includeUniform ? "10,000 + 1,500 Dobok" : "10,000 Tuition"}
+                            {student.includeUniform ? "10,000 Training + 1,500 Dobok" : "10,000 Training Fee"}
                           </div>
+                          <span className="inline-block mt-0.5 text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+                            {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")}
+                          </span>
                         </td>
 
                         {/* Column 4: Payment Status (3 states) */}
@@ -1561,7 +1592,10 @@ export default function InstructorAdminDashboard() {
                 <p className="font-extrabold text-amber-700 dark:text-amber-400 font-mono text-base mt-0.5">
                   {reminderStudent.totalAmount?.toLocaleString()} ETB
                 </p>
-                <span className="text-[10px] text-amber-800 dark:text-amber-300 font-semibold bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-500/40">
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  {reminderStudent.includeUniform ? "10,000 Training + 1,500 Dobok" : "10,000 Training Fee"}
+                </p>
+                <span className="text-[10px] text-amber-800 dark:text-amber-300 font-semibold bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-500/40 inline-block mt-1">
                   Payment Pending
                 </span>
               </div>
@@ -1699,6 +1733,72 @@ export default function InstructorAdminDashboard() {
 
             <form onSubmit={handleSaveManualStudent} className="mt-5 space-y-4" noValidate>
               
+              {/* Student Enrollment Type: New Student vs Returning Student */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
+                  Student Enrollment Type / የተማሪው አይነት <span className="text-crimson">*</span>
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <label
+                    onClick={() => setAddForm((prev) => ({ ...prev, studentType: "New Student", includeUniform: true }))}
+                    className={`min-h-[46px] flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                      addForm.studentType === "New Student"
+                        ? "border-amber-400 bg-amber-50/70 dark:bg-amber-500/20 text-slate-900 dark:text-white shadow-sm ring-1 ring-amber-400/50"
+                        : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="manualStudentType"
+                      value="New Student"
+                      checked={addForm.studentType === "New Student"}
+                      onChange={() => setAddForm((prev) => ({ ...prev, studentType: "New Student", includeUniform: true }))}
+                      className="text-crimson focus:ring-crimson h-4 w-4"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-900 dark:text-white">
+                          አዲስ ተማሪ (New)
+                        </span>
+                        <span className="text-[10px] font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/30 px-1.5 py-0.5 rounded">
+                          11,500 ETB
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee + Dobok uniform</p>
+                    </div>
+                  </label>
+
+                  <label
+                    onClick={() => setAddForm((prev) => ({ ...prev, studentType: "Returning Student", includeUniform: false }))}
+                    className={`min-h-[46px] flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                      addForm.studentType === "Returning Student"
+                        ? "border-emerald-500 bg-emerald-50/70 dark:bg-emerald-500/20 text-slate-900 dark:text-white shadow-sm ring-1 ring-emerald-500/50"
+                        : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="manualStudentType"
+                      value="Returning Student"
+                      checked={addForm.studentType === "Returning Student"}
+                      onChange={() => setAddForm((prev) => ({ ...prev, studentType: "Returning Student", includeUniform: false }))}
+                      className="text-emerald-600 focus:ring-emerald-500 h-4 w-4"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-900 dark:text-white">
+                          ነባር ተማሪ (2nd Term)
+                        </span>
+                        <span className="text-[10px] font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/30 px-1.5 py-0.5 rounded">
+                          10,000 ETB
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee only</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
@@ -1978,7 +2078,7 @@ export default function InstructorAdminDashboard() {
                     Calculated Total Fee
                   </span>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                    10,000 Tuition {addForm.includeUniform ? "+ 1,500 Uniform" : "+ 0 Uniform"}
+                    10,000 Training Fee {addForm.includeUniform ? "+ 1,500 Uniform (Dobok)" : "+ 0 Uniform"}
                   </p>
                 </div>
                 <div className="text-right">
@@ -2050,6 +2150,9 @@ export default function InstructorAdminDashboard() {
                 <span className="text-slate-500 dark:text-slate-400">Total Payable:</span>
                 <p className="font-extrabold text-amber-700 dark:text-amber-400 font-mono text-sm mt-0.5">
                   {selectedReceiptStudent.totalAmount?.toLocaleString()} ETB
+                </p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                  {selectedReceiptStudent.includeUniform ? "10,000 Training + 1,500 Dobok" : "10,000 Training Fee"}
                 </p>
               </div>
               <div>
@@ -2147,7 +2250,7 @@ export default function InstructorAdminDashboard() {
                       Ref: {selectedReceiptStudent.transactionId || selectedReceiptStudent.receiptFileName || "DIRECT-RECORD"}
                     </h4>
                     <p className="text-[11px] text-slate-600 dark:text-slate-300">
-                      Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.age || selectedReceiptStudent.grade}
+                      Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.age || selectedReceiptStudent.grade} ({selectedReceiptStudent.studentType || (selectedReceiptStudent.includeUniform ? "New Student" : "Returning Student")})
                     </p>
                   </div>
                   <div className="text-base font-black text-amber-700 dark:text-amber-400 font-mono">

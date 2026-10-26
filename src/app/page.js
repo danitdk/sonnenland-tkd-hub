@@ -99,11 +99,12 @@ const BANK_ACCOUNTS = [
 export default function ParentRegistrationPage() {
   // Form State
   const [studentName, setStudentName] = useState("");
+  const [studentType, setStudentType] = useState("new"); // "new" | "returning"
   const [age, setAge] = useState("");
   const [parentName, setParentName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
   const [emergencyPhone, setEmergencyPhone] = useState("");
-  const [includeUniform, setIncludeUniform] = useState(false);
+  const [includeUniform, setIncludeUniform] = useState(true); // default true for new students
   const [uniformSize, setUniformSize] = useState("110cm");
   const [transactionId, setTransactionId] = useState("");
 
@@ -121,10 +122,19 @@ export default function ParentRegistrationPage() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [submittedTicket, setSubmittedTicket] = useState(null);
 
-  // Pricing Constants
-  const TUITION_FEE = 10000;
+  // Pricing Constants: Training Fee + Optional Uniform (Zero Registration Fee)
+  const TRAINING_FEE = 10000;
   const UNIFORM_FEE = 1500;
-  const totalAmount = TUITION_FEE + (includeUniform ? UNIFORM_FEE : 0);
+  const totalAmount = TRAINING_FEE + (includeUniform ? UNIFORM_FEE : 0);
+
+  const handleStudentTypeChange = (type) => {
+    setStudentType(type);
+    if (type === "new") {
+      setIncludeUniform(true);
+    } else {
+      setIncludeUniform(false);
+    }
+  };
 
   // Validate Ethiopian phone number (09... or 07... or +251...)
   const validateEthiopianPhone = (phone) => {
@@ -274,6 +284,7 @@ export default function ParentRegistrationPage() {
     const registrationData = {
       id: referenceId,
       studentName: studentName.trim(),
+      studentType: studentType === "new" ? "New Student" : "Returning Student",
       age,
       grade: age,
       parentName: parentName.trim(),
@@ -282,7 +293,8 @@ export default function ParentRegistrationPage() {
       includeUniform,
       uniformSize: includeUniform ? uniformSize : "None",
       uniformStatus: includeUniform ? "Needed" : "None",
-      tuitionFee: TUITION_FEE,
+      trainingFee: TRAINING_FEE,
+      tuitionFee: TRAINING_FEE,
       uniformFee: includeUniform ? UNIFORM_FEE : 0,
       totalAmount,
       transactionId: transactionId.trim(),
@@ -328,6 +340,7 @@ export default function ParentRegistrationPage() {
         `*Reference ID:* ${ticket.id}\n` +
         `*Transaction / Ref:* ${ticket.transactionId || "N/A"}\n` +
         `*Student:* ${ticket.studentName} (${ticket.age || ticket.grade})\n` +
+        `*Student Type:* ${ticket.studentType || "New Student"}\n` +
         `*Parent:* ${ticket.parentName} (${ticket.parentPhone})\n` +
         `*Uniform:* ${ticket.includeUniform ? `Yes (${ticket.uniformSize})` : "No"}\n` +
         `*Total Paid:* ${ticket.totalAmount.toLocaleString()} ETB\n` +
@@ -340,7 +353,7 @@ export default function ParentRegistrationPage() {
   const getTelegramShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 Sönnenland TKD Hub Registration\nRef: ${ticket.id}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
+      `🥋 Sönnenland TKD Hub Registration\nRef: ${ticket.id}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nType: ${ticket.studentType || "New Student"}\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
     );
     return `https://t.me/share/url?url=https://sonnenland.school/tkd&text=${text}`;
   };
@@ -425,7 +438,77 @@ export default function ParentRegistrationPage() {
                   </div>
 
                   <div className="mt-6 space-y-5">
-                    {/* Row 1: Student Name & Grade */}
+                    {/* Student Enrollment Type Selector: አዲስ ተማሪ vs ነባር ተማሪ */}
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
+                        Student Enrollment Type / የተማሪው አይነት <span className="text-crimson">*</span>
+                      </label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label
+                          onClick={() => handleStudentTypeChange("new")}
+                          className={`min-h-[52px] flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                            studentType === "new"
+                              ? "border-amber-400 bg-amber-50/70 dark:bg-amber-500/15 text-slate-900 dark:text-white shadow-sm ring-1 ring-amber-400/50"
+                              : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="studentType"
+                            value="new"
+                            checked={studentType === "new"}
+                            onChange={() => handleStudentTypeChange("new")}
+                            className="mt-1 text-crimson focus:ring-crimson h-4 w-4"
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+                                አዲስ ተማሪ (New Student)
+                              </span>
+                              <span className="text-[11px] font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/25 px-2 py-0.5 rounded-md border border-amber-300 dark:border-amber-500/40">
+                                11,500 ETB
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
+                              Training Fee (10,000 ETB) + Official Dobok & Belt (1,500 ETB)
+                            </p>
+                          </div>
+                        </label>
+
+                        <label
+                          onClick={() => handleStudentTypeChange("returning")}
+                          className={`min-h-[52px] flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                            studentType === "returning"
+                              ? "border-emerald-500 bg-emerald-50/70 dark:bg-emerald-500/15 text-slate-900 dark:text-white shadow-sm ring-1 ring-emerald-500/50"
+                              : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="studentType"
+                            value="returning"
+                            checked={studentType === "returning"}
+                            onChange={() => handleStudentTypeChange("returning")}
+                            className="mt-1 text-emerald-600 focus:ring-emerald-500 h-4 w-4"
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+                                ነባር ተማሪ / 2nd Term (Returning)
+                              </span>
+                              <span className="text-[11px] font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/25 px-2 py-0.5 rounded-md border border-emerald-300 dark:border-emerald-500/40">
+                                10,000 ETB
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
+                              Training Fee only (10,000 ETB) • Already has Dobok uniform
+                            </p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Row 1: Student Name & Age */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                       {/* Student Full Name */}
                       <div id="studentName">
@@ -597,61 +680,108 @@ export default function ParentRegistrationPage() {
                       )}
                     </div>
 
-                    {/* Row 4: Uniform Selection Toggle & Size Dropdown */}
+                    {/* Row 4: Uniform Selection & Size Dropdown */}
                     <div className="pt-2">
-                      <div className={`rounded-2xl border p-4 sm:p-5 transition-colors ${
-                        includeUniform
-                          ? "border-amber-300 dark:border-amber-500/50 bg-amber-50/50 dark:bg-amber-500/10"
-                          : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50"
-                      }`}>
-                        <label className="flex items-start gap-3.5 cursor-pointer select-none min-h-[44px]">
-                          <input
-                            type="checkbox"
-                            checked={includeUniform}
-                            onChange={(e) => setIncludeUniform(e.target.checked)}
-                            className="mt-1 h-5 w-5 rounded border-slate-300 text-crimson focus:ring-crimson shrink-0"
-                          />
-                          <div className="flex-1">
-                            <div className="flex flex-wrap items-center justify-between gap-2">
-                              <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <Shirt className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                                Include Official TKD Uniform (Dobok) + White Belt
-                              </span>
-                              <span className="text-xs font-black text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-300 dark:border-amber-500/30">
-                                +1,500 ETB
-                              </span>
+                      {studentType === "new" ? (
+                        <div className="rounded-2xl border p-4 sm:p-5 border-amber-300 dark:border-amber-500/50 bg-amber-50/50 dark:bg-amber-500/10 transition-colors">
+                          <div className="flex items-start gap-3.5">
+                            <div className="mt-1 h-5 w-5 rounded-md bg-amber-500 text-white flex items-center justify-center shrink-0">
+                              <Check className="h-3.5 w-3.5" />
                             </div>
-                            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                              Required for all students without an existing Sonnenland approved Dobok. Comes with jacket, pants, and white belt.
-                            </p>
-                          </div>
-                        </label>
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                  <Shirt className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                  Official TKD Uniform (Dobok) + White Belt (የደንብ ልብስ)
+                                </span>
+                                <span className="text-xs font-black text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-300 dark:border-amber-500/30">
+                                  +1,500 ETB (Included)
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                                Standard official Sönnenland martial arts Dobok set (jacket, pants, white belt) required for all new students.
+                              </p>
 
-                        {/* Conditional Size Selector */}
-                        {includeUniform && (
-                          <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-500/30 animate-fade-in">
-                            <label className="block text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1.5">
-                              Select Uniform Size (Based on Student Height):
-                            </label>
-                            <div className="relative">
-                              <select
-                                value={uniformSize}
-                                onChange={(e) => setUniformSize(e.target.value)}
-                                className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson"
-                              >
-                                {UNIFORM_SIZES.map((size) => (
-                                  <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                                    {size.label}
-                                  </option>
-                                ))}
-                              </select>
+                              {/* Size Selector */}
+                              <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-500/30">
+                                <label className="block text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1.5">
+                                  Select Uniform Size (Based on Student Height):
+                                </label>
+                                <div className="relative">
+                                  <select
+                                    value={uniformSize}
+                                    onChange={(e) => setUniformSize(e.target.value)}
+                                    className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson"
+                                  >
+                                    {UNIFORM_SIZES.map((size) => (
+                                      <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                        {size.label}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5">
+                                  Master Daniel will also verify exact fits on day one of training.
+                                </p>
+                              </div>
                             </div>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5">
-                              Master Daniel will also verify exact fits on day one of training.
-                            </p>
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      ) : (
+                        <div className={`rounded-2xl border p-4 sm:p-5 transition-colors ${
+                          includeUniform
+                            ? "border-amber-300 dark:border-amber-500/50 bg-amber-50/50 dark:bg-amber-500/10"
+                            : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50"
+                        }`}>
+                          <label className="flex items-start gap-3.5 cursor-pointer select-none min-h-[44px]">
+                            <input
+                              type="checkbox"
+                              checked={includeUniform}
+                              onChange={(e) => setIncludeUniform(e.target.checked)}
+                              className="mt-1 h-5 w-5 rounded border-slate-300 text-crimson focus:ring-crimson shrink-0"
+                            />
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center justify-between gap-2">
+                                <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                  <Shirt className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                                  Request New / Replacement Uniform (Dobok) + White Belt
+                                </span>
+                                <span className={`text-xs font-black px-2.5 py-1 rounded-full border ${
+                                  includeUniform
+                                    ? "text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 border-amber-300 dark:border-amber-500/30"
+                                    : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
+                                }`}>
+                                  {includeUniform ? "+1,500 ETB" : "0 ETB (Already Owned)"}
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                                Optional for returning students. Only select this if your child needs a replacement or larger size Dobok.
+                              </p>
+                            </div>
+                          </label>
+
+                          {includeUniform && (
+                            <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-500/30 animate-fade-in">
+                              <label className="block text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1.5">
+                                Select Replacement Uniform Size:
+                              </label>
+                              <div className="relative">
+                                <select
+                                  value={uniformSize}
+                                  onChange={(e) => setUniformSize(e.target.value)}
+                                  className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson"
+                                >
+                                  {UNIFORM_SIZES.map((size) => (
+                                    <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                      {size.label}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                   </div>
@@ -895,19 +1025,21 @@ export default function ParentRegistrationPage() {
                   </p>
 
                   <div className="mt-5 space-y-3.5 border-t border-slate-200 dark:border-slate-700/80 pt-5 text-sm">
+                    {/* Active Line Item 1: Training Fee */}
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                       <div>
-                        <span className="font-bold text-slate-900 dark:text-white">Tuition Fee</span>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400">1 Term (Mon/Wed/Fri)</p>
+                        <span className="font-bold text-slate-900 dark:text-white">Training Fee (የትምህርት ክፍያ)</span>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">1 Term (Mon / Wed / Fri)</p>
                       </div>
                       <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
                     </div>
 
+                    {/* Active Line Item 2: Uniform / Dobok */}
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                       <div>
-                        <span className="font-bold text-slate-900 dark:text-white">Uniform (Dobok) + Belt</span>
+                        <span className="font-bold text-slate-900 dark:text-white">Uniform / የደንብ ልብስ (Dobok + Belt)</span>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                          {includeUniform ? uniformSize : "Not included"}
+                          {includeUniform ? `Size ${uniformSize} (${studentType === "new" ? "New Student Dobok" : "Replacement"})` : "Not needed (Returning Student)"}
                         </p>
                       </div>
                       <span className={`font-mono font-bold ${includeUniform ? "text-amber-700 dark:text-amber-400" : "text-slate-400 dark:text-slate-500"}`}>
@@ -915,6 +1047,7 @@ export default function ParentRegistrationPage() {
                       </span>
                     </div>
 
+                    {/* Total: Strictly calculated from active items */}
                     <div className="border-t border-slate-200 dark:border-slate-700/80 pt-4 mt-2 flex items-baseline justify-between">
                       <span className="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200">
                         Total Payable:
@@ -923,7 +1056,9 @@ export default function ParentRegistrationPage() {
                         <span className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">
                           {totalAmount.toLocaleString()} ETB
                         </span>
-                        <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold">Equipment & tuition included</p>
+                        <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold">
+                          {includeUniform ? "Training fee & official Dobok set" : "Training fee included"}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -1062,6 +1197,12 @@ export default function ParentRegistrationPage() {
                   <p className="font-bold text-slate-900 dark:text-white mt-0.5">{submittedTicket.studentName}</p>
                 </div>
                 <div>
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Student Type:</span>
+                  <p className="font-bold text-slate-900 dark:text-white mt-0.5">
+                    {submittedTicket.studentType || "New Student"}
+                  </p>
+                </div>
+                <div>
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Age / እድሜ:</span>
                   <p className="font-bold text-slate-900 dark:text-white mt-0.5">{submittedTicket.age || submittedTicket.grade}</p>
                 </div>
@@ -1079,9 +1220,9 @@ export default function ParentRegistrationPage() {
                     {submittedTicket.includeUniform ? `Yes (${submittedTicket.uniformSize})` : "Not included"}
                   </p>
                 </div>
-                <div>
-                  <span className="text-slate-500 dark:text-slate-400 font-medium">Total Paid:</span>
-                  <p className="font-bold text-slate-900 dark:text-white mt-0.5 text-sm">
+                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-700/80 flex items-center justify-between">
+                  <span className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[11px]">Total Paid:</span>
+                  <p className="font-black text-amber-600 dark:text-amber-400 font-mono text-base">
                     {submittedTicket.totalAmount.toLocaleString()} ETB
                   </p>
                 </div>

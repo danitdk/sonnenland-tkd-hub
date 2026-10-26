@@ -53,7 +53,7 @@ export default function Navbar() {
             href="#schedule"
             className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-crimson dark:hover:text-amber-400"
           >
-            Schedule & Tuition
+            Schedule & Fees
           </Link>
           <Link
             href="#registration"
@@ -99,7 +99,7 @@ export default function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-crimson dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
             >
-              Schedule & Tuition
+              Schedule & Fees
             </Link>
             <Link
               href="#registration"

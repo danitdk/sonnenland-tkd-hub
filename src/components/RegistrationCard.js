@@ -1,7 +1,7 @@
 import { Shield, CheckCircle2, ChevronRight } from "lucide-react";
 
 export default function RegistrationCard({
-  title = "Term Registration",
+  title = "Term Training",
   price = "10,000 ETB",
   term = "Fall / Term 1 Trimester",
   features = [
