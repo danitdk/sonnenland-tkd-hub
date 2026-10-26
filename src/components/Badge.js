@@ -6,10 +6,10 @@ export default function Badge({
   pulse = false,
 }) {
   const variantStyles = {
-    gold: "bg-amber-50 text-amber-800 border-amber-300 shadow-sm",
-    crimson: "bg-red-50 text-red-700 border-red-200 shadow-sm",
-    dark: "bg-slate-100 text-slate-700 border-slate-200",
-    emerald: "bg-emerald-50 text-emerald-700 border-emerald-300 shadow-sm",
+    gold: "bg-amber-50 dark:bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-400/40 shadow-sm",
+    crimson: "bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-400 border-red-200 dark:border-red-500/40 shadow-sm",
+    dark: "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700",
+    emerald: "bg-emerald-50 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-500/40 shadow-sm",
   };
 
   const sizeStyles = {

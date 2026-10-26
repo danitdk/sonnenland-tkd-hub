@@ -7,6 +7,7 @@
   --background-rich: #F1F5F9;
   --surface-card: #FFFFFF;
   --surface-border: #E2E8F0;
+  --surface-elevated: #F8FAFC;
   --accent-crimson: #DC2626;
   --accent-crimson-light: #EF4444;
   --accent-gold: #D97706;
@@ -16,16 +17,39 @@
   --text-muted: #64748B;
 }
 
+.dark {
+  --background-deep: #090D16;
+  --background-rich: #0F172A;
+  --surface-card: #1E293B;
+  --surface-border: #334155;
+  --surface-elevated: #1E293B;
+  --accent-crimson: #DC2626;
+  --accent-crimson-light: #EF4444;
+  --accent-gold: #D97706;
+  --accent-gold-dark: #B45309;
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+}
+
 html, body {
-  background-color: #F8FAFC;
-  color: #1E293B;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   max-width: 100vw;
 }
 
-/* Custom soft light scrollbar */
+html.dark, html.dark body {
+  background-color: #090D16;
+  color: #F8FAFC;
+}
+
+html:not(.dark), html:not(.dark) body {
+  background-color: #F8FAFC;
+  color: #1E293B;
+}
+
+/* Custom soft scrollbar (Light Mode) */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
@@ -44,6 +68,20 @@ html, body {
   background: #94A3B8;
 }
 
+/* Custom scrollbar (Dark Mode) */
+.dark ::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #D97706;
+}
+
 /* Slim scrollbar for tables and horizontal scrolling */
 .slim-scrollbar::-webkit-scrollbar {
   height: 5px;
@@ -54,24 +92,33 @@ html, body {
   background: #F1F5F9;
 }
 
+.dark .slim-scrollbar::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+
 .slim-scrollbar::-webkit-scrollbar-thumb {
   background: #CBD5E1;
   border-radius: 9999px;
 }
 
-.slim-scrollbar::-webkit-scrollbar-thumb:hover {
+.dark .slim-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb:hover,
+.dark .slim-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #D97706;
 }
 
 /* Red/Gold gradient text helpers */
 .gradient-text-gold {
-  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-crimson {
-  background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

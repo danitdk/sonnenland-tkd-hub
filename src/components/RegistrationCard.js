@@ -15,7 +15,7 @@ export default function RegistrationCard({
   onRegister,
 }) {
   return (
-    <div className="rounded-2xl border-2 border-amber-300 bg-white p-6 sm:p-8 shadow-sm relative overflow-hidden">
+    <div className="rounded-2xl border-2 border-amber-300 dark:border-amber-400/60 bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm dark:shadow-glow-gold relative overflow-hidden transition-colors">
       <div className="absolute top-0 right-0 bg-amber-500 text-white font-bold text-xs uppercase px-4 py-1.5 rounded-bl-xl tracking-wider shadow-xs">
         October 26–28
       </div>
@@ -25,17 +25,23 @@ export default function RegistrationCard({
         {term}
       </div>
 
-      <h3 className="text-xl sm:text-2xl font-black text-slate-900 mt-1">{title}</h3>
+      <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mt-1">
+        {title}
+      </h3>
 
       <div className="mt-4 flex items-baseline gap-2">
-        <span className="text-4xl sm:text-5xl font-black text-slate-900 font-mono tracking-tight">{price}</span>
-        <span className="text-sm font-semibold text-slate-500">/ 10-week term</span>
+        <span className="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white font-mono tracking-tight">
+          {price}
+        </span>
+        <span className="text-sm font-semibold text-slate-500 dark:text-slate-400">
+          / 10-week term
+        </span>
       </div>
 
-      <ul className="mt-6 space-y-3 border-t border-slate-200 pt-6 text-sm text-slate-700 font-medium">
+      <ul className="mt-6 space-y-3 border-t border-slate-200 dark:border-slate-700 pt-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
         {features.map((feature, idx) => (
           <li key={idx} className="flex items-start gap-2.5">
-            <CheckCircle2 className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+            <CheckCircle2 className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <span>{feature}</span>
           </li>
         ))}
