@@ -46,10 +46,11 @@ import {
 import Badge from "@/components/Badge";
 import ThemeToggle from "@/components/ThemeToggle";
 
-const GRADES = [
-  "KG 1",
-  "KG 2",
-  "KG 3",
+const AGES = [
+  "3 Years Old",
+  "4 Years Old",
+  "5 Years Old",
+  "6 Years Old",
 ];
 
 const UNIFORM_SIZES = [
@@ -63,7 +64,8 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1042",
     studentName: "Nahom Solomon",
-    grade: "KG 3",
+    age: "5 Years Old",
+    grade: "5 Years Old",
     parentName: "Solomon Haile",
     parentPhone: "0911223344",
     emergencyPhone: "0912345678",
@@ -84,7 +86,8 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1043",
     studentName: "Selamawit Tadesse",
-    grade: "KG 2",
+    age: "4 Years Old",
+    grade: "4 Years Old",
     parentName: "Tadesse Bekele",
     parentPhone: "0912445566",
     emergencyPhone: "N/A",
@@ -104,7 +107,8 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1044",
     studentName: "Ephraim Yohannes",
-    grade: "KG 2",
+    age: "4 Years Old",
+    grade: "4 Years Old",
     parentName: "Yohannes Girma",
     parentPhone: "0918778899",
     emergencyPhone: "0911002233",
@@ -125,7 +129,8 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1045",
     studentName: "Liya Mekonnen",
-    grade: "KG 1",
+    age: "3 Years Old",
+    grade: "3 Years Old",
     parentName: "Mekonnen Tesfaye",
     parentPhone: "0920112233",
     emergencyPhone: "N/A",
@@ -145,7 +150,8 @@ const SEED_REGISTRATIONS = [
   {
     id: "TKD-2026-1046",
     studentName: "Dawit Abebe",
-    grade: "KG 3",
+    age: "6 Years Old",
+    grade: "6 Years Old",
     parentName: "Abebe Kebede",
     parentPhone: "0911334455",
     emergencyPhone: "0911998877",
@@ -175,7 +181,7 @@ export default function InstructorAdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPayment, setFilterPayment] = useState("ALL");
   const [filterUniform, setFilterUniform] = useState("ALL");
-  const [filterGrade, setFilterGrade] = useState("ALL");
+  const [filterAge, setFilterAge] = useState("ALL");
 
   const [selectedReceiptStudent, setSelectedReceiptStudent] = useState(null);
   const [studentToDelete, setStudentToDelete] = useState(null);
@@ -183,7 +189,8 @@ export default function InstructorAdminDashboard() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [addForm, setAddForm] = useState({
     studentName: "",
-    grade: "KG 1",
+    age: "3 Years Old",
+    grade: "3 Years Old",
     parentName: "",
     parentPhone: "",
     transactionId: "",
@@ -222,7 +229,8 @@ export default function InstructorAdminDashboard() {
           const normalized = parsed.map((item, idx) => ({
             id: item.id || `TKD-2026-${1000 + idx}`,
             studentName: item.studentName || "Unknown Student",
-            grade: item.grade || "KG 1",
+            age: item.age || item.grade || "3 Years Old",
+            grade: item.age || item.grade || "3 Years Old",
             parentName: item.parentName || "Unknown Parent",
             parentPhone: item.parentPhone || "0911000000",
             emergencyPhone: item.emergencyPhone || "N/A",
@@ -297,7 +305,7 @@ export default function InstructorAdminDashboard() {
 
   const handlePinSubmit = (e) => {
     e?.preventDefault();
-    if (pinInput === "1234") {
+    if (pinInput === "2141") {
       setIsUnlocked(true);
       setPinError("");
       try {
@@ -306,7 +314,7 @@ export default function InstructorAdminDashboard() {
         console.warn(err);
       }
     } else {
-      setPinError("Incorrect PIN. Please enter Master Daniel's 4-digit code (Default: 1234).");
+      setPinError("Incorrect PIN. Please enter Master Daniel's 4-digit code (Default: 2141).");
       setPinInput("");
     }
   };
@@ -403,7 +411,8 @@ export default function InstructorAdminDashboard() {
     const newStudent = {
       id: newId,
       studentName: addForm.studentName.trim(),
-      grade: addForm.grade,
+      age: addForm.age || addForm.grade || "3 Years Old",
+      grade: addForm.age || addForm.grade || "3 Years Old",
       parentName: addForm.parentName.trim(),
       parentPhone: addForm.parentPhone.trim(),
       emergencyPhone: "N/A",
@@ -439,7 +448,8 @@ export default function InstructorAdminDashboard() {
 
     setAddForm({
       studentName: "",
-      grade: "KG 1",
+      age: "3 Years Old",
+      grade: "3 Years Old",
       parentName: "",
       parentPhone: "",
       transactionId: "",
@@ -488,18 +498,18 @@ export default function InstructorAdminDashboard() {
       matchesUniform = s.includeUniform && s.uniformStatus === "Delivered";
     }
 
-    let matchesGrade = true;
-    if (filterGrade !== "ALL") {
-      matchesGrade = s.grade === filterGrade;
+    let matchesAge = true;
+    if (filterAge !== "ALL") {
+      matchesAge = (s.age || s.grade) === filterAge;
     }
 
-    return matchesSearch && matchesPayment && matchesUniform && matchesGrade;
+    return matchesSearch && matchesPayment && matchesUniform && matchesAge;
   });
 
   const handleExportCSV = () => {
     const headers = [
       "Student Name",
-      "Grade",
+      "Age",
       "Parent Name",
       "Parent Phone",
       "Transaction ID / Ref",
@@ -512,7 +522,7 @@ export default function InstructorAdminDashboard() {
 
     const rows = filteredStudents.map((s) => [
       `"${(s.studentName || "").replace(/"/g, '""')}"`,
-      `"${s.grade || ""}"`,
+      `"${s.age || s.grade || ""}"`,
       `"${(s.parentName || "").replace(/"/g, '""')}"`,
       `"${s.parentPhone || ""}"`,
       `"${(s.transactionId || "").replace(/"/g, '""')}"`,
@@ -583,7 +593,7 @@ export default function InstructorAdminDashboard() {
             Instructor Portal
           </h2>
           <p className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-400">
-            Master Daniel • Sönnenland International Kindergarten
+            Master Daniel • Sönnenland International Kindergarten After-School TKD Hub
           </p>
           <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
             Please enter the 4-digit Master PIN to unlock the enrollment administration dashboard.
@@ -621,7 +631,7 @@ export default function InstructorAdminDashboard() {
                     if (pinInput.length < 4) {
                       const next = pinInput + num;
                       setPinInput(next);
-                      if (next.length === 4 && next === "1234") {
+                      if (next.length === 4 && next === "2141") {
                         setIsUnlocked(true);
                         sessionStorage.setItem("tkd_admin_unlocked", "true");
                       }
@@ -645,7 +655,7 @@ export default function InstructorAdminDashboard() {
                   if (pinInput.length < 4) {
                     const next = pinInput + "0";
                     setPinInput(next);
-                    if (next.length === 4 && next === "1234") {
+                    if (next.length === 4 && next === "2141") {
                       setIsUnlocked(true);
                       sessionStorage.setItem("tkd_admin_unlocked", "true");
                     }
@@ -675,7 +685,7 @@ export default function InstructorAdminDashboard() {
 
           <div className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/15 px-3 py-1.5 text-[11px] text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30">
             <Lock className="h-3 w-3 text-amber-700 dark:text-amber-400" />
-            <span>Default PIN: <strong className="text-amber-900 dark:text-amber-300 font-mono">1234</strong></span>
+            <span>Master PIN: <strong className="text-amber-900 dark:text-amber-300 font-mono">2141</strong></span>
           </div>
 
           <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700/80">
@@ -730,7 +740,9 @@ export default function InstructorAdminDashboard() {
                 <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-tight truncate">
                   Instructor Portal — Master Daniel
                 </h1>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Sönnenland International Kindergarten (SIK)</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
+                  Sönnenland International Kindergarten After-School TKD Hub
+                </p>
               </div>
             </div>
           </div>
@@ -795,7 +807,7 @@ export default function InstructorAdminDashboard() {
               </span>
               <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">Students</span>
             </div>
-            <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 truncate">KG 1 to KG 3</p>
+            <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400 truncate">Ages 3 to 6 Years Old</p>
           </div>
 
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1E293B] p-4 sm:p-5 shadow-sm transition-all hover:border-emerald-400">
@@ -908,14 +920,16 @@ export default function InstructorAdminDashboard() {
               </select>
 
               <select
-                value={filterGrade}
-                onChange={(e) => setFilterGrade(e.target.value)}
+                value={filterAge}
+                onChange={(e) => setFilterAge(e.target.value)}
                 className="min-h-[44px] col-span-2 sm:col-span-1 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:border-amber-600 focus:outline-none shadow-sm"
               >
-                <option value="ALL">All Kindergarten Classes</option>
-                <option value="KG 1">KG 1</option>
-                <option value="KG 2">KG 2</option>
-                <option value="KG 3">KG 3</option>
+                <option value="ALL">All Ages / ሁሉም እድሜዎች</option>
+                {AGES.map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -959,7 +973,7 @@ export default function InstructorAdminDashboard() {
 
                 return (
                   <div key={student.id} className="p-4 space-y-3 bg-white dark:bg-[#1E293B] hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors">
-                    {/* Header Row: Student Name, Grade & ID */}
+                    {/* Header Row: Student Name, Age & ID */}
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <div className="flex items-center gap-1.5">
@@ -975,7 +989,7 @@ export default function InstructorAdminDashboard() {
                         </div>
                         <div className="flex items-center gap-2 mt-1">
                           <span className="rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                            {student.grade}
+                            {student.age || student.grade}
                           </span>
                           <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
                             {student.id}
@@ -1204,7 +1218,7 @@ export default function InstructorAdminDashboard() {
             <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
               <thead className="bg-slate-50 dark:bg-slate-900/80 uppercase tracking-wider text-[11px] text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
                 <tr>
-                  <th scope="col" className="px-5 py-3.5 font-bold">1. Student & Grade</th>
+                  <th scope="col" className="px-5 py-3.5 font-bold">1. Student & Age</th>
                   <th scope="col" className="px-5 py-3.5 font-bold">2. Parent & Phone</th>
                   <th scope="col" className="px-5 py-3.5 font-bold">3. Total Fee</th>
                   <th scope="col" className="px-5 py-3.5 font-bold">4. Payment Status</th>
@@ -1240,7 +1254,7 @@ export default function InstructorAdminDashboard() {
                           </div>
                           <div className="flex items-center gap-2 mt-0.5">
                             <span className="inline-flex rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                              {student.grade}
+                              {student.age || student.grade}
                             </span>
                             <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
                               {student.id}
@@ -1466,7 +1480,7 @@ export default function InstructorAdminDashboard() {
                           setSearchTerm("");
                           setFilterPayment("ALL");
                           setFilterUniform("ALL");
-                          setFilterGrade("ALL");
+                          setFilterAge("ALL");
                         }}
                         className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline"
                       >
@@ -1486,7 +1500,7 @@ export default function InstructorAdminDashboard() {
               Showing {filteredStudents.length} of {students.length} enrolled students
             </span>
             <span className="text-slate-600 dark:text-slate-300 font-medium">
-              Master Daniel • Sönnenland International Kindergarten After-School Taekwondo Program
+              Master Daniel • Sönnenland International Kindergarten After-School TKD Hub
             </span>
           </div>
         </div>
@@ -1529,7 +1543,7 @@ export default function InstructorAdminDashboard() {
                 <p className="font-extrabold text-slate-900 dark:text-white text-sm mt-0.5">
                   {reminderStudent.studentName}
                 </p>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">{reminderStudent.grade}</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">{reminderStudent.age || reminderStudent.grade}</p>
               </div>
               <div>
                 <span className="text-slate-500 dark:text-slate-400">Parent & Phone:</span>
@@ -1719,20 +1733,24 @@ export default function InstructorAdminDashboard() {
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                    Kindergarten Class Level <span className="text-crimson">*</span>
+                    Age / እድሜ <span className="text-crimson">*</span>
                   </label>
                   <div className="relative">
                     <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
                     <select
-                      value={addForm.grade}
+                      value={addForm.age || addForm.grade}
                       onChange={(e) =>
-                        setAddForm((prev) => ({ ...prev, grade: e.target.value }))
+                        setAddForm((prev) => ({
+                          ...prev,
+                          age: e.target.value,
+                          grade: e.target.value,
+                        }))
                       }
                       className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 pl-10 pr-3 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson shadow-sm"
                     >
-                      {GRADES.map((g) => (
-                        <option key={g} value={g} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                          {g}
+                      {AGES.map((a) => (
+                        <option key={a} value={a} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                          {a}
                         </option>
                       ))}
                     </select>
@@ -2019,7 +2037,7 @@ export default function InstructorAdminDashboard() {
                   Payment Proof Screenshot / Details
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {selectedReceiptStudent.studentName} ({selectedReceiptStudent.grade}) • Ref:{" "}
+                  {selectedReceiptStudent.studentName} ({selectedReceiptStudent.age || selectedReceiptStudent.grade}) • Ref:{" "}
                   <span className="font-mono text-amber-700 dark:text-amber-400 font-bold">
                     {selectedReceiptStudent.id}
                   </span>
@@ -2129,7 +2147,7 @@ export default function InstructorAdminDashboard() {
                       Ref: {selectedReceiptStudent.transactionId || selectedReceiptStudent.receiptFileName || "DIRECT-RECORD"}
                     </h4>
                     <p className="text-[11px] text-slate-600 dark:text-slate-300">
-                      Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.grade}
+                      Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.age || selectedReceiptStudent.grade}
                     </p>
                   </div>
                   <div className="text-base font-black text-amber-700 dark:text-amber-400 font-mono">

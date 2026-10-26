@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { UserCheck, Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
@@ -29,14 +29,14 @@ export default function Navbar() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold tracking-tight text-slate-900 dark:text-white text-base sm:text-lg">
-                Sonnenland <span className="text-crimson">TKD</span> Hub
+                Sönnenland <span className="text-crimson">TKD</span> Hub
               </span>
               <span className="hidden sm:inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-400/30">
-                Kindergarten Program
+                Kindergarten
               </span>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              After-School Taekwondo • Master Daniel
+              Sönnenland International Kindergarten After-School TKD Hub
             </p>
           </div>
         </Link>
@@ -63,20 +63,9 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Right Action Buttons: Theme Toggle & Admin Portal */}
+        {/* Right Action Buttons: Theme Toggle (Admin button removed for discretion) */}
         <div className="hidden sm:flex items-center gap-2.5">
-          {/* Theme Toggle Button */}
           <ThemeToggle />
-
-          {/* Instructor Admin Portal Link */}
-          <Link
-            href="/admin"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 px-3.5 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 transition-all hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-crimson dark:hover:text-amber-400 shadow-sm"
-          >
-            <UserCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-            <span>Instructor Admin</span>
-            <ArrowUpRight className="h-3.5 w-3.5 text-slate-400" />
-          </Link>
         </div>
 
         {/* Mobile controls (Theme Toggle + Hamburger) */}
@@ -123,20 +112,6 @@ export default function Navbar() {
             <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Theme:</span>
               <ThemeToggle size="sm" showLabel={true} />
-            </div>
-
-            <div className="pt-2">
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] flex items-center justify-between rounded-xl bg-amber-50 dark:bg-slate-800 px-4 py-3 text-sm font-bold text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30"
-              >
-                <span className="flex items-center gap-2">
-                  <UserCheck className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-                  Instructor Admin Dashboard
-                </span>
-                <ArrowUpRight className="h-4 w-4 text-amber-700 dark:text-amber-400" />
-              </Link>
             </div>
           </div>
         </div>

@@ -34,17 +34,18 @@ import {
   Hash
 } from "lucide-react";
 
-const GRADES = [
-  "KG 1",
-  "KG 2",
-  "KG 3",
+const AGES = [
+  "3 Years Old",
+  "4 Years Old",
+  "5 Years Old",
+  "6 Years Old",
 ];
 
 const UNIFORM_SIZES = [
-  { value: "100cm", label: "Size 100cm (KG 1, Height ~95-105cm)" },
-  { value: "110cm", label: "Size 110cm (KG 2, Height ~105-115cm)" },
-  { value: "120cm", label: "Size 120cm (KG 3, Height ~115-125cm)" },
-  { value: "130cm", label: "Size 130cm (Height ~125cm and above)" },
+  { value: "100cm", label: "Size 100cm (Age 3, Height ~95-105cm)" },
+  { value: "110cm", label: "Size 110cm (Age 4, Height ~105-115cm)" },
+  { value: "120cm", label: "Size 120cm (Age 5, Height ~115-125cm)" },
+  { value: "130cm", label: "Size 130cm (Age 6+, Height ~125cm+)" },
 ];
 
 const BANK_ACCOUNTS = [
@@ -98,7 +99,7 @@ const BANK_ACCOUNTS = [
 export default function ParentRegistrationPage() {
   // Form State
   const [studentName, setStudentName] = useState("");
-  const [grade, setGrade] = useState("");
+  const [age, setAge] = useState("");
   const [parentName, setParentName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
   const [emergencyPhone, setEmergencyPhone] = useState("");
@@ -224,8 +225,8 @@ export default function ParentRegistrationPage() {
       newErrors.studentName = "Student full name is required";
     }
 
-    if (!grade) {
-      newErrors.grade = "Please select student's grade level";
+    if (!age) {
+      newErrors.age = "Please select student's age / እድሜ ይምረጡ";
     }
 
     if (!parentName.trim()) {
@@ -273,7 +274,8 @@ export default function ParentRegistrationPage() {
     const registrationData = {
       id: referenceId,
       studentName: studentName.trim(),
-      grade,
+      age,
+      grade: age,
       parentName: parentName.trim(),
       parentPhone: parentPhone.trim(),
       emergencyPhone: emergencyPhone.trim() || "N/A",
@@ -321,16 +323,16 @@ export default function ParentRegistrationPage() {
   const getWhatsAppShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 *Sonnenland TKD Hub Registration Confirmation*\n` +
+      `🥋 *Sönnenland TKD Hub Registration Confirmation*\n` +
         `-----------------------------------------\n` +
         `*Reference ID:* ${ticket.id}\n` +
         `*Transaction / Ref:* ${ticket.transactionId || "N/A"}\n` +
-        `*Student:* ${ticket.studentName} (${ticket.grade})\n` +
+        `*Student:* ${ticket.studentName} (${ticket.age || ticket.grade})\n` +
         `*Parent:* ${ticket.parentName} (${ticket.parentPhone})\n` +
         `*Uniform:* ${ticket.includeUniform ? `Yes (${ticket.uniformSize})` : "No"}\n` +
         `*Total Paid:* ${ticket.totalAmount.toLocaleString()} ETB\n` +
         `*Date:* ${ticket.displayDate}\n\n` +
-        `Hello Master Daniel, I have registered my child for the Sonnenland After-School Taekwondo program and submitted my payment receipt. Thank you!`
+        `Hello Master Daniel, I have registered my child for the Sönnenland International Kindergarten After-School TKD Hub and submitted my payment receipt. Thank you!`
     );
     return `https://wa.me/251935368595?text=${text}`;
   };
@@ -338,7 +340,7 @@ export default function ParentRegistrationPage() {
   const getTelegramShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 Sonnenland TKD Registration\nRef: ${ticket.id}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.grade})\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
+      `🥋 Sönnenland TKD Hub Registration\nRef: ${ticket.id}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
     );
     return `https://t.me/share/url?url=https://sonnenland.school/tkd&text=${text}`;
   };
@@ -366,13 +368,13 @@ export default function ParentRegistrationPage() {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-              Sönnenland <span className="text-crimson">After-School</span> Taekwondo
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+              Sönnenland International Kindergarten <span className="text-crimson">After-School TKD Hub</span>
             </h1>
 
             {/* Subtitle */}
             <p className="mt-3 text-base sm:text-2xl font-bold text-slate-700 dark:text-slate-200 max-w-3xl mx-auto leading-snug">
-              Specialized martial arts, discipline, and physical development exclusively for Sönnenland kindergarten students.
+              Specialized martial arts, discipline, and physical development exclusively for Sönnenland kindergarten students (Ages 3 to 6).
             </p>
 
             {/* Schedule Indicator */}
@@ -389,7 +391,7 @@ export default function ParentRegistrationPage() {
             </div>
 
             <p className="mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-              Exclusively open to Sönnenland International Kindergarten students (KG 1, KG 2, KG 3).
+              Exclusively open to Sönnenland International Kindergarten students (Ages 3, 4, 5, and 6).
               Please complete student details, choose uniform options, transfer fees, and upload your payment proof below.
             </p>
           </div>
@@ -455,31 +457,31 @@ export default function ParentRegistrationPage() {
                         )}
                       </div>
 
-                      {/* Grade / Class Level */}
-                      <div id="grade">
+                      {/* Age / እድሜ Selection */}
+                      <div id="age">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Kindergarten Class Level <span className="text-crimson">*</span>
+                          Age / እድሜ <span className="text-crimson">*</span>
                         </label>
                         <div className="relative">
                           <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
                           <select
-                            value={grade}
+                            value={age}
                             onChange={(e) => {
-                              setGrade(e.target.value);
-                              if (errors.grade) setErrors((prev) => ({ ...prev, grade: null }));
+                              setAge(e.target.value);
+                              if (errors.age) setErrors((prev) => ({ ...prev, age: null }));
                             }}
                             className={`w-full min-h-[44px] rounded-xl border bg-white dark:bg-slate-900/90 pl-10 pr-10 py-3 text-base sm:text-sm text-slate-900 dark:text-white appearance-none transition-colors focus:outline-none focus:ring-1 ${
-                              errors.grade
+                              errors.age
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
                                 : "border-slate-300 dark:border-slate-700 focus:border-crimson focus:ring-crimson"
                             }`}
                           >
                             <option value="" disabled className="text-slate-400">
-                              Select Kindergarten Class (KG 1, KG 2, KG 3)
+                              Select Student Age / እድሜ ይምረጡ
                             </option>
-                            {GRADES.map((g) => (
-                              <option key={g} value={g} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                                {g}
+                            {AGES.map((a) => (
+                              <option key={a} value={a} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                {a}
                               </option>
                             ))}
                           </select>
@@ -487,10 +489,10 @@ export default function ParentRegistrationPage() {
                             ▼
                           </div>
                         </div>
-                        {errors.grade && (
+                        {errors.age && (
                           <p className="mt-1.5 flex items-center gap-1 text-xs text-crimson font-medium">
                             <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-                            {errors.grade}
+                            {errors.age}
                           </p>
                         )}
                       </div>
@@ -983,17 +985,6 @@ export default function ParentRegistrationPage() {
                   </div>
                 </div>
 
-                {/* Instructor Admin Portal Quick Link */}
-                <div className="text-center pt-2">
-                  <Link
-                    href="/admin"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-crimson dark:hover:text-amber-400 transition-colors py-2"
-                  >
-                    <span>Master Daniel Admin Portal</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </Link>
-                </div>
-
               </div>
 
             </div>
@@ -1071,8 +1062,8 @@ export default function ParentRegistrationPage() {
                   <p className="font-bold text-slate-900 dark:text-white mt-0.5">{submittedTicket.studentName}</p>
                 </div>
                 <div>
-                  <span className="text-slate-500 dark:text-slate-400 font-medium">Grade Level:</span>
-                  <p className="font-bold text-slate-900 dark:text-white mt-0.5">{submittedTicket.grade}</p>
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Age / እድሜ:</span>
+                  <p className="font-bold text-slate-900 dark:text-white mt-0.5">{submittedTicket.age || submittedTicket.grade}</p>
                 </div>
                 <div>
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Parent / Guardian:</span>
