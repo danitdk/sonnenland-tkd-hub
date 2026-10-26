@@ -9,7 +9,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-md shadow-sm transition-colors duration-200">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#090D16]/95 backdrop-blur-md shadow-sm transition-colors duration-200">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6 lg:px-8">
         {/* Brand Logo & School Affiliation */}
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group">
@@ -29,7 +29,7 @@ export default function Navbar() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold tracking-tight text-slate-900 dark:text-white text-base sm:text-lg">
-                Sönnenland <span className="text-crimson">After-School TKD</span>
+                Sönnenland After-School TKD
               </span>
               <span className="hidden sm:inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-500/15 px-2 py-0.5 text-xs font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-400/30">
                 Kindergarten
@@ -85,7 +85,7 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-4 md:hidden shadow-lg animate-fade-in">
+        <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#090D16] px-4 py-4 md:hidden shadow-lg animate-fade-in">
           <div className="flex flex-col space-y-2">
             <Link
               href="#program-details"

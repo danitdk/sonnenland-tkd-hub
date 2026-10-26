@@ -65,6 +65,7 @@ const SEED_REGISTRATIONS = [
     id: "TKD-2026-1042",
     studentName: "Nahom Solomon",
     studentType: "New Student",
+    term: "Term 2",
     age: "5 Years Old",
     grade: "5 Years Old",
     parentName: "Solomon Haile",
@@ -89,6 +90,7 @@ const SEED_REGISTRATIONS = [
     id: "TKD-2026-1043",
     studentName: "Selamawit Tadesse",
     studentType: "Returning Student",
+    term: "Term 2",
     age: "4 Years Old",
     grade: "4 Years Old",
     parentName: "Tadesse Bekele",
@@ -112,6 +114,7 @@ const SEED_REGISTRATIONS = [
     id: "TKD-2026-1044",
     studentName: "Ephraim Yohannes",
     studentType: "New Student",
+    term: "Term 3",
     age: "4 Years Old",
     grade: "4 Years Old",
     parentName: "Yohannes Girma",
@@ -136,6 +139,7 @@ const SEED_REGISTRATIONS = [
     id: "TKD-2026-1045",
     studentName: "Liya Mekonnen",
     studentType: "New Student",
+    term: "Term 2",
     age: "3 Years Old",
     grade: "3 Years Old",
     parentName: "Mekonnen Tesfaye",
@@ -159,6 +163,7 @@ const SEED_REGISTRATIONS = [
     id: "TKD-2026-1046",
     studentName: "Dawit Abebe",
     studentType: "Returning Student",
+    term: "Term 3",
     age: "6 Years Old",
     grade: "6 Years Old",
     parentName: "Abebe Kebede",
@@ -192,6 +197,7 @@ export default function InstructorAdminDashboard() {
   const [filterPayment, setFilterPayment] = useState("ALL");
   const [filterUniform, setFilterUniform] = useState("ALL");
   const [filterAge, setFilterAge] = useState("ALL");
+  const [filterTerm, setFilterTerm] = useState("ALL");
 
   const [selectedReceiptStudent, setSelectedReceiptStudent] = useState(null);
   const [studentToDelete, setStudentToDelete] = useState(null);
@@ -200,6 +206,7 @@ export default function InstructorAdminDashboard() {
   const [addForm, setAddForm] = useState({
     studentName: "",
     studentType: "New Student", // "New Student" | "Returning Student"
+    term: "Term 2", // "Term 2" | "Term 3"
     age: "3 Years Old",
     grade: "3 Years Old",
     parentName: "",
@@ -240,6 +247,7 @@ export default function InstructorAdminDashboard() {
             id: item.id || `TKD-2026-${1000 + idx}`,
             studentName: item.studentName || "Unknown Student",
             studentType: item.studentType || (item.includeUniform ? "New Student" : "Returning Student"),
+            term: item.term || "Term 2",
             age: item.age || item.grade || "3 Years Old",
             grade: item.age || item.grade || "3 Years Old",
             parentName: item.parentName || "Unknown Parent",
@@ -418,6 +426,7 @@ export default function InstructorAdminDashboard() {
       id: newId,
       studentName: addForm.studentName.trim(),
       studentType: addForm.studentType || (addForm.includeUniform ? "New Student" : "Returning Student"),
+      term: addForm.term || "Term 2",
       age: addForm.age || addForm.grade || "3 Years Old",
       grade: addForm.age || addForm.grade || "3 Years Old",
       parentName: addForm.parentName.trim(),
@@ -457,6 +466,7 @@ export default function InstructorAdminDashboard() {
     setAddForm({
       studentName: "",
       studentType: "New Student",
+      term: "Term 2",
       age: "3 Years Old",
       grade: "3 Years Old",
       parentName: "",
@@ -512,13 +522,16 @@ export default function InstructorAdminDashboard() {
       matchesAge = (s.age || s.grade) === filterAge;
     }
 
-    return matchesSearch && matchesPayment && matchesUniform && matchesAge;
+    const matchesTerm = filterTerm === "ALL" || (s.term || "Term 2") === filterTerm;
+
+    return matchesSearch && matchesPayment && matchesUniform && matchesAge && matchesTerm;
   });
 
   const handleExportCSV = () => {
     const headers = [
       "Student Name",
       "Student Type",
+      "Term",
       "Age",
       "Parent Name",
       "Parent Phone",
@@ -535,6 +548,7 @@ export default function InstructorAdminDashboard() {
     const rows = filteredStudents.map((s) => [
       `"${(s.studentName || "").replace(/"/g, '""')}"`,
       `"${s.studentType || (s.includeUniform ? "New Student" : "Returning Student")}"`,
+      `"${s.term || "Term 2"}"`,
       `"${s.age || s.grade || ""}"`,
       `"${(s.parentName || "").replace(/"/g, '""')}"`,
       `"${s.parentPhone || ""}"`,
@@ -914,6 +928,16 @@ export default function InstructorAdminDashboard() {
             {/* Filter Dropdowns */}
             <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-3">
               <select
+                value={filterTerm}
+                onChange={(e) => setFilterTerm(e.target.value)}
+                className="min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:border-amber-600 focus:outline-none shadow-sm"
+              >
+                <option value="ALL">Term: All</option>
+                <option value="Term 2">Term 2</option>
+                <option value="Term 3">Term 3</option>
+              </select>
+
+              <select
                 value={filterPayment}
                 onChange={(e) => setFilterPayment(e.target.value)}
                 className="min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 focus:border-amber-600 focus:outline-none shadow-sm"
@@ -1003,6 +1027,9 @@ export default function InstructorAdminDashboard() {
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-1">
+                          <span className="rounded-md bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                            {student.term || "Term 2"}
+                          </span>
                           <span className="rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                             {student.age || student.grade}
                           </span>
@@ -1020,7 +1047,7 @@ export default function InstructorAdminDashboard() {
                           {student.includeUniform ? "10,000 + 1,500 Dobok" : "10,000 Training"}
                         </div>
                         <span className="inline-block mt-0.5 text-[9px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-                          {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")}
+                          {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")} • {student.term || "Term 2"}
                         </span>
                       </div>
                     </div>
@@ -1273,6 +1300,9 @@ export default function InstructorAdminDashboard() {
                             )}
                           </div>
                           <div className="flex items-center gap-2 mt-0.5">
+                            <span className="inline-flex rounded-md bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                              {student.term || "Term 2"}
+                            </span>
                             <span className="inline-flex rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                               {student.age || student.grade}
                             </span>
@@ -1310,7 +1340,7 @@ export default function InstructorAdminDashboard() {
                             {student.includeUniform ? "10,000 Training + 1,500 Dobok" : "10,000 Training Fee"}
                           </div>
                           <span className="inline-block mt-0.5 text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-                            {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")}
+                            {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")} • {student.term || "Term 2"}
                           </span>
                         </td>
 
@@ -1503,6 +1533,7 @@ export default function InstructorAdminDashboard() {
                           setFilterPayment("ALL");
                           setFilterUniform("ALL");
                           setFilterAge("ALL");
+                          setFilterTerm("ALL");
                         }}
                         className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline"
                       >
@@ -1693,69 +1724,66 @@ export default function InstructorAdminDashboard() {
 
             <form onSubmit={handleSaveManualStudent} className="mt-5 space-y-4" noValidate>
               
-              {/* Student Type: New Student vs Returning Student */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                  Student Type <span className="text-crimson">*</span>
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <label
-                    onClick={() => setAddForm((prev) => ({ ...prev, studentType: "New Student", includeUniform: true }))}
-                    className={`min-h-[46px] flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-                      addForm.studentType === "New Student"
-                        ? "border-amber-400 bg-amber-50/70 dark:bg-amber-500/20 text-slate-900 dark:text-white shadow-sm ring-1 ring-amber-400/50"
-                        : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="manualStudentType"
-                      value="New Student"
-                      checked={addForm.studentType === "New Student"}
-                      onChange={() => setAddForm((prev) => ({ ...prev, studentType: "New Student", includeUniform: true }))}
-                      className="text-crimson focus:ring-crimson h-4 w-4"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          New Student
-                        </span>
-                        <span className="text-[10px] font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/30 px-1.5 py-0.5 rounded">
-                          11,500 ETB
-                        </span>
-                      </div>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee (10,000 ETB) + Uniform/Dobok (1,500 ETB)</p>
-                    </div>
+              {/* Compact Segmented Pills: Student Type & Term Selection */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                    Student Type <span className="text-crimson">*</span>
                   </label>
+                  <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => setAddForm((prev) => ({ ...prev, studentType: "New Student", includeUniform: true }))}
+                      className={`flex-1 min-h-[42px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
+                        addForm.studentType === "New Student"
+                          ? "bg-crimson text-white shadow-md font-extrabold"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                      }`}
+                    >
+                      New Student
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAddForm((prev) => ({ ...prev, studentType: "Returning Student", includeUniform: false }))}
+                      className={`flex-1 min-h-[42px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
+                        addForm.studentType === "Returning Student"
+                          ? "bg-crimson text-white shadow-md font-extrabold"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                      }`}
+                    >
+                      Returning Student
+                    </button>
+                  </div>
+                </div>
 
-                  <label
-                    onClick={() => setAddForm((prev) => ({ ...prev, studentType: "Returning Student", includeUniform: false }))}
-                    className={`min-h-[46px] flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-                      addForm.studentType === "Returning Student"
-                        ? "border-emerald-500 bg-emerald-50/70 dark:bg-emerald-500/20 text-slate-900 dark:text-white shadow-sm ring-1 ring-emerald-500/50"
-                        : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="manualStudentType"
-                      value="Returning Student"
-                      checked={addForm.studentType === "Returning Student"}
-                      onChange={() => setAddForm((prev) => ({ ...prev, studentType: "Returning Student", includeUniform: false }))}
-                      className="text-emerald-600 focus:ring-emerald-500 h-4 w-4"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          Returning Student (2nd Term)
-                        </span>
-                        <span className="text-[10px] font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/30 px-1.5 py-0.5 rounded">
-                          10,000 ETB
-                        </span>
-                      </div>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400">Training Fee Only (10,000 ETB)</p>
-                    </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                    Term Selection <span className="text-crimson">*</span>
                   </label>
+                  <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => setAddForm((prev) => ({ ...prev, term: "Term 2" }))}
+                      className={`flex-1 min-h-[42px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
+                        addForm.term === "Term 2"
+                          ? "bg-crimson text-white shadow-md font-extrabold"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                      }`}
+                    >
+                      Term 2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAddForm((prev) => ({ ...prev, term: "Term 3" }))}
+                      className={`flex-1 min-h-[42px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
+                        addForm.term === "Term 3"
+                          ? "bg-crimson text-white shadow-md font-extrabold"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                      }`}
+                    >
+                      Term 3
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -2035,7 +2063,7 @@ export default function InstructorAdminDashboard() {
               <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 p-3.5 flex items-center justify-between">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
-                    Calculated Total Fee
+                    Calculated Total Fee ({addForm.term || "Term 2"})
                   </span>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                     10,000 Training Fee {addForm.includeUniform ? "+ 1,500 Uniform (Dobok)" : "+ 0 Uniform"}
@@ -2097,7 +2125,7 @@ export default function InstructorAdminDashboard() {
                   Payment Proof Screenshot / Details
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {selectedReceiptStudent.studentName} ({selectedReceiptStudent.age || selectedReceiptStudent.grade}) • Ref:{" "}
+                  {selectedReceiptStudent.studentName} ({selectedReceiptStudent.age || selectedReceiptStudent.grade}) • <span className="font-bold text-amber-700 dark:text-amber-400">{selectedReceiptStudent.term || "Term 2"}</span> • Ref:{" "}
                   <span className="font-mono text-amber-700 dark:text-amber-400 font-bold">
                     {selectedReceiptStudent.id}
                   </span>
@@ -2107,7 +2135,7 @@ export default function InstructorAdminDashboard() {
 
             <div className="mt-4 grid grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div>
-                <span className="text-slate-500 dark:text-slate-400">Total Payable:</span>
+                <span className="text-slate-500 dark:text-slate-400">Total Payable ({selectedReceiptStudent.term || "Term 2"}):</span>
                 <p className="font-extrabold text-amber-700 dark:text-amber-400 font-mono text-sm mt-0.5">
                   {selectedReceiptStudent.totalAmount?.toLocaleString()} ETB
                 </p>

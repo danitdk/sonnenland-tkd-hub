@@ -100,6 +100,7 @@ export default function ParentRegistrationPage() {
   // Form State
   const [studentName, setStudentName] = useState("");
   const [studentType, setStudentType] = useState("new"); // "new" | "returning"
+  const [term, setTerm] = useState("Term 2"); // "Term 2" | "Term 3"
   const [age, setAge] = useState("");
   const [parentName, setParentName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
@@ -284,7 +285,8 @@ export default function ParentRegistrationPage() {
     const registrationData = {
       id: referenceId,
       studentName: studentName.trim(),
-      studentType: studentType === "new" ? "New Student" : "Returning Student (2nd Term)",
+      studentType: studentType === "new" ? "New Student" : "Returning Student",
+      term,
       age,
       grade: age,
       parentName: parentName.trim(),
@@ -340,6 +342,7 @@ export default function ParentRegistrationPage() {
         `*Reference ID:* ${ticket.id}\n` +
         `*Transaction / Ref:* ${ticket.transactionId || "N/A"}\n` +
         `*Student:* ${ticket.studentName} (${ticket.age || ticket.grade})\n` +
+        `*Term:* ${ticket.term || "Term 2"}\n` +
         `*Student Type:* ${ticket.studentType || "New Student"}\n` +
         `*Parent:* ${ticket.parentName} (${ticket.parentPhone})\n` +
         `*Uniform:* ${ticket.includeUniform ? `Yes (${ticket.uniformSize})` : "No"}\n` +
@@ -353,7 +356,7 @@ export default function ParentRegistrationPage() {
   const getTelegramShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 Sönnenland TKD Hub Registration\nRef: ${ticket.id}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nType: ${ticket.studentType || "New Student"}\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
+      `🥋 Sönnenland TKD Hub Registration\nRef: ${ticket.id}\nTerm: ${ticket.term || "Term 2"}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nType: ${ticket.studentType || "New Student"}\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
     );
     return `https://t.me/share/url?url=https://sonnenland.school/tkd&text=${text}`;
   };
@@ -367,11 +370,8 @@ export default function ParentRegistrationPage() {
         {/* ========================================================= */}
         {/* 1. HEADER / HERO SECTION                                  */}
         {/* ========================================================= */}
-        <section className="relative overflow-hidden pt-8 pb-12 sm:pt-14 sm:pb-16 border-b border-slate-200 dark:border-slate-800/80 bg-gradient-to-b from-slate-100 via-slate-50 to-[#F8FAFC] dark:from-[#0F172A] dark:via-[#090D16] dark:to-[#090D16]">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[250px] bg-crimson/5 dark:bg-crimson/15 blur-[100px] pointer-events-none rounded-full" />
-          <div className="absolute top-1/3 right-10 w-64 h-64 bg-amber-400/10 dark:bg-amber-400/15 blur-[90px] pointer-events-none" />
-
-          <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800 bg-[#F8FAFC] dark:bg-[#090D16]">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
             {/* Registration Status Badge */}
             <div className="inline-flex mb-4">
               <Badge variant="gold" size="md" pulse={true}>
@@ -382,7 +382,7 @@ export default function ParentRegistrationPage() {
 
             {/* Title */}
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-              Sönnenland <span className="text-crimson">After-School TKD Hub</span>
+              Sönnenland After-School TKD Hub
             </h1>
 
             {/* Subtitle */}
@@ -402,11 +402,6 @@ export default function ParentRegistrationPage() {
                 <span>Sönnenland International Kindergarten</span>
               </div>
             </div>
-
-            <p className="mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-              Exclusively open to Sönnenland International Kindergarten students (Ages 3, 4, 5, and 6).
-              Please complete student details, choose uniform options, transfer fees, and upload your payment proof below.
-            </p>
           </div>
         </section>
 
@@ -438,73 +433,101 @@ export default function ParentRegistrationPage() {
                   </div>
 
                   <div className="mt-6 space-y-5">
-                    {/* Student Type Selector */}
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                        Student Type <span className="text-crimson">*</span>
-                      </label>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <label
-                          onClick={() => handleStudentTypeChange("new")}
-                          className={`min-h-[52px] flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                            studentType === "new"
-                              ? "border-amber-400 bg-amber-50/70 dark:bg-amber-500/15 text-slate-900 dark:text-white shadow-sm ring-1 ring-amber-400/50"
-                              : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="studentType"
-                            value="new"
-                            checked={studentType === "new"}
-                            onChange={() => handleStudentTypeChange("new")}
-                            className="mt-1 text-crimson focus:ring-crimson h-4 w-4"
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                                New Student
-                              </span>
-                              <span className="text-[11px] font-mono font-bold text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/25 px-2 py-0.5 rounded-md border border-amber-300 dark:border-amber-500/40">
-                                11,500 ETB
-                              </span>
-                            </div>
-                            <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
-                              Training Fee (10,000 ETB) + Uniform/Dobok (1,500 ETB)
-                            </p>
+                    {/* 1. COMPACT SEGMENTED PILL DESIGN: STUDENT TYPE & TERM SELECTION */}
+                    <div className="space-y-3.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        {/* Student Type Selector */}
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                            Student Type <span className="text-crimson">*</span>
+                          </label>
+                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                            <button
+                              type="button"
+                              onClick={() => handleStudentTypeChange("new")}
+                              className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
+                                studentType === "new"
+                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                              }`}
+                            >
+                              New Student
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleStudentTypeChange("returning")}
+                              className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
+                                studentType === "returning"
+                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                              }`}
+                            >
+                              Returning Student
+                            </button>
                           </div>
-                        </label>
+                        </div>
 
-                        <label
-                          onClick={() => handleStudentTypeChange("returning")}
-                          className={`min-h-[52px] flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                            studentType === "returning"
-                              ? "border-emerald-500 bg-emerald-50/70 dark:bg-emerald-500/15 text-slate-900 dark:text-white shadow-sm ring-1 ring-emerald-500/50"
-                              : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600"
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="studentType"
-                            value="returning"
-                            checked={studentType === "returning"}
-                            onChange={() => handleStudentTypeChange("returning")}
-                            className="mt-1 text-emerald-600 focus:ring-emerald-500 h-4 w-4"
-                          />
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
-                                Returning Student (2nd Term)
-                              </span>
-                              <span className="text-[11px] font-mono font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-500/25 px-2 py-0.5 rounded-md border border-emerald-300 dark:border-emerald-500/40">
-                                10,000 ETB
-                              </span>
-                            </div>
-                            <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 leading-snug">
-                              Training Fee Only (10,000 ETB)
-                            </p>
+                        {/* Term Selection */}
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                            Term Selection <span className="text-crimson">*</span>
+                          </label>
+                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                            <button
+                              type="button"
+                              onClick={() => setTerm("Term 2")}
+                              className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
+                                term === "Term 2"
+                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                              }`}
+                            >
+                              Term 2
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setTerm("Term 3")}
+                              className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
+                                term === "Term 3"
+                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                              }`}
+                            >
+                              Term 3
+                            </button>
                           </div>
-                        </label>
+                        </div>
+                      </div>
+
+                      {/* 2. DYNAMIC & MINIMAL SUMMARY CARD (Strictly 2-3 concise lines) */}
+                      <div className="rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-900/70 p-3 sm:p-3.5 transition-all text-xs">
+                        {studentType === "new" ? (
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
+                              <span>{term} Tuition (Training Fee):</span>
+                              <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
+                            </div>
+                            <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
+                              <span>Official Dobok & Belt:</span>
+                              <span className="font-mono font-bold text-amber-700 dark:text-amber-400">+1,500 ETB</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700 font-extrabold text-sm text-slate-900 dark:text-white">
+                              <span>Total Due:</span>
+                              <span className="font-mono font-black text-amber-600 dark:text-amber-400">11,500 ETB</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-1.5">
+                            <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
+                              <span>{term} Tuition (Training Fee):</span>
+                              <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700 font-extrabold text-sm text-slate-900 dark:text-white">
+                              <span>Total Due:</span>
+                              <span className="font-mono font-black text-emerald-600 dark:text-emerald-400">10,000 ETB</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -680,103 +703,63 @@ export default function ParentRegistrationPage() {
                       )}
                     </div>
 
-                    {/* Row 4: Uniform Selection & Size Dropdown */}
+                    {/* Row 4: Dobok Size / Uniform Option */}
                     <div className="pt-2">
                       {studentType === "new" ? (
-                        <div className="rounded-2xl border p-4 sm:p-5 border-amber-300 dark:border-amber-500/50 bg-amber-50/50 dark:bg-amber-500/10 transition-colors">
-                          <div className="flex items-start gap-3.5">
-                            <div className="mt-1 h-5 w-5 rounded-md bg-amber-500 text-white flex items-center justify-center shrink-0">
-                              <Check className="h-3.5 w-3.5" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                  <Shirt className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                                  Official TKD Uniform (Dobok) + White Belt
-                                </span>
-                                <span className="text-xs font-black text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 px-2.5 py-1 rounded-full border border-amber-300 dark:border-amber-500/30">
-                                  +1,500 ETB (Included)
-                                </span>
-                              </div>
-                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                                Standard official Sönnenland martial arts Dobok set (jacket, pants, white belt) required for all new students.
-                              </p>
-
-                              {/* Size Selector */}
-                              <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-500/30">
-                                <label className="block text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1.5">
-                                  Select Uniform Size (Based on Student Height):
-                                </label>
-                                <div className="relative">
-                                  <select
-                                    value={uniformSize}
-                                    onChange={(e) => setUniformSize(e.target.value)}
-                                    className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson"
-                                  >
-                                    {UNIFORM_SIZES.map((size) => (
-                                      <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                                        {size.label}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </div>
-                                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5">
-                                  Master Daniel will also verify exact fits on day one of training.
-                                </p>
-                              </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                            Dobok Uniform Size <span className="text-crimson">*</span>
+                          </label>
+                          <div className="relative">
+                            <Shirt className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
+                            <select
+                              value={uniformSize}
+                              onChange={(e) => setUniformSize(e.target.value)}
+                              className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
+                            >
+                              {UNIFORM_SIZES.map((size) => (
+                                <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                  {size.label}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="pointer-events-none absolute right-3.5 top-3.5 text-slate-400">
+                              ▼
                             </div>
                           </div>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                            Includes official Sönnenland Dobok (jacket, pants, white belt). Exact fit verified on day one.
+                          </p>
                         </div>
                       ) : (
-                        <div className={`rounded-2xl border p-4 sm:p-5 transition-colors ${
-                          includeUniform
-                            ? "border-amber-300 dark:border-amber-500/50 bg-amber-50/50 dark:bg-amber-500/10"
-                            : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50"
-                        }`}>
-                          <label className="flex items-start gap-3.5 cursor-pointer select-none min-h-[44px]">
+                        <div>
+                          <label className="flex items-center gap-2.5 cursor-pointer select-none text-xs text-slate-700 dark:text-slate-300 min-h-[36px]">
                             <input
                               type="checkbox"
                               checked={includeUniform}
                               onChange={(e) => setIncludeUniform(e.target.checked)}
-                              className="mt-1 h-5 w-5 rounded border-slate-300 text-crimson focus:ring-crimson shrink-0"
+                              className="h-4 w-4 rounded border-slate-300 text-crimson focus:ring-crimson"
                             />
-                            <div className="flex-1">
-                              <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                  <Shirt className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-                                  Request New / Replacement Uniform (Dobok) + White Belt
-                                </span>
-                                <span className={`text-xs font-black px-2.5 py-1 rounded-full border ${
-                                  includeUniform
-                                    ? "text-amber-900 dark:text-amber-300 bg-amber-100 dark:bg-amber-500/20 border-amber-300 dark:border-amber-500/30"
-                                    : "text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                                }`}>
-                                  {includeUniform ? "+1,500 ETB" : "0 ETB (Already Owned)"}
-                                </span>
-                              </div>
-                              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
-                                Optional for returning students. Only select this if your child needs a replacement or larger size Dobok.
-                              </p>
-                            </div>
+                            <span className="font-semibold">
+                              Request replacement / new Dobok uniform (+1,500 ETB)
+                            </span>
                           </label>
-
                           {includeUniform && (
-                            <div className="mt-4 pt-4 border-t border-amber-200 dark:border-amber-500/30 animate-fade-in">
-                              <label className="block text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 mb-1.5">
-                                Select Replacement Uniform Size:
-                              </label>
-                              <div className="relative">
-                                <select
-                                  value={uniformSize}
-                                  onChange={(e) => setUniformSize(e.target.value)}
-                                  className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson"
-                                >
-                                  {UNIFORM_SIZES.map((size) => (
-                                    <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                                      {size.label}
-                                    </option>
-                                  ))}
-                                </select>
+                            <div className="mt-2 relative animate-fade-in">
+                              <Shirt className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
+                              <select
+                                value={uniformSize}
+                                onChange={(e) => setUniformSize(e.target.value)}
+                                className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900/90 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson transition-colors"
+                              >
+                                {UNIFORM_SIZES.map((size) => (
+                                  <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                    {size.label}
+                                  </option>
+                                ))}
+                              </select>
+                              <div className="pointer-events-none absolute right-3.5 top-3.5 text-slate-400">
+                                ▼
                               </div>
                             </div>
                           )}
@@ -1013,7 +996,7 @@ export default function ParentRegistrationPage() {
                 {/* 3. LIVE FEE SUMMARY CARD (DYNAMIC) */}
                 <div className="rounded-2xl border-2 border-amber-300 dark:border-amber-400/60 bg-white dark:bg-slate-850/95 dark:bg-[#1E293B] p-6 shadow-sm dark:shadow-glow-gold relative overflow-hidden transition-colors">
                   <div className="absolute top-0 right-0 bg-amber-500 text-white font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl tracking-wider shadow-xs">
-                    Term 1 • 2026
+                    {term} • 2026
                   </div>
 
                   <div className="flex items-center gap-2">
@@ -1028,7 +1011,7 @@ export default function ParentRegistrationPage() {
                     {/* Active Line Item 1: Training Fee */}
                     <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
                       <div>
-                        <span className="font-bold text-slate-900 dark:text-white">Training Fee</span>
+                        <span className="font-bold text-slate-900 dark:text-white">{term} Training Fee</span>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400">1 Term (Mon / Wed / Fri)</p>
                       </div>
                       <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
@@ -1050,7 +1033,7 @@ export default function ParentRegistrationPage() {
                     {/* Total: Strictly calculated from active items */}
                     <div className="border-t border-slate-200 dark:border-slate-700/80 pt-4 mt-2 flex items-baseline justify-between">
                       <span className="text-sm font-extrabold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-                        Total Payable
+                        Total Payable ({term})
                       </span>
                       <div className="text-right">
                         <span className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400 font-mono tracking-tight">
@@ -1130,11 +1113,11 @@ export default function ParentRegistrationPage() {
       {/* ========================================================= */}
       {/* STICKY TOTAL DUE BAR ON MOBILE BOTTOM (< lg: screens)     */}
       {/* ========================================================= */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0F172A]/95 px-4 py-3 backdrop-blur-md shadow-lg safe-area-pb">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#090D16]/95 px-4 py-3 backdrop-blur-md shadow-lg safe-area-pb">
         <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
           <div>
             <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block leading-tight">
-              Total Due:
+              Total Due ({term}):
             </span>
             <span className="text-xl font-black text-amber-600 dark:text-amber-400 font-mono leading-none">
               {totalAmount.toLocaleString()} ETB
@@ -1200,6 +1183,12 @@ export default function ParentRegistrationPage() {
                   <span className="text-slate-500 dark:text-slate-400 font-medium">Student Type:</span>
                   <p className="font-bold text-slate-900 dark:text-white mt-0.5">
                     {submittedTicket.studentType || "New Student"}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-slate-500 dark:text-slate-400 font-medium">Enrolled Term:</span>
+                  <p className="font-bold text-amber-700 dark:text-amber-400 mt-0.5">
+                    {submittedTicket.term || "Term 2"}
                   </p>
                 </div>
                 <div>
