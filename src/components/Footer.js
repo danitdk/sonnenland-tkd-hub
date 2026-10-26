@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Shield, Mail, MapPin, Award } from "lucide-react";
+import { Mail, MapPin, Award } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -9,8 +9,17 @@ export default function Footer() {
           {/* Column 1: Brand & Philosophy */}
           <div className="space-y-4 md:col-span-2">
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-crimson shadow-sm">
-                <Shield className="h-5 w-5 text-white" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white p-1 border border-slate-200 dark:border-slate-700 shadow-sm shrink-0 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="Sonnenland International School Logo"
+                  className="h-full w-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/logo.svg";
+                  }}
+                />
               </div>
               <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
                 Sonnenland <span className="text-crimson">TKD</span> Hub
@@ -19,21 +28,22 @@ export default function Footer() {
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-md leading-relaxed">
               Official After-School Taekwondo Training Program at Sonnenland International School (SIS), led by certified Master Daniel. Dedicated to building physical discipline, confidence, respect, and martial arts excellence.
             </p>
+            {/* Clean English-only Tenets */}
             <div className="flex flex-wrap gap-2 pt-2">
-              <span className="rounded-lg bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
-                Courtesy • 예의
+              <span className="rounded-lg bg-white dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
+                Courtesy
               </span>
-              <span className="rounded-lg bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
-                Integrity • 염치
+              <span className="rounded-lg bg-white dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
+                Integrity
               </span>
-              <span className="rounded-lg bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
-                Perseverance • 인내
+              <span className="rounded-lg bg-white dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
+                Perseverance
               </span>
-              <span className="rounded-lg bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
-                Self-Control • 극기
+              <span className="rounded-lg bg-white dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
+                Self-Control
               </span>
-              <span className="rounded-lg bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
-                Indomitable Spirit • 백절불굴
+              <span className="rounded-lg bg-white dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-xs">
+                Indomitable Spirit
               </span>
             </div>
           </div>
@@ -83,7 +93,12 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-slate-400 shrink-0" />
-                <span>sonnenlandprimary@gmail.com</span>
+                <a
+                  href="mailto:danielteshome335@gmail.com"
+                  className="font-medium text-slate-700 dark:text-slate-200 hover:text-crimson dark:hover:text-amber-400 transition-colors underline-offset-2 hover:underline"
+                >
+                  danielteshome335@gmail.com
+                </a>
               </li>
             </ul>
           </div>

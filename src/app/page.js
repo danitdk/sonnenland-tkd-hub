@@ -29,7 +29,8 @@ import {
   ArrowRight,
   ExternalLink,
   Flame,
-  Award
+  Award,
+  Mail
 } from "lucide-react";
 
 const GRADES = [
@@ -353,23 +354,6 @@ export default function ParentRegistrationPage() {
           <div className="absolute top-1/3 right-10 w-64 h-64 bg-amber-400/10 dark:bg-amber-400/15 blur-[90px] pointer-events-none" />
 
           <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-            
-            {/* 1. School Logo in elevated container so it pops in both light and dark modes */}
-            <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center justify-center p-3.5 sm:p-4 rounded-3xl bg-white/95 dark:bg-white shadow-md dark:shadow-glow-gold border border-slate-200 dark:border-amber-400/50 backdrop-blur-sm transition-all hover:scale-105">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/logo.png"
-                  alt="Sonnenland International School Logo"
-                  className="h-20 sm:h-24 w-auto object-contain"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/logo.svg";
-                  }}
-                />
-              </div>
-            </div>
-
             {/* Registration Status Badge */}
             <div className="inline-flex mb-4">
               <Badge variant="gold" size="md" pulse={true}>
@@ -944,6 +928,13 @@ export default function ParentRegistrationPage() {
                     >
                       <Phone className="h-4 w-4 text-crimson shrink-0" />
                       <span className="font-mono font-bold">+251 935 368 595</span>
+                    </a>
+                    <a
+                      href="mailto:danielteshome335@gmail.com"
+                      className="min-h-[44px] flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:text-crimson font-medium transition-colors"
+                    >
+                      <Mail className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                      <span className="font-mono font-medium">danielteshome335@gmail.com</span>
                     </a>
                     <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                       <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />

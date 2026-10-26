@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Shield, UserCheck, Menu, X, ArrowUpRight } from "lucide-react";
+import { UserCheck, Menu, X, ArrowUpRight } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Navbar() {
@@ -10,11 +10,21 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0F172A]/95 backdrop-blur-md shadow-sm transition-colors duration-200">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6 lg:px-8">
         {/* Brand Logo & School Affiliation */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-crimson to-crimson-dark shadow-sm transition-transform group-hover:scale-105">
-            <Shield className="h-5 w-5 text-white" />
+        <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group">
+          {/* Official Sönnenland School Logo properly placed in header slot */}
+          <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-white p-1 border border-slate-200 dark:border-slate-700 shadow-sm transition-transform group-hover:scale-105 shrink-0 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="Sonnenland International School Logo"
+              className="h-full w-full object-contain"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/logo.svg";
+              }}
+            />
           </div>
           <div>
             <div className="flex items-center gap-2">

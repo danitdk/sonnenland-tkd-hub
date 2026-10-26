@@ -684,9 +684,18 @@ export default function InstructorAdminDashboard() {
 
             <div className="h-5 w-[1px] bg-slate-200 dark:bg-slate-700 hidden sm:block" />
 
-            <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-crimson text-white shadow-sm shrink-0">
-                <Shield className="h-5 w-5" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 border border-slate-200 dark:border-slate-700 shadow-sm shrink-0 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="Sonnenland International School Logo"
+                  className="h-full w-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/logo.svg";
+                  }}
+                />
               </div>
               <div className="min-w-0">
                 <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-tight truncate">
