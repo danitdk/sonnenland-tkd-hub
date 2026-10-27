@@ -22,7 +22,7 @@ export default function Footer() {
                 />
               </div>
               <span className="text-base sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-                Sönnenland International Kindergarten After-School TKD Hub
+                Sönnenland International Kindergarten After-School TKD
               </span>
             </div>
             <p className="text-sm text-slate-600 dark:text-slate-300 max-w-md leading-relaxed">
@@ -100,7 +100,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-slate-200 dark:border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Sönnenland International Kindergarten After-School TKD Hub. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Sönnenland International Kindergarten After-School TKD. All rights reserved.</p>
           <p className="flex items-center gap-1.5">
             Designed for <span className="text-slate-800 dark:text-slate-200 font-semibold">Master Daniel</span> • Mobile-Friendly Web App
           </p>

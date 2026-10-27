@@ -40,8 +40,7 @@ import {
   Copy,
   Globe,
   XCircle,
-  Flag,
-  Hash
+  Flag
 } from "lucide-react";
 import Badge from "@/components/Badge";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -58,132 +57,6 @@ const UNIFORM_SIZES = [
   "110cm",
   "120cm",
   "130cm",
-];
-
-const SEED_REGISTRATIONS = [
-  {
-    id: "TKD-2026-1042",
-    studentName: "Nahom Solomon",
-    studentType: "New Student",
-    term: "Term 2",
-    age: "5 Years Old",
-    grade: "5 Years Old",
-    parentName: "Solomon Haile",
-    parentPhone: "0911223344",
-    emergencyPhone: "0912345678",
-    includeUniform: true,
-    uniformSize: "120cm",
-    uniformStatus: "Needed",
-    trainingFee: 10000,
-    tuitionFee: 10000,
-    uniformFee: 1500,
-    totalAmount: 11500,
-    transactionId: "CBE-FT2629884102",
-    paymentStatus: "Verified",
-    receiptImage: null,
-    receiptFileName: "cbe_receipt_1042.jpg",
-    registeredAt: "2026-10-26T08:30:00Z",
-    displayDate: "Oct 26, 2026, 08:30 AM",
-    notes: "Paid in advance via CBE Mobile Banking",
-  },
-  {
-    id: "TKD-2026-1043",
-    studentName: "Selamawit Tadesse",
-    studentType: "Returning Student",
-    term: "Term 2",
-    age: "4 Years Old",
-    grade: "4 Years Old",
-    parentName: "Tadesse Bekele",
-    parentPhone: "0912445566",
-    emergencyPhone: "N/A",
-    includeUniform: false,
-    uniformSize: "None",
-    uniformStatus: "None",
-    trainingFee: 10000,
-    tuitionFee: 10000,
-    uniformFee: 0,
-    totalAmount: 10000,
-    transactionId: "TB-0912445566-9921",
-    paymentStatus: "Verified",
-    receiptImage: null,
-    receiptFileName: "telebirr_tx_445566.png",
-    registeredAt: "2026-10-26T09:10:00Z",
-    displayDate: "Oct 26, 2026, 09:10 AM",
-  },
-  {
-    id: "TKD-2026-1044",
-    studentName: "Ephraim Yohannes",
-    studentType: "New Student",
-    term: "Term 3",
-    age: "4 Years Old",
-    grade: "4 Years Old",
-    parentName: "Yohannes Girma",
-    parentPhone: "0918778899",
-    emergencyPhone: "0911002233",
-    includeUniform: true,
-    uniformSize: "110cm",
-    uniformStatus: "Needed",
-    trainingFee: 10000,
-    tuitionFee: 10000,
-    uniformFee: 1500,
-    totalAmount: 11500,
-    transactionId: "AWASH-0132-7788",
-    paymentStatus: "Pending",
-    receiptImage: null,
-    receiptFileName: "awash_app_screenshot.jpg",
-    registeredAt: "2026-10-27T10:15:00Z",
-    displayDate: "Oct 27, 2026, 10:15 AM",
-    notes: "Parent called, requested uniform size 110cm",
-  },
-  {
-    id: "TKD-2026-1045",
-    studentName: "Liya Mekonnen",
-    studentType: "New Student",
-    term: "Term 2",
-    age: "3 Years Old",
-    grade: "3 Years Old",
-    parentName: "Mekonnen Tesfaye",
-    parentPhone: "0920112233",
-    emergencyPhone: "N/A",
-    includeUniform: true,
-    uniformSize: "100cm",
-    uniformStatus: "Delivered",
-    trainingFee: 10000,
-    tuitionFee: 10000,
-    uniformFee: 1500,
-    totalAmount: 11500,
-    transactionId: "CBE-FT2629910455",
-    paymentStatus: "Verified",
-    receiptImage: null,
-    receiptFileName: "cbe_receipt_201122.png",
-    registeredAt: "2026-10-27T11:40:00Z",
-    displayDate: "Oct 27, 2026, 11:40 AM",
-  },
-  {
-    id: "TKD-2026-1046",
-    studentName: "Dawit Abebe",
-    studentType: "Returning Student",
-    term: "Term 3",
-    age: "6 Years Old",
-    grade: "6 Years Old",
-    parentName: "Abebe Kebede",
-    parentPhone: "0911334455",
-    emergencyPhone: "0911998877",
-    includeUniform: false,
-    uniformSize: "None",
-    uniformStatus: "None",
-    trainingFee: 10000,
-    tuitionFee: 10000,
-    uniformFee: 0,
-    totalAmount: 10000,
-    transactionId: "TB-0911334455-8840",
-    paymentStatus: "Pending",
-    receiptImage: null,
-    receiptFileName: "telebirr_payment_receipt.jpg",
-    registeredAt: "2026-10-28T07:20:00Z",
-    displayDate: "Oct 28, 2026, 07:20 AM",
-    notes: "Awaiting CBE Birr transfer",
-  },
 ];
 
 export default function InstructorAdminDashboard() {
@@ -211,7 +84,8 @@ export default function InstructorAdminDashboard() {
     grade: "3 Years Old",
     parentName: "",
     parentPhone: "",
-    transactionId: "",
+    emergencyPhone: "",
+    paymentMethod: "Telebirr",
     includeUniform: true,
     uniformSize: "110cm",
     paymentStatus: "Pending",
@@ -237,13 +111,25 @@ export default function InstructorAdminDashboard() {
     setHasCheckedSession(true);
   }, []);
 
-  useEffect(() => {
+  // Persistent Submissions via localStorage (No dummy/seed records)
+  const loadStudentsFromStorage = () => {
     try {
       const stored = localStorage.getItem("sonnenland_registrations");
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const normalized = parsed.map((item, idx) => ({
+        if (Array.isArray(parsed)) {
+          // Filter out any legacy dummy seed IDs if they were previously saved by old mock code
+          const realStudents = parsed.filter(
+            (item) =>
+              item &&
+              item.id !== "TKD-2026-1042" &&
+              item.id !== "TKD-2026-1043" &&
+              item.id !== "TKD-2026-1044" &&
+              item.id !== "TKD-2026-1045" &&
+              item.id !== "TKD-2026-1046"
+          );
+
+          const normalized = realStudents.map((item, idx) => ({
             id: item.id || `TKD-2026-${1000 + idx}`,
             studentName: item.studentName || "Unknown Student",
             studentType: item.studentType || (item.includeUniform ? "New Student" : "Returning Student"),
@@ -252,19 +138,16 @@ export default function InstructorAdminDashboard() {
             grade: item.age || item.grade || "3 Years Old",
             parentName: item.parentName || "Unknown Parent",
             parentPhone: item.parentPhone || "0911000000",
-            emergencyPhone: item.emergencyPhone || "N/A",
+            emergencyPhone: item.emergencyPhone && item.emergencyPhone !== "N/A" ? item.emergencyPhone : "N/A",
+            paymentMethod: item.paymentMethod || "Telebirr / CBE",
             includeUniform: Boolean(item.includeUniform),
-            uniformSize: item.uniformSize || (item.includeUniform ? "120cm" : "None"),
-            uniformStatus:
-              item.uniformStatus ||
-              (item.includeUniform ? "Needed" : "None"),
+            uniformSize: item.uniformSize || (item.includeUniform ? "110cm" : "None"),
+            uniformStatus: item.uniformStatus || (item.includeUniform ? "Needed" : "None"),
             trainingFee: item.trainingFee || item.tuitionFee || 10000,
             tuitionFee: item.trainingFee || item.tuitionFee || 10000,
             uniformFee: item.uniformFee !== undefined ? item.uniformFee : (item.includeUniform ? 1500 : 0),
-            totalAmount:
-              item.totalAmount ||
-              (item.trainingFee || item.tuitionFee || 10000) + (item.includeUniform ? 1500 : 0),
-            transactionId: item.transactionId || item.txnId || "N/A",
+            totalAmount: item.totalAmount || ((item.trainingFee || item.tuitionFee || 10000) + (item.includeUniform ? 1500 : 0)),
+            transactionId: item.transactionId || "N/A",
             paymentStatus:
               item.paymentStatus === "Verified" || item.paymentStatus === "Paid"
                 ? "Verified"
@@ -278,19 +161,24 @@ export default function InstructorAdminDashboard() {
             notes: item.notes || undefined,
             registrationType: item.registrationType || "Online",
           }));
+
           setStudents(normalized);
+          // If legacy dummy seed entries were present in localStorage, purge them
+          if (realStudents.length !== parsed.length) {
+            localStorage.setItem("sonnenland_registrations", JSON.stringify(normalized));
+          }
           return;
         }
       }
-      setStudents(SEED_REGISTRATIONS);
-      localStorage.setItem(
-        "sonnenland_registrations",
-        JSON.stringify(SEED_REGISTRATIONS)
-      );
+      setStudents([]);
     } catch (e) {
       console.warn("Could not read from localStorage:", e);
-      setStudents(SEED_REGISTRATIONS);
+      setStudents([]);
     }
+  };
+
+  useEffect(() => {
+    loadStudentsFromStorage();
   }, []);
 
   useEffect(() => {
@@ -300,7 +188,7 @@ export default function InstructorAdminDashboard() {
     }
     const total = reminderStudent.totalAmount?.toLocaleString() || "10,000";
     setReminderText(
-      `Hello ${reminderStudent.parentName}, this is Master Daniel regarding ${reminderStudent.studentName}'s enrollment in Sönnenland Taekwondo. To secure their spot, kindly finalize the term training fee of ${total} ETB before Wednesday 3:30 PM. Please share the transfer receipt once completed. Thank you!`
+      `Hello ${reminderStudent.parentName}, this is Master Daniel regarding ${reminderStudent.studentName}'s enrollment in Sönnenland Taekwondo. To secure their spot, kindly finalize the term training fee of ${total} ETB. Please share the transfer receipt once completed. Thank you!`
     );
     setIsCopiedReminder(false);
   }, [reminderStudent]);
@@ -328,7 +216,7 @@ export default function InstructorAdminDashboard() {
         console.warn(err);
       }
     } else {
-      setPinError("Incorrect PIN. Please enter Master Daniel's 4-digit code (Default: 2141).");
+      setPinError("Incorrect PIN. Please enter Master Daniel's 4-digit code.");
       setPinInput("");
     }
   };
@@ -431,7 +319,8 @@ export default function InstructorAdminDashboard() {
       grade: addForm.age || addForm.grade || "3 Years Old",
       parentName: addForm.parentName.trim(),
       parentPhone: addForm.parentPhone.trim(),
-      emergencyPhone: "N/A",
+      emergencyPhone: addForm.emergencyPhone?.trim() || "N/A",
+      paymentMethod: addForm.paymentMethod || "Telebirr",
       includeUniform: addForm.includeUniform,
       uniformSize: addForm.includeUniform ? addForm.uniformSize : "None",
       uniformStatus: addForm.includeUniform ? "Needed" : "None",
@@ -439,9 +328,7 @@ export default function InstructorAdminDashboard() {
       tuitionFee: 10000,
       uniformFee: addForm.includeUniform ? 1500 : 0,
       totalAmount,
-      transactionId:
-        addForm.transactionId?.trim() ||
-        (addForm.paymentStatus === "Verified" ? "CASH-RECORD" : "AWAITING-TXN"),
+      transactionId: "N/A",
       paymentStatus: addForm.paymentStatus,
       receiptImage: null,
       receiptFileName:
@@ -471,7 +358,8 @@ export default function InstructorAdminDashboard() {
       grade: "3 Years Old",
       parentName: "",
       parentPhone: "",
-      transactionId: "",
+      emergencyPhone: "",
+      paymentMethod: "Telebirr",
       includeUniform: true,
       uniformSize: "110cm",
       paymentStatus: "Pending",
@@ -530,12 +418,13 @@ export default function InstructorAdminDashboard() {
   const handleExportCSV = () => {
     const headers = [
       "Student Name",
-      "Student Type",
-      "Term",
       "Age",
       "Parent Name",
       "Parent Phone",
-      "Transaction ID / Ref",
+      "Emergency Contact",
+      "Registration Type",
+      "Term",
+      "Payment Method",
       "Training Fee (ETB)",
       "Uniform Fee (ETB)",
       "Total Amount (ETB)",
@@ -547,12 +436,13 @@ export default function InstructorAdminDashboard() {
 
     const rows = filteredStudents.map((s) => [
       `"${(s.studentName || "").replace(/"/g, '""')}"`,
-      `"${s.studentType || (s.includeUniform ? "New Student" : "Returning Student")}"`,
-      `"${s.term || "Term 2"}"`,
       `"${s.age || s.grade || ""}"`,
       `"${(s.parentName || "").replace(/"/g, '""')}"`,
       `"${s.parentPhone || ""}"`,
-      `"${(s.transactionId || "").replace(/"/g, '""')}"`,
+      `"${s.emergencyPhone || "N/A"}"`,
+      `"${s.studentType || (s.includeUniform ? "New Student" : "Returning Student")}"`,
+      `"${s.term || "Term 2"}"`,
+      `"${s.paymentMethod || "Telebirr / CBE"}"`,
       s.trainingFee || s.tuitionFee || 10000,
       s.uniformFee !== undefined ? s.uniformFee : (s.includeUniform ? 1500 : 0),
       s.totalAmount || 0,
@@ -622,7 +512,7 @@ export default function InstructorAdminDashboard() {
             Instructor Portal
           </h2>
           <p className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-400">
-            Master Daniel • Sönnenland International Kindergarten After-School TKD Hub
+            Master Daniel • Sönnenland International Kindergarten After-School TKD
           </p>
           <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
             Please enter the 4-digit Master PIN to unlock the enrollment administration dashboard.
@@ -712,11 +602,6 @@ export default function InstructorAdminDashboard() {
             </button>
           </form>
 
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/15 px-3 py-1.5 text-[11px] text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30">
-            <Lock className="h-3 w-3 text-amber-700 dark:text-amber-400" />
-            <span>Master PIN: <strong className="text-amber-900 dark:text-amber-300 font-mono">2141</strong></span>
-          </div>
-
           <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700/80">
             <Link
               href="/"
@@ -770,7 +655,7 @@ export default function InstructorAdminDashboard() {
                   Instructor Portal — Master Daniel
                 </h1>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
-                  Sönnenland International Kindergarten After-School TKD Hub
+                  Sönnenland International Kindergarten After-School TKD
                 </p>
               </div>
             </div>
@@ -780,6 +665,21 @@ export default function InstructorAdminDashboard() {
             {/* Dynamic Theme Switcher ("ፀሐይ" / "ጨለማ") */}
             <ThemeToggle size="md" className="hidden sm:inline-flex" />
             <ThemeToggle size="sm" showLabel={false} className="sm:hidden" />
+
+            {/* Refresh from localStorage button */}
+            <button
+              type="button"
+              onClick={() => {
+                loadStudentsFromStorage();
+                setToastMessage("Roster refreshed from storage.");
+                setTimeout(() => setToastMessage(""), 2500);
+              }}
+              className="min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-amber-500 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50/50 dark:hover:bg-slate-700 transition-all shadow-sm"
+              title="Refresh roster from storage"
+            >
+              <RefreshCw className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span className="hidden md:inline">Refresh</span>
+            </button>
 
             {/* Export CSV button */}
             <button
@@ -909,7 +809,7 @@ export default function InstructorAdminDashboard() {
               <Search className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search by student, parent phone, or txn reference..."
+                placeholder="Search by student or parent phone..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 pl-10 pr-9 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-amber-600 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-amber-600"
@@ -1002,550 +902,563 @@ export default function InstructorAdminDashboard() {
           </div>
 
           {/* ========================================================= */}
-          {/* MOBILE CARD VIEW (< md: screens)                          */}
+          {/* EMPTY STATE: WHEN NO REGISTRATIONS EXIST                   */}
           {/* ========================================================= */}
-          <div className="md:hidden divide-y divide-slate-200 dark:divide-slate-800">
-            {filteredStudents.length > 0 ? (
-              filteredStudents.map((student) => {
-                const isVerified = student.paymentStatus === "Verified";
-                const isUniformDelivered = student.uniformStatus === "Delivered";
-
-                return (
-                  <div key={student.id} className="p-4 space-y-3 bg-white dark:bg-[#1E293B] hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors">
-                    {/* Header Row: Student Name, Age & ID */}
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-extrabold text-slate-900 dark:text-white text-base">
-                            {student.studentName}
-                          </span>
-                          {student.registrationType === "Phone Call" && (
-                            <span className="inline-flex items-center gap-0.5 rounded bg-amber-50 dark:bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/40">
-                              <PhoneCall className="h-2.5 w-2.5" />
-                              <span>Call</span>
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="rounded-md bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
-                            {student.term || "Term 2"}
-                          </span>
-                          <span className="rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                            {student.age || student.grade}
-                          </span>
-                          <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-                            {student.id}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="text-right">
-                        <span className="font-mono font-black text-amber-700 dark:text-amber-400 text-lg">
-                          {student.totalAmount?.toLocaleString()} ETB
-                        </span>
-                        <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                          {student.includeUniform ? "10,000 + 1,500 Dobok" : "10,000 Training"}
-                        </div>
-                        <span className="inline-block mt-0.5 text-[9px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-                          {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")} • {student.term || "Term 2"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Parent Contact Card (min-h-[44px] touch target) */}
-                    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-3 flex items-center justify-between gap-2">
-                      <div className="text-xs truncate">
-                        <span className="text-slate-500 dark:text-slate-400">Parent: </span>
-                        <span className="font-bold text-slate-900 dark:text-white">{student.parentName}</span>
-                      </div>
-                      <a
-                        href={`tel:${student.parentPhone}`}
-                        className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono font-bold text-amber-700 dark:text-amber-400 hover:underline bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 shadow-sm shrink-0"
-                      >
-                        <Phone className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                        <span>{student.parentPhone}</span>
-                      </a>
-                    </div>
-
-                    {/* Notes if present */}
-                    {student.notes && (
-                      <div className="flex items-center gap-1.5 text-[11px] text-amber-900 dark:text-amber-300 italic bg-amber-50 dark:bg-amber-950/40 p-2 rounded-lg border border-amber-200 dark:border-amber-900/60">
-                        <FileText className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                        <span className="truncate">{student.notes}</span>
-                      </div>
-                    )}
-
-                    {/* Proof & Transaction Reference Snippet */}
-                    <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-3 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedReceiptStudent(student)}
-                          className="shrink-0 relative group"
-                          title="Tap to preview receipt"
-                        >
-                          {student.receiptImage ? (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                              src={student.receiptImage}
-                              alt="Receipt"
-                              className="h-10 w-10 rounded-lg object-cover border border-slate-300 dark:border-slate-700 shadow-xs"
-                            />
-                          ) : (
-                            <div className="h-10 w-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-amber-600 dark:text-amber-400">
-                              <FileText className="h-5 w-5" />
-                            </div>
-                          )}
-                        </button>
-                        <div className="min-w-0 flex-1">
-                          <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block">
-                            Txn Reference:
-                          </span>
-                          <span
-                            className="font-mono font-bold text-xs text-amber-700 dark:text-amber-400 truncate block select-all"
-                            title={student.transactionId || "N/A"}
-                          >
-                            {student.transactionId || "N/A"}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {student.transactionId && student.transactionId !== "N/A" && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              navigator.clipboard.writeText(student.transactionId);
-                              setToastMessage(`Copied ref ${student.transactionId}`);
-                              setTimeout(() => setToastMessage(""), 2500);
-                            }}
-                            className="min-h-[36px] min-w-[36px] flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-amber-600"
-                            title="Copy reference"
-                          >
-                            <Copy className="h-3.5 w-3.5" />
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => setSelectedReceiptStudent(student)}
-                          className="min-h-[36px] px-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-amber-600 flex items-center gap-1"
-                        >
-                          <Eye className="h-3.5 w-3.5 text-amber-600" />
-                          <span>Proof</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Payment Status Row with 3 States */}
-                    <div className="flex items-center justify-between text-xs pt-1">
-                      <span className="font-bold text-slate-500 dark:text-slate-400">Payment Status:</span>
-                      {student.paymentStatus === "Verified" ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-500/20 px-2.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                          <span>Verified (Paid)</span>
-                        </span>
-                      ) : student.paymentStatus === "Invalid" ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-red-50 dark:bg-red-500/20 px-2.5 py-1 text-xs font-bold text-crimson dark:text-red-400 border border-red-300 dark:border-red-500/40">
-                          <XCircle className="h-3.5 w-3.5 text-crimson dark:text-red-400" />
-                          <span>Invalid / Flagged</span>
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-500/20 px-2.5 py-1 text-xs font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
-                          <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                          <span>Pending Approval</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* 1-Click Verification Action Buttons (Verify / Flag) */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      <button
-                        type="button"
-                        onClick={() => handleSetPaymentStatus(student.id, "Verified")}
-                        className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all border shadow-sm active:scale-95 ${
-                          student.paymentStatus === "Verified"
-                            ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
-                            : "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
-                        }`}
-                      >
-                        <Check className="h-4 w-4" />
-                        <span>{student.paymentStatus === "Verified" ? "Verified ✓" : "Verify"}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleSetPaymentStatus(student.id, "Invalid")}
-                        className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all border shadow-sm active:scale-95 ${
-                          student.paymentStatus === "Invalid"
-                            ? "bg-crimson text-white border-crimson shadow-md"
-                            : "bg-red-50 dark:bg-red-500/20 text-crimson dark:text-red-400 border-red-300 dark:border-red-500/40 hover:bg-red-100"
-                        }`}
-                      >
-                        <XCircle className="h-4 w-4" />
-                        <span>{student.paymentStatus === "Invalid" ? "Flagged ✕" : "Flag / Reject"}</span>
-                      </button>
-                    </div>
-
-                    {/* Uniform & Reminder Row */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      {student.includeUniform ? (
-                        <button
-                          type="button"
-                          onClick={() => handleToggleUniform(student.id)}
-                          className={`min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-bold border active:scale-95 transition-colors shadow-sm ${
-                            isUniformDelivered
-                              ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
-                              : "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40 hover:bg-purple-100"
-                          }`}
-                        >
-                          <Shirt className="h-4 w-4 shrink-0" />
-                          <span className="truncate">{student.uniformSize} – {isUniformDelivered ? "Delivered" : "Needed"}</span>
-                        </button>
-                      ) : (
-                        <div className="min-h-[44px] flex items-center justify-center text-xs text-slate-400 dark:text-slate-500 italic rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/60">
-                          No Uniform
-                        </div>
-                      )}
-
-                      {student.paymentStatus === "Pending" ? (
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setReminderStudent(student);
-                          }}
-                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-3 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 active:scale-95 transition-all shadow-sm"
-                        >
-                          <MessageSquare className="h-4 w-4" />
-                          <span>Send Reminder</span>
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleSetPaymentStatus(student.id, "Pending")}
-                          className="min-h-[44px] w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 active:scale-95 transition-all"
-                        >
-                          <Clock className="h-3.5 w-3.5" />
-                          <span>Reset to Pending</span>
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Secondary Actions Row */}
-                    <div className="flex items-center justify-between pt-1 text-xs border-t border-slate-100 dark:border-slate-800">
-                      <span className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
-                        {student.displayDate}
-                      </span>
-
-                      <button
-                        type="button"
-                        onClick={() => setStudentToDelete(student)}
-                        className="min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl text-slate-400 hover:text-crimson dark:hover:text-red-400 active:scale-95"
-                        title="Delete registration"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="p-8 text-center text-slate-500 dark:text-slate-400">
-                <Users className="h-8 w-8 text-slate-400 dark:text-slate-600 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  No student registrations match your filter.
-                </p>
+          {students.length === 0 ? (
+            <div className="p-10 sm:p-14 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 mb-4 border border-slate-200 dark:border-slate-700 shadow-xs">
+                <Users className="h-8 w-8" />
               </div>
-            )}
-          </div>
-
-          {/* ========================================================= */}
-          {/* DESKTOP TABLE VIEW (>= md: screens)                       */}
-          {/* ========================================================= */}
-          <div className="hidden md:block overflow-x-auto slim-scrollbar">
-            <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
-              <thead className="bg-slate-50 dark:bg-slate-900/80 uppercase tracking-wider text-[11px] text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
-                <tr>
-                  <th scope="col" className="px-5 py-3.5 font-bold">1. Student & Age</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">2. Parent & Phone</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">3. Total Fee</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">4. Payment Status</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">5. Proof & Txn Ref</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold">6. Uniform</th>
-                  <th scope="col" className="px-5 py-3.5 font-bold text-right">7. Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                No student registrations yet.
+              </h3>
+              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                When parents register on the public enrollment page, their submissions and payment receipt screenshots will appear here in real time.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  href="/"
+                  className="min-h-[42px] inline-flex items-center gap-2 rounded-xl bg-crimson px-5 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-red-700 active:scale-95 transition-all"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Open Public Registration</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="min-h-[42px] inline-flex items-center gap-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm active:scale-95 transition-all"
+                >
+                  <PhoneCall className="h-3.5 w-3.5 text-amber-500" />
+                  <span>+ Add Student via Call</span>
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* ========================================================= */}
+              {/* MOBILE CARD VIEW (< md: screens)                          */}
+              {/* ========================================================= */}
+              <div className="md:hidden divide-y divide-slate-200 dark:divide-slate-800">
                 {filteredStudents.length > 0 ? (
                   filteredStudents.map((student) => {
+                    const isVerified = student.paymentStatus === "Verified";
                     const isUniformDelivered = student.uniformStatus === "Delivered";
 
                     return (
-                      <tr
-                        key={student.id}
-                        className="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors"
-                      >
-                        <td className="px-5 py-4">
-                          <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-slate-900 dark:text-white text-sm">
-                              {student.studentName}
-                            </span>
-                            {student.registrationType === "Phone Call" && (
-                              <span
-                                title="Enrolled via Phone Call"
-                                className="inline-flex items-center gap-1 rounded bg-amber-50 dark:bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/40"
-                              >
-                                <PhoneCall className="h-2.5 w-2.5" />
-                                <span>Call</span>
+                      <div key={student.id} className="p-4 space-y-3 bg-white dark:bg-[#1E293B] hover:bg-slate-50/70 dark:hover:bg-slate-800/70 transition-colors">
+                        {/* 1. Header: Student Name & Age */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-extrabold text-slate-900 dark:text-white text-base">
+                                {student.studentName}
                               </span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2 mt-0.5">
-                            <span className="inline-flex rounded-md bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
-                              {student.term || "Term 2"}
-                            </span>
-                            <span className="inline-flex rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                              {student.age || student.grade}
-                            </span>
-                            <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
-                              {student.id}
-                            </span>
-                          </div>
-                          {student.notes && (
-                            <div className="mt-1 flex items-center gap-1 text-[11px] text-amber-900 dark:text-amber-300 italic">
-                              <FileText className="h-3 w-3 shrink-0 text-amber-600 dark:text-amber-400" />
-                              <span className="truncate max-w-[200px]" title={student.notes}>
-                                Note: {student.notes}
-                              </span>
-                            </div>
-                          )}
-                        </td>
-
-                        <td className="px-5 py-4">
-                          <div className="font-medium text-slate-900 dark:text-white">{student.parentName}</div>
-                          <a
-                            href={`tel:${student.parentPhone}`}
-                            className="inline-flex items-center gap-1.5 mt-1 text-[11px] font-mono text-amber-700 dark:text-amber-400 hover:underline hover:text-amber-800 transition-colors"
-                            title={`Call parent: ${student.parentPhone}`}
-                          >
-                            <Phone className="h-3 w-3 text-amber-600 dark:text-amber-400 shrink-0" />
-                            <span>{student.parentPhone}</span>
-                          </a>
-                        </td>
-
-                        <td className="px-5 py-4">
-                          <div className="font-extrabold text-slate-900 dark:text-white font-mono text-sm">
-                            {student.totalAmount?.toLocaleString()} ETB
-                          </div>
-                          <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                            {student.includeUniform ? "10,000 Training + 1,500 Dobok" : "10,000 Training Fee"}
-                          </div>
-                          <span className="inline-block mt-0.5 text-[10px] font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
-                            {student.studentType || (student.includeUniform ? "New Student" : "Returning Student")} • {student.term || "Term 2"}
-                          </span>
-                        </td>
-
-                        {/* Column 4: Payment Status (3 states) */}
-                        <td className="px-5 py-4">
-                          {student.paymentStatus === "Verified" ? (
-                            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
-                              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                              <span>Verified</span>
-                            </span>
-                          ) : student.paymentStatus === "Invalid" ? (
-                            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold bg-red-50 dark:bg-red-500/20 text-crimson dark:text-red-400 border border-red-300 dark:border-red-500/40">
-                              <XCircle className="h-3.5 w-3.5 text-crimson dark:text-red-400" />
-                              <span>Invalid</span>
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
-                              <Clock className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                              <span>Pending</span>
-                            </span>
-                          )}
-                        </td>
-
-                        {/* Column 5: Proof & Txn Reference */}
-                        <td className="px-5 py-4">
-                          <div className="flex items-center gap-2.5">
-                            {/* Receipt Preview Thumbnail */}
-                            <button
-                              type="button"
-                              onClick={() => setSelectedReceiptStudent(student)}
-                              className="group relative shrink-0"
-                              title="Click to view receipt proof"
-                            >
-                              {student.receiptImage ? (
-                                /* eslint-disable-next-line @next/next/no-img-element */
-                                <img
-                                  src={student.receiptImage}
-                                  alt="Receipt"
-                                  className="h-10 w-10 rounded-lg object-cover border border-slate-300 dark:border-slate-700 shadow-xs group-hover:scale-105 group-hover:border-amber-400 transition-all"
-                                />
-                              ) : (
-                                <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:border-amber-400 transition-all">
-                                  <FileText className="h-5 w-5" />
-                                </div>
-                              )}
-                            </button>
-
-                            {/* Transaction Reference Number right next to thumbnail */}
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-1">
-                                <span
-                                  className="font-mono font-bold text-xs text-amber-700 dark:text-amber-400 select-all truncate max-w-[130px] block"
-                                  title={student.transactionId || "N/A"}
-                                >
-                                  {student.transactionId || "N/A"}
+                              {student.registrationType === "Phone Call" && (
+                                <span className="inline-flex items-center gap-0.5 rounded bg-amber-50 dark:bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/40">
+                                  <PhoneCall className="h-2.5 w-2.5" />
+                                  <span>Call</span>
                                 </span>
-                                {student.transactionId && student.transactionId !== "N/A" && (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      navigator.clipboard.writeText(student.transactionId);
-                                      setToastMessage(`Copied ref ${student.transactionId}`);
-                                      setTimeout(() => setToastMessage(""), 2500);
-                                    }}
-                                    title="Copy Transaction Ref"
-                                    className="text-slate-400 hover:text-amber-600 p-0.5 shrink-0"
-                                  >
-                                    <Copy className="h-3 w-3" />
-                                  </button>
-                                )}
-                              </div>
-                              <button
-                                type="button"
-                                onClick={() => setSelectedReceiptStudent(student)}
-                                className="text-[10px] text-slate-500 dark:text-slate-400 hover:text-amber-700 dark:hover:text-amber-400 font-medium block mt-0.5 hover:underline"
-                              >
-                                View Proof →
-                              </button>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                {student.age || student.grade}
+                              </span>
+                              <span className="font-mono text-xs text-slate-400 dark:text-slate-500">
+                                {student.id}
+                              </span>
                             </div>
                           </div>
-                        </td>
 
-                        {/* Column 6: Uniform */}
-                        <td className="px-5 py-4">
+                          {/* 4 & 5. Type & Amount */}
+                          <div className="text-right">
+                            <span className="font-mono font-black text-amber-700 dark:text-amber-400 text-lg">
+                              {student.totalAmount?.toLocaleString()} ETB
+                            </span>
+                            <div className="flex items-center justify-end gap-1 mt-0.5">
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                {student.paymentMethod || "Telebirr / CBE"}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 2 & 3. Parent Contact & Emergency Contact */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                          {/* Parent Name & Phone */}
+                          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-2.5 flex items-center justify-between">
+                            <div>
+                              <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 block">
+                                Parent / Guardian:
+                              </span>
+                              <span className="font-bold text-slate-900 dark:text-white truncate block">
+                                {student.parentName}
+                              </span>
+                            </div>
+                            <a
+                              href={`tel:${student.parentPhone}`}
+                              className="min-h-[36px] inline-flex items-center gap-1 text-xs font-mono font-bold text-amber-700 dark:text-amber-400 hover:underline bg-white dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-700 shadow-xs shrink-0"
+                            >
+                              <Phone className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                              <span>{student.parentPhone}</span>
+                            </a>
+                          </div>
+
+                          {/* Emergency Contact */}
+                          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-2.5 flex items-center justify-between">
+                            <div>
+                              <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 block">
+                                Emergency Contact:
+                              </span>
+                              {student.emergencyPhone && student.emergencyPhone !== "N/A" ? (
+                                <a
+                                  href={`tel:${student.emergencyPhone}`}
+                                  className="font-mono font-bold text-xs text-slate-700 dark:text-slate-300 hover:text-amber-600 hover:underline inline-flex items-center gap-1 mt-0.5"
+                                >
+                                  <Phone className="h-3 w-3 text-slate-400" />
+                                  <span>{student.emergencyPhone}</span>
+                                </a>
+                              ) : (
+                                <span className="text-[11px] text-slate-400 italic">None provided</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 4. Registration Type & Term */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span
+                            className={`rounded-md px-2 py-0.5 text-[10px] font-bold border ${
+                              student.studentType?.includes("New")
+                                ? "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-500/40"
+                                : "bg-blue-50 dark:bg-blue-500/20 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-500/40"
+                            }`}
+                          >
+                            {student.studentType || "New Student"}
+                          </span>
+                          <span className="rounded-md bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                            {student.term || "Term 2"}
+                          </span>
                           {student.includeUniform ? (
                             <button
                               type="button"
                               onClick={() => handleToggleUniform(student.id)}
-                              title="Click to toggle Delivery Status"
-                              className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-[11px] font-bold border transition-colors shadow-sm ${
+                              className={`rounded-md px-2 py-0.5 text-[10px] font-bold border flex items-center gap-1 transition-colors ${
                                 isUniformDelivered
-                                  ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
-                                  : "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40 hover:bg-purple-100"
+                                  ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40"
+                                  : "bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-500/40"
                               }`}
                             >
                               <Shirt className="h-3 w-3" />
-                              <span>
-                                {student.uniformSize} – {isUniformDelivered ? "Delivered" : "Needed"}
-                              </span>
+                              <span>Dobok {student.uniformSize} ({student.uniformStatus || "Needed"})</span>
                             </button>
                           ) : (
-                            <span className="text-slate-400 dark:text-slate-500 italic text-[11px]">
-                              No Uniform
-                            </span>
+                            <span className="text-[10px] text-slate-400 italic">No Uniform</span>
                           )}
-                        </td>
+                        </div>
 
-                        {/* Column 7: Actions */}
-                        <td className="px-5 py-4 text-right">
-                          <div className="flex items-center justify-end gap-1.5 flex-wrap">
-                            {/* Verify Button (marks payment as Verified, green badge) */}
-                            {student.paymentStatus !== "Verified" && (
+                        {/* 6. Receipt Thumbnail (Clickable) */}
+                        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/70 p-3 flex items-center justify-between gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedReceiptStudent(student)}
+                            className="flex items-center gap-3 min-w-0 flex-1 text-left group"
+                            title="Tap to preview receipt"
+                          >
+                            {student.receiptImage ? (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img
+                                src={student.receiptImage}
+                                alt="Receipt Thumbnail"
+                                className="h-12 w-12 rounded-xl object-cover border border-slate-300 dark:border-slate-700 shadow-xs group-hover:scale-105 group-hover:border-amber-500 transition-all shrink-0"
+                              />
+                            ) : (
+                              <div className="h-12 w-12 rounded-xl bg-white dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
+                                <FileText className="h-5 w-5" />
+                              </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <span className="text-xs font-bold text-slate-900 dark:text-white block group-hover:text-amber-600 transition-colors">
+                                {student.receiptImage ? "Receipt Attached" : "No Receipt Image"}
+                              </span>
+                              <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">
+                                Tap to inspect payment screenshot
+                              </span>
+                            </div>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setSelectedReceiptStudent(student)}
+                            className="min-h-[36px] px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-amber-600 flex items-center gap-1.5 shrink-0 shadow-xs"
+                          >
+                            <Eye className="h-3.5 w-3.5 text-amber-600" />
+                            <span>Inspect</span>
+                          </button>
+                        </div>
+
+                        {/* 7. Registration Date & Verification Status + Action Buttons */}
+                        <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-100 dark:border-slate-800">
+                          <div>
+                            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono block">
+                              {student.displayDate}
+                            </span>
+                            <div className="mt-0.5">
+                              {student.paymentStatus === "Verified" ? (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+                                  <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                                  <span>Verified (Paid)</span>
+                                </span>
+                              ) : student.paymentStatus === "Invalid" ? (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-red-50 dark:bg-red-500/20 px-2 py-0.5 text-[10px] font-bold text-crimson dark:text-red-400 border border-red-300 dark:border-red-500/40">
+                                  <XCircle className="h-3 w-3 text-crimson dark:text-red-400" />
+                                  <span>Invalid / Flagged</span>
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                                  <Clock className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                                  <span>Pending</span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            {student.paymentStatus !== "Verified" ? (
                               <button
                                 type="button"
                                 onClick={() => handleSetPaymentStatus(student.id, "Verified")}
-                                title="Mark payment as Verified"
-                                className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 text-xs font-bold transition-all shadow-xs active:scale-95"
+                                className="min-h-[36px] inline-flex items-center gap-1 rounded-lg bg-emerald-600 text-white px-3 py-1.5 text-xs font-bold shadow-xs active:scale-95"
                               >
                                 <Check className="h-3.5 w-3.5" />
                                 <span>Verify</span>
                               </button>
-                            )}
-
-                            {/* Flag / Reject Button (marks payment as Invalid, red badge) */}
-                            {student.paymentStatus !== "Invalid" && (
-                              <button
-                                type="button"
-                                onClick={() => handleSetPaymentStatus(student.id, "Invalid")}
-                                title="Flag or Reject payment as Invalid"
-                                className="inline-flex items-center gap-1 rounded-lg border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 text-crimson dark:text-red-400 px-2 py-1.5 text-xs font-bold transition-all shadow-xs active:scale-95"
-                              >
-                                <XCircle className="h-3.5 w-3.5" />
-                                <span>Flag / Reject</span>
-                              </button>
-                            )}
-
-                            {/* Option to Reset to Pending */}
-                            {student.paymentStatus !== "Pending" && (
+                            ) : (
                               <button
                                 type="button"
                                 onClick={() => handleSetPaymentStatus(student.id, "Pending")}
-                                title="Reset status to Pending"
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-600 dark:text-slate-300 px-2 py-1.5 text-[11px] font-semibold transition-all shadow-xs"
+                                className="min-h-[36px] inline-flex items-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-1 text-xs font-semibold"
                               >
-                                <Clock className="h-3 w-3" />
-                                <span>Pending</span>
+                                <span>Reset</span>
                               </button>
                             )}
-
-                            {/* Polite Reminder Button if Pending */}
-                            {student.paymentStatus === "Pending" && (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setReminderStudent(student);
-                                }}
-                                className="inline-flex items-center gap-1 rounded-lg border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-2 py-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition-all shadow-xs"
-                                title="Send Polite Reminder"
-                              >
-                                <MessageSquare className="h-3.5 w-3.5" />
-                                <span>Remind</span>
-                              </button>
-                            )}
-
-                            {/* Delete Registration */}
                             <button
                               type="button"
                               onClick={() => setStudentToDelete(student)}
-                              className="inline-flex items-center justify-center rounded-lg p-1.5 text-slate-400 hover:text-crimson hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-                              title="Delete Registration"
+                              className="min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-lg text-slate-400 hover:text-crimson hover:bg-red-50 dark:hover:bg-red-950/30"
+                              title="Delete registration"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
-                        </td>
-                      </tr>
+                        </div>
+
+                      </div>
                     );
                   })
                 ) : (
-                  <tr>
-                    <td colSpan={7} className="px-5 py-12 text-center text-slate-500 dark:text-slate-400">
-                      <Users className="h-8 w-8 text-slate-400 dark:text-slate-600 mx-auto mb-2" />
-                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                        No student registrations match your filter.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSearchTerm("");
-                          setFilterPayment("ALL");
-                          setFilterUniform("ALL");
-                          setFilterAge("ALL");
-                          setFilterTerm("ALL");
-                        }}
-                        className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline"
-                      >
-                        <RefreshCw className="h-3 w-3" />
-                        <span>Reset all filters</span>
-                      </button>
-                    </td>
-                  </tr>
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
+                    <Users className="h-8 w-8 text-slate-400 dark:text-slate-600 mx-auto mb-2" />
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      No student registrations match your filter.
+                    </p>
+                  </div>
                 )}
-              </tbody>
-            </table>
-          </div>
+              </div>
+
+              {/* ========================================================= */}
+              {/* DESKTOP TABLE VIEW (>= md: screens)                       */}
+              {/* ========================================================= */}
+              <div className="hidden md:block overflow-x-auto slim-scrollbar">
+                <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                  <thead className="bg-slate-50 dark:bg-slate-900/80 uppercase tracking-wider text-[11px] text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                    <tr>
+                      <th scope="col" className="px-4 py-3.5 font-bold">1. Student Name & Age</th>
+                      <th scope="col" className="px-4 py-3.5 font-bold">2. Parent Name & Phone</th>
+                      <th scope="col" className="px-4 py-3.5 font-bold">3. Emergency Contact</th>
+                      <th scope="col" className="px-4 py-3.5 font-bold">4. Type & Term</th>
+                      <th scope="col" className="px-4 py-3.5 font-bold">5. Payment Method & Amount</th>
+                      <th scope="col" className="px-4 py-3.5 font-bold">6. Receipt Thumbnail</th>
+                      <th scope="col" className="px-4 py-3.5 font-bold text-right">7. Registration Date & Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {filteredStudents.length > 0 ? (
+                      filteredStudents.map((student) => {
+                        const isUniformDelivered = student.uniformStatus === "Delivered";
+
+                        return (
+                          <tr
+                            key={student.id}
+                            className="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors"
+                          >
+                            {/* 1. Student Name & Age */}
+                            <td className="px-4 py-4">
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-extrabold text-slate-900 dark:text-white text-sm">
+                                  {student.studentName}
+                                </span>
+                                {student.registrationType === "Phone Call" && (
+                                  <span
+                                    title="Enrolled via Phone Call"
+                                    className="inline-flex items-center gap-0.5 rounded bg-amber-50 dark:bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-500/40"
+                                  >
+                                    <PhoneCall className="h-2.5 w-2.5" />
+                                    <span>Call</span>
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="inline-flex rounded-md bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                  {student.age || student.grade}
+                                </span>
+                                <span className="font-mono text-[10px] text-slate-400 dark:text-slate-500">
+                                  {student.id}
+                                </span>
+                              </div>
+                              {student.notes && (
+                                <div className="mt-1 flex items-center gap-1 text-[11px] text-amber-800 dark:text-amber-300 italic">
+                                  <FileText className="h-3 w-3 shrink-0 text-amber-600 dark:text-amber-400" />
+                                  <span className="truncate max-w-[180px]" title={student.notes}>
+                                    {student.notes}
+                                  </span>
+                                </div>
+                              )}
+                            </td>
+
+                            {/* 2. Parent Name & Phone */}
+                            <td className="px-4 py-4">
+                              <div className="font-semibold text-slate-900 dark:text-white text-xs sm:text-sm">
+                                {student.parentName}
+                              </div>
+                              <a
+                                href={`tel:${student.parentPhone}`}
+                                className="inline-flex items-center gap-1.5 mt-1 text-xs font-mono font-bold text-amber-700 dark:text-amber-400 hover:underline hover:text-amber-800 transition-colors"
+                                title={`Call parent: ${student.parentPhone}`}
+                              >
+                                <Phone className="h-3 w-3 text-amber-600 dark:text-amber-400 shrink-0" />
+                                <span>{student.parentPhone}</span>
+                              </a>
+                            </td>
+
+                            {/* 3. Emergency Contact */}
+                            <td className="px-4 py-4">
+                              {student.emergencyPhone && student.emergencyPhone !== "N/A" ? (
+                                <a
+                                  href={`tel:${student.emergencyPhone}`}
+                                  className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-slate-700 dark:text-slate-300 hover:text-amber-600 hover:underline transition-colors"
+                                  title={`Call emergency: ${student.emergencyPhone}`}
+                                >
+                                  <Phone className="h-3 w-3 text-slate-400 shrink-0" />
+                                  <span>{student.emergencyPhone}</span>
+                                </a>
+                              ) : (
+                                <span className="text-[11px] text-slate-400 dark:text-slate-500 italic">
+                                  None provided
+                                </span>
+                              )}
+                            </td>
+
+                            {/* 4. Registration Type & Term */}
+                            <td className="px-4 py-4">
+                              <div className="flex flex-col gap-1.5 items-start">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span
+                                    className={`inline-flex rounded-md px-2 py-0.5 text-[10px] font-bold border ${
+                                      student.studentType?.includes("New")
+                                        ? "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-500/40"
+                                        : "bg-blue-50 dark:bg-blue-500/20 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-500/40"
+                                    }`}
+                                  >
+                                    {student.studentType || "New Student"}
+                                  </span>
+                                  <span className="inline-flex rounded-md bg-amber-50 dark:bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                                    {student.term || "Term 2"}
+                                  </span>
+                                </div>
+                                {student.includeUniform ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleUniform(student.id)}
+                                    title="Toggle Dobok delivery status"
+                                    className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded border transition-colors shadow-xs ${
+                                      isUniformDelivered
+                                        ? "bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40 hover:bg-emerald-100"
+                                        : "bg-purple-50 dark:bg-purple-500/20 text-purple-800 dark:text-purple-300 border-purple-300 dark:border-purple-500/40 hover:bg-purple-100"
+                                    }`}
+                                  >
+                                    <Shirt className="h-3 w-3 shrink-0" />
+                                    <span>Dobok {student.uniformSize} ({student.uniformStatus || "Needed"})</span>
+                                  </button>
+                                ) : (
+                                  <span className="text-[10px] text-slate-400 dark:text-slate-500 italic">
+                                    No Uniform
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* 5. Payment Method & Amount Paid */}
+                            <td className="px-4 py-4">
+                              <div className="font-extrabold text-slate-900 dark:text-white font-mono text-sm">
+                                {student.totalAmount?.toLocaleString()} ETB
+                              </div>
+                              <div className="flex items-center gap-1 mt-1">
+                                <span className="inline-flex items-center gap-1 rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-[11px] font-bold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                                  <CreditCard className="h-3 w-3 text-amber-500" />
+                                  <span>{student.paymentMethod || "Telebirr / CBE"}</span>
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+                                {student.includeUniform ? "10,000 Tuition + 1,500 Dobok" : "10,000 Tuition"}
+                              </p>
+                            </td>
+
+                            {/* 6. Receipt Thumbnail (Clickable to inspect) */}
+                            <td className="px-4 py-4">
+                              <button
+                                type="button"
+                                onClick={() => setSelectedReceiptStudent(student)}
+                                className="group relative flex items-center gap-2.5 focus:outline-none"
+                                title="Click to view & inspect receipt proof"
+                              >
+                                {student.receiptImage ? (
+                                  /* eslint-disable-next-line @next/next/no-img-element */
+                                  <img
+                                    src={student.receiptImage}
+                                    alt="Receipt Thumbnail"
+                                    className="h-11 w-11 rounded-xl object-cover border-2 border-slate-300 dark:border-slate-700 shadow-xs group-hover:scale-105 group-hover:border-amber-500 transition-all cursor-pointer shrink-0"
+                                  />
+                                ) : (
+                                  <div className="h-11 w-11 rounded-xl bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 flex flex-col items-center justify-center text-slate-400 shrink-0">
+                                    <FileText className="h-5 w-5 text-slate-400" />
+                                  </div>
+                                )}
+                                <div className="text-left">
+                                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 block transition-colors">
+                                    {student.receiptImage ? "Inspect" : "No File"}
+                                  </span>
+                                  <span className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-0.5">
+                                    <Eye className="h-3 w-3" />
+                                    <span>Preview</span>
+                                  </span>
+                                </div>
+                              </button>
+                            </td>
+
+                            {/* 7. Registration Date & Verification Status + Actions */}
+                            <td className="px-4 py-4 text-right">
+                              <div className="flex flex-col items-end gap-1.5">
+                                <div className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                                  {student.displayDate || "Recent Registration"}
+                                </div>
+                                <div>
+                                  {student.paymentStatus === "Verified" ? (
+                                    <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/40">
+                                      <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
+                                      <span>Verified</span>
+                                    </span>
+                                  ) : student.paymentStatus === "Invalid" ? (
+                                    <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold bg-red-50 dark:bg-red-500/20 text-crimson dark:text-red-400 border border-red-300 dark:border-red-500/40">
+                                      <XCircle className="h-3 w-3 text-crimson dark:text-red-400" />
+                                      <span>Invalid</span>
+                                    </span>
+                                  ) : (
+                                    <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                                      <Clock className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+                                      <span>Pending</span>
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div className="flex items-center gap-1.5 mt-1">
+                                  {student.paymentStatus !== "Verified" && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetPaymentStatus(student.id, "Verified")}
+                                      title="Mark payment as Verified"
+                                      className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 text-[11px] font-bold transition-all shadow-xs active:scale-95"
+                                    >
+                                      <Check className="h-3 w-3" />
+                                      <span>Verify</span>
+                                    </button>
+                                  )}
+                                  {student.paymentStatus !== "Invalid" && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetPaymentStatus(student.id, "Invalid")}
+                                      title="Flag or Reject payment as Invalid"
+                                      className="inline-flex items-center gap-1 rounded-lg border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 text-crimson dark:text-red-400 px-2 py-1 text-[11px] font-bold transition-all shadow-xs active:scale-95"
+                                    >
+                                      <XCircle className="h-3 w-3" />
+                                      <span>Flag</span>
+                                    </button>
+                                  )}
+                                  {student.paymentStatus !== "Pending" && (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSetPaymentStatus(student.id, "Pending")}
+                                      title="Reset status to Pending"
+                                      className="inline-flex items-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 text-slate-600 dark:text-slate-300 px-1.5 py-1 text-[11px] font-semibold transition-all shadow-xs"
+                                    >
+                                      <Clock className="h-3 w-3" />
+                                      <span>Reset</span>
+                                    </button>
+                                  )}
+                                  {student.paymentStatus === "Pending" && (
+                                    <button
+                                      type="button"
+                                      onClick={() => setReminderStudent(student)}
+                                      className="inline-flex items-center gap-1 rounded-lg border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/20 px-2 py-1 text-[11px] font-bold text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition-all shadow-xs"
+                                      title="Send Polite Reminder"
+                                    >
+                                      <MessageSquare className="h-3 w-3" />
+                                      <span>Remind</span>
+                                    </button>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => setStudentToDelete(student)}
+                                    className="inline-flex items-center justify-center rounded-lg p-1 text-slate-400 hover:text-crimson hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors ml-0.5"
+                                    title="Delete Registration"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="px-5 py-12 text-center text-slate-500 dark:text-slate-400">
+                          <Users className="h-8 w-8 text-slate-400 dark:text-slate-600 mx-auto mb-2" />
+                          <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                            No student registrations match your filter.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSearchTerm("");
+                              setFilterPayment("ALL");
+                              setFilterUniform("ALL");
+                              setFilterAge("ALL");
+                              setFilterTerm("ALL");
+                            }}
+                            className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline"
+                          >
+                            <RefreshCw className="h-3 w-3" />
+                            <span>Reset all filters</span>
+                          </button>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
 
           {/* Table Footer */}
           <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-2">
@@ -1553,7 +1466,7 @@ export default function InstructorAdminDashboard() {
               Showing {filteredStudents.length} of {students.length} enrolled students
             </span>
             <span className="text-slate-600 dark:text-slate-300 font-medium">
-              Master Daniel • Sönnenland International Kindergarten After-School TKD Hub
+              Master Daniel • Sönnenland International Kindergarten After-School TKD
             </span>
           </div>
         </div>
@@ -1913,26 +1826,50 @@ export default function InstructorAdminDashboard() {
                 </div>
               </div>
 
-              {/* Optional Transaction ID / Reference Code */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                  Transaction ID / Reference Number <span className="text-slate-500 dark:text-slate-400 text-[11px] font-normal">(Optional)</span>
-                </label>
-                <div className="relative">
-                  <Hash className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
-                  <input
-                    type="text"
-                    placeholder="e.g. CBE txn code, Telebirr ref, or leave blank for CASH"
-                    value={addForm.transactionId}
-                    onChange={(e) =>
-                      setAddForm((prev) => ({ ...prev, transactionId: e.target.value }))
-                    }
-                    className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 pl-10 pr-3 py-2.5 text-base sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-crimson focus:outline-none focus:ring-1 focus:ring-crimson shadow-sm"
-                  />
+              {/* Emergency Contact & Payment Method */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                    Emergency Contact Phone <span className="text-slate-500 dark:text-slate-400 text-[11px] font-normal">(Optional)</span>
+                  </label>
+                  <div className="relative">
+                    <Phone className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
+                    <input
+                      type="tel"
+                      placeholder="0911223344"
+                      value={addForm.emergencyPhone}
+                      onChange={(e) =>
+                        setAddForm((prev) => ({ ...prev, emergencyPhone: e.target.value }))
+                      }
+                      className="w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 pl-10 pr-3 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:border-crimson focus:ring-crimson shadow-sm"
+                    />
+                  </div>
+                  <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                    Secondary contact person
+                  </p>
                 </div>
-                <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
-                  Optional. If student paid in cash or via phone, you can leave this blank (defaults to CASH-RECORD).
-                </p>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                    Payment Method
+                  </label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {["Telebirr", "CBE", "Awash Bank", "Cash"].map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => setAddForm((prev) => ({ ...prev, paymentMethod: method }))}
+                        className={`min-h-[42px] px-2 py-1.5 rounded-xl text-xs font-bold border transition-all text-center flex items-center justify-center ${
+                          addForm.paymentMethod === method
+                            ? "border-crimson bg-crimson text-white shadow-xs font-black"
+                            : "border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:border-slate-400"
+                        }`}
+                      >
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/80 p-4 space-y-3">
@@ -2133,75 +2070,76 @@ export default function InstructorAdminDashboard() {
               </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 text-xs bg-slate-50 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700">
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs bg-slate-50 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700">
               <div>
-                <span className="text-slate-500 dark:text-slate-400">Total Payable ({selectedReceiptStudent.term || "Term 2"}):</span>
+                <span className="text-slate-500 dark:text-slate-400">Student & Term:</span>
+                <p className="font-extrabold text-slate-900 dark:text-white mt-0.5">
+                  {selectedReceiptStudent.studentName}
+                </p>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="inline-block rounded px-1.5 py-0.5 text-[10px] font-bold bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-500/40">
+                    {selectedReceiptStudent.term || "Term 2"}
+                  </span>
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                    {selectedReceiptStudent.studentType || (selectedReceiptStudent.includeUniform ? "New" : "Returning")}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-slate-500 dark:text-slate-400">Parent & Emergency:</span>
+                <p className="font-bold text-slate-900 dark:text-white mt-0.5">
+                  {selectedReceiptStudent.parentName}
+                </p>
+                <a
+                  href={`tel:${selectedReceiptStudent.parentPhone}`}
+                  className="font-mono text-[11px] text-amber-700 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
+                >
+                  <Phone className="h-3 w-3" />
+                  <span>{selectedReceiptStudent.parentPhone}</span>
+                </a>
+                {selectedReceiptStudent.emergencyPhone && selectedReceiptStudent.emergencyPhone !== "N/A" ? (
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
+                    Emerg: {selectedReceiptStudent.emergencyPhone}
+                  </p>
+                ) : (
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 italic mt-0.5">No emerg. contact</p>
+                )}
+              </div>
+
+              <div className="col-span-2 sm:col-span-1">
+                <span className="text-slate-500 dark:text-slate-400">Payment & Method:</span>
                 <p className="font-extrabold text-amber-700 dark:text-amber-400 font-mono text-sm mt-0.5">
                   {selectedReceiptStudent.totalAmount?.toLocaleString()} ETB
                 </p>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                  {selectedReceiptStudent.includeUniform ? "10,000 Training + 1,500 Dobok" : "10,000 Training Fee"}
-                </p>
-              </div>
-              <div>
-                <span className="text-slate-500 dark:text-slate-400">Current Status:</span>
-                <p className="mt-0.5 font-bold">
-                  {selectedReceiptStudent.paymentStatus === "Verified" ? (
-                    <span className="text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                      Verified (Paid)
-                    </span>
-                  ) : selectedReceiptStudent.paymentStatus === "Invalid" ? (
-                    <span className="text-crimson dark:text-red-400 flex items-center gap-1">
-                      <XCircle className="h-3.5 w-3.5" />
-                      Invalid (Flagged)
-                    </span>
-                  ) : (
-                    <span className="text-amber-700 dark:text-amber-400 flex items-center gap-1">
-                      <Clock className="h-3.5 w-3.5" />
-                      Pending Approval
-                    </span>
-                  )}
-                </p>
-              </div>
-              <div>
-                <span className="text-slate-500 dark:text-slate-400">Parent Contact:</span>
-                <p className="font-medium text-slate-900 dark:text-white mt-0.5">
-                  {selectedReceiptStudent.parentName} ({selectedReceiptStudent.parentPhone})
-                </p>
-              </div>
-              <div>
-                <span className="text-slate-500 dark:text-slate-400">Submission Date:</span>
-                <p className="font-medium text-slate-900 dark:text-white mt-0.5">
-                  {selectedReceiptStudent.displayDate}
-                </p>
-              </div>
-
-              {/* Transaction Reference Number prominently displayed with copy button */}
-              <div className="col-span-2 pt-2.5 mt-1 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between gap-2">
-                <div>
-                  <span className="text-slate-500 dark:text-slate-400 block text-[11px] font-medium">
-                    Transaction ID / Reference Number:
-                  </span>
-                  <span className="font-mono font-bold text-amber-700 dark:text-amber-400 text-xs sm:text-sm select-all">
-                    {selectedReceiptStudent.transactionId || "N/A"}
+                <div className="flex items-center gap-1 mt-0.5">
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    {selectedReceiptStudent.paymentMethod || "Telebirr / CBE"}
                   </span>
                 </div>
-                {selectedReceiptStudent.transactionId && selectedReceiptStudent.transactionId !== "N/A" && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(selectedReceiptStudent.transactionId);
-                      setToastMessage(`Copied ref ${selectedReceiptStudent.transactionId}`);
-                      setTimeout(() => setToastMessage(""), 2500);
-                    }}
-                    className="inline-flex items-center gap-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-amber-600 transition-colors shadow-xs"
-                    title="Copy Transaction Ref"
-                  >
-                    <Copy className="h-3.5 w-3.5 text-amber-600" />
-                    <span>Copy</span>
-                  </button>
-                )}
+                <div className="mt-1">
+                  {selectedReceiptStudent.paymentStatus === "Verified" ? (
+                    <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1 text-[11px]">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      Verified
+                    </span>
+                  ) : selectedReceiptStudent.paymentStatus === "Invalid" ? (
+                    <span className="text-crimson dark:text-red-400 font-bold flex items-center gap-1 text-[11px]">
+                      <XCircle className="h-3.5 w-3.5" />
+                      Invalid
+                    </span>
+                  ) : (
+                    <span className="text-amber-700 dark:text-amber-400 font-bold flex items-center gap-1 text-[11px]">
+                      <Clock className="h-3.5 w-3.5" />
+                      Pending
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-span-2 sm:col-span-3 pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                <span>Date: {selectedReceiptStudent.displayDate}</span>
+                <span>Ref: <strong className="font-mono text-slate-700 dark:text-slate-300">{selectedReceiptStudent.id}</strong></span>
               </div>
             </div>
 
@@ -2234,8 +2172,8 @@ export default function InstructorAdminDashboard() {
                         ? "Phone Call Registration Record"
                         : "Mobile Banking / CBE Birr / Telebirr"}
                     </span>
-                    <h4 className="mt-1 text-xs font-bold text-slate-900 dark:text-white font-mono">
-                      Ref: {selectedReceiptStudent.transactionId || selectedReceiptStudent.receiptFileName || "DIRECT-RECORD"}
+                    <h4 className="mt-1 text-xs font-bold text-slate-900 dark:text-white">
+                      {selectedReceiptStudent.receiptFileName || "Payment Receipt Screenshot"}
                     </h4>
                     <p className="text-[11px] text-slate-600 dark:text-slate-300">
                       Student: <strong>{selectedReceiptStudent.studentName}</strong> • {selectedReceiptStudent.age || selectedReceiptStudent.grade} ({selectedReceiptStudent.studentType || (selectedReceiptStudent.includeUniform ? "New Student" : "Returning Student")})

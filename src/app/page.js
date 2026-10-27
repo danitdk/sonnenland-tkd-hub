@@ -8,7 +8,6 @@ import Badge from "@/components/Badge";
 import ThemeToggle from "@/components/ThemeToggle";
 import {
   Shield,
-  Calendar,
   Clock,
   MapPin,
   CheckCircle2,
@@ -30,8 +29,7 @@ import {
   ExternalLink,
   Flame,
   Award,
-  Mail,
-  Hash
+  Mail
 } from "lucide-react";
 
 const AGES = [
@@ -57,12 +55,12 @@ const BANK_ACCOUNTS = [
     accountHolder: "Daniel Teshome",
     copyLabel: "Copy Account",
     icon: Building2,
-    color: "from-purple-50/70 to-white dark:from-purple-950/20 dark:to-slate-800/90",
-    borderColor: "border-purple-200 dark:border-purple-900/50",
+    color: "from-purple-50/70 to-white dark:from-purple-950/20 dark:to-slate-900/80",
+    borderColor: "border-purple-200 dark:border-purple-900/30",
     badge: "Official Account",
-    badgeStyle: "bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/60",
+    badgeStyle: "bg-purple-100 dark:bg-purple-950/40 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800/40",
     iconColor: "text-purple-600 dark:text-purple-400",
-    iconBg: "bg-purple-100 dark:bg-purple-950/50",
+    iconBg: "bg-purple-100 dark:bg-purple-950/40",
   },
   {
     id: "telebirr",
@@ -72,12 +70,12 @@ const BANK_ACCOUNTS = [
     accountHolder: "Daniel Teshome",
     copyLabel: "Copy Number",
     icon: Smartphone,
-    color: "from-blue-50/70 to-white dark:from-blue-950/20 dark:to-slate-800/90",
-    borderColor: "border-blue-200 dark:border-blue-900/50",
+    color: "from-blue-50/70 to-white dark:from-blue-950/20 dark:to-slate-900/80",
+    borderColor: "border-blue-200 dark:border-blue-900/30",
     badge: "Instant Transfer",
-    badgeStyle: "bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800/60",
+    badgeStyle: "bg-blue-100 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800/40",
     iconColor: "text-blue-600 dark:text-blue-400",
-    iconBg: "bg-blue-100 dark:bg-blue-950/50",
+    iconBg: "bg-blue-100 dark:bg-blue-950/40",
   },
   {
     id: "awash",
@@ -87,12 +85,12 @@ const BANK_ACCOUNTS = [
     accountHolder: "Daniel Teshome",
     copyLabel: "Copy Account",
     icon: CreditCard,
-    color: "from-amber-50/70 to-white dark:from-amber-950/20 dark:to-slate-800/90",
-    borderColor: "border-amber-200 dark:border-amber-900/50",
+    color: "from-amber-50/70 to-white dark:from-amber-950/20 dark:to-slate-900/80",
+    borderColor: "border-amber-200 dark:border-amber-900/30",
     badge: "Official Account",
-    badgeStyle: "bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800/60",
+    badgeStyle: "bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800/40",
     iconColor: "text-amber-600 dark:text-amber-400",
-    iconBg: "bg-amber-100 dark:bg-amber-950/50",
+    iconBg: "bg-amber-100 dark:bg-amber-950/40",
   },
 ];
 
@@ -107,7 +105,7 @@ export default function ParentRegistrationPage() {
   const [emergencyPhone, setEmergencyPhone] = useState("");
   const [includeUniform, setIncludeUniform] = useState(true); // default true for new students
   const [uniformSize, setUniformSize] = useState("110cm");
-  const [transactionId, setTransactionId] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Telebirr");
 
   // Payment Proof Upload State
   const [receiptImage, setReceiptImage] = useState(null);
@@ -145,6 +143,10 @@ export default function ParentRegistrationPage() {
 
   // Copy bank details helper with resilient clipboard & mobile fallback
   const handleCopy = (id, text, label) => {
+    if (id === "cbe") setPaymentMethod("CBE");
+    else if (id === "telebirr") setPaymentMethod("Telebirr");
+    else if (id === "awash") setPaymentMethod("Awash Bank");
+
     const copySuccess = () => {
       setCopiedId(id);
       setCopiedToast(`Copied ${label || "account"} (${text}) to clipboard!`);
@@ -256,11 +258,6 @@ export default function ParentRegistrationPage() {
         "Enter a valid emergency phone number (e.g. 0912345678)";
     }
 
-    if (!transactionId.trim()) {
-      newErrors.transactionId =
-        "Please enter the reference number from your bank or Telebirr SMS/receipt to confirm your payment.";
-    }
-
     if (!receiptImage) {
       newErrors.receipt =
         "Please upload a screenshot or photo of your payment transfer receipt";
@@ -292,6 +289,7 @@ export default function ParentRegistrationPage() {
       parentName: parentName.trim(),
       parentPhone: parentPhone.trim(),
       emergencyPhone: emergencyPhone.trim() || "N/A",
+      paymentMethod,
       includeUniform,
       uniformSize: includeUniform ? uniformSize : "None",
       uniformStatus: includeUniform ? "Needed" : "None",
@@ -299,7 +297,7 @@ export default function ParentRegistrationPage() {
       tuitionFee: TRAINING_FEE,
       uniformFee: includeUniform ? UNIFORM_FEE : 0,
       totalAmount,
-      transactionId: transactionId.trim(),
+      transactionId: "N/A",
       paymentStatus: "Pending",
       receiptImage,
       receiptFileName,
@@ -337,10 +335,9 @@ export default function ParentRegistrationPage() {
   const getWhatsAppShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 *Sönnenland TKD Hub Registration Confirmation*\n` +
+      `🥋 *Sönnenland TKD Registration Confirmation*\n` +
         `-----------------------------------------\n` +
         `*Reference ID:* ${ticket.id}\n` +
-        `*Transaction / Ref:* ${ticket.transactionId || "N/A"}\n` +
         `*Student:* ${ticket.studentName} (${ticket.age || ticket.grade})\n` +
         `*Term:* ${ticket.term || "Term 2"}\n` +
         `*Student Type:* ${ticket.studentType || "New Student"}\n` +
@@ -348,7 +345,7 @@ export default function ParentRegistrationPage() {
         `*Uniform:* ${ticket.includeUniform ? `Yes (${ticket.uniformSize})` : "No"}\n` +
         `*Total Paid:* ${ticket.totalAmount.toLocaleString()} ETB\n` +
         `*Date:* ${ticket.displayDate}\n\n` +
-        `Hello Master Daniel, I have registered my child for the Sönnenland International Kindergarten After-School TKD Hub and submitted my payment receipt. Thank you!`
+        `Hello Master Daniel, I have registered my child for the Sönnenland International Kindergarten After-School TKD and submitted my payment receipt. Thank you!`
     );
     return `https://wa.me/251935368595?text=${text}`;
   };
@@ -356,13 +353,13 @@ export default function ParentRegistrationPage() {
   const getTelegramShareUrl = (ticket) => {
     if (!ticket) return "#";
     const text = encodeURIComponent(
-      `🥋 Sönnenland TKD Hub Registration\nRef: ${ticket.id}\nTerm: ${ticket.term || "Term 2"}\nTxn: ${ticket.transactionId || "N/A"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nType: ${ticket.studentType || "New Student"}\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
+      `🥋 Sönnenland TKD Registration\nRef: ${ticket.id}\nTerm: ${ticket.term || "Term 2"}\nStudent: ${ticket.studentName} (${ticket.age || ticket.grade})\nType: ${ticket.studentType || "New Student"}\nPaid: ${ticket.totalAmount.toLocaleString()} ETB\nParent: ${ticket.parentName} (${ticket.parentPhone})`
     );
     return `https://t.me/share/url?url=https://sonnenland.school/tkd&text=${text}`;
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0B0F17] text-slate-800 dark:text-slate-100 selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0B0F17] text-slate-800 dark:text-slate-300 selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
       {/* Top Navigation with Theme Switcher */}
       <Navbar />
 
@@ -370,35 +367,26 @@ export default function ParentRegistrationPage() {
         {/* ========================================================= */}
         {/* 1. HEADER / HERO SECTION                                  */}
         {/* ========================================================= */}
-        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800/80 bg-[#F8FAFC] dark:bg-[#0B0F17]">
+        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800 bg-[#F8FAFC] dark:bg-[#0B0F17]">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-            {/* Registration Status Badge */}
-            <div className="inline-flex mb-4">
-              <span className="inline-flex items-center gap-2 rounded-full bg-slate-100 dark:bg-slate-800/70 px-4 py-1.5 text-xs font-semibold text-amber-800 dark:text-amber-400 border border-slate-200 dark:border-slate-700/80 shadow-xs">
-                <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-                <Calendar className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                <span>Registration Open: October 26 - October 28</span>
-              </span>
-            </div>
-
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
-              Sönnenland After-School TKD Hub
+              Sönnenland After-School TKD
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-3 text-base sm:text-lg font-medium text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-3 text-base sm:text-lg font-medium text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
               Martial arts, discipline, and physical fitness exclusively for Sönnenland KG students.
             </p>
 
             {/* Schedule & Location Pills */}
-            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md px-4 py-2 sm:px-5 sm:py-2.5 shadow-sm">
+            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-2.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-4 py-2 sm:px-5 sm:py-2.5 shadow-sm">
               <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300 font-semibold text-xs sm:text-sm">
                 <Clock className="h-4 w-4 text-amber-500 shrink-0" />
                 <span>Mon / Wed / Fri | 3:30 PM - 4:30 PM</span>
               </div>
               <span className="hidden sm:inline text-slate-300 dark:text-slate-700">•</span>
-              <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 font-medium text-xs sm:text-sm">
+              <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium text-xs sm:text-sm">
                 <MapPin className="h-4 w-4 text-crimson shrink-0" />
                 <span>Sönnenland International Kindergarten</span>
               </div>
@@ -417,7 +405,7 @@ export default function ParentRegistrationPage() {
               <div className="lg:col-span-8 space-y-8">
                 
                 {/* 2. REGISTRATION FORM FIELDS */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 sm:p-8 shadow-xl transition-colors">
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-crimson dark:text-red-400 border border-red-500/20 shrink-0">
@@ -428,7 +416,7 @@ export default function ParentRegistrationPage() {
                         <p className="text-xs text-slate-500 dark:text-slate-400">Step 1: Enrolment Profile</p>
                       </div>
                     </div>
-                    <span className="text-[11px] sm:text-xs font-semibold text-slate-400 dark:text-slate-500">
+                    <span className="text-[11px] sm:text-xs font-semibold text-slate-400 dark:text-slate-400">
                       * Required
                     </span>
                   </div>
@@ -442,14 +430,14 @@ export default function ParentRegistrationPage() {
                           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                             Student Type <span className="text-crimson">*</span>
                           </label>
-                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-800/60 p-1 border border-slate-200 dark:border-slate-700/80">
+                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
                             <button
                               type="button"
                               onClick={() => handleStudentTypeChange("new")}
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 studentType === "new"
                                   ? "bg-crimson text-white shadow-md font-extrabold"
-                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
                               New Student
@@ -460,7 +448,7 @@ export default function ParentRegistrationPage() {
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 studentType === "returning"
                                   ? "bg-crimson text-white shadow-md font-extrabold"
-                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
                               Returning Student
@@ -473,14 +461,14 @@ export default function ParentRegistrationPage() {
                           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                             Term Selection <span className="text-crimson">*</span>
                           </label>
-                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-800/60 p-1 border border-slate-200 dark:border-slate-700/80">
+                          <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
                             <button
                               type="button"
                               onClick={() => setTerm("Term 2")}
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 term === "Term 2"
                                   ? "bg-crimson text-white shadow-md font-extrabold"
-                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
                               Term 2
@@ -491,7 +479,7 @@ export default function ParentRegistrationPage() {
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 term === "Term 3"
                                   ? "bg-crimson text-white shadow-md font-extrabold"
-                                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                                  : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
                               Term 3
@@ -501,7 +489,7 @@ export default function ParentRegistrationPage() {
                       </div>
 
                       {/* 2. DYNAMIC & MINIMAL SUMMARY CARD (Strictly 2-3 concise lines) */}
-                      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 p-3.5 transition-all text-xs">
+                      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 p-3.5 transition-all text-xs">
                         {studentType === "new" ? (
                           <div className="space-y-1.5">
                             <div className="flex items-center justify-between text-slate-600 dark:text-slate-300">
@@ -512,7 +500,7 @@ export default function ParentRegistrationPage() {
                               <span>Official Dobok & Belt:</span>
                               <span className="font-mono font-bold text-amber-600 dark:text-amber-400">+1,500 ETB</span>
                             </div>
-                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700/80 font-extrabold text-sm text-slate-900 dark:text-white">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-800 font-extrabold text-sm text-slate-900 dark:text-white">
                               <span>Total Due:</span>
                               <span className="font-mono font-black text-amber-500 dark:text-amber-400">11,500 ETB</span>
                             </div>
@@ -523,7 +511,7 @@ export default function ParentRegistrationPage() {
                               <span>{term} Tuition (Training Fee):</span>
                               <span className="font-mono font-bold text-slate-900 dark:text-white">10,000 ETB</span>
                             </div>
-                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-700/80 font-extrabold text-sm text-slate-900 dark:text-white">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-800 font-extrabold text-sm text-slate-900 dark:text-white">
                               <span>Total Due:</span>
                               <span className="font-mono font-black text-emerald-500 dark:text-emerald-400">10,000 ETB</span>
                             </div>
@@ -549,10 +537,10 @@ export default function ParentRegistrationPage() {
                               setStudentName(e.target.value);
                               if (errors.studentName) setErrors((prev) => ({ ...prev, studentName: null }));
                             }}
-                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.studentName
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
                             }`}
                           />
                         </div>
@@ -577,17 +565,17 @@ export default function ParentRegistrationPage() {
                               setAge(e.target.value);
                               if (errors.age) setErrors((prev) => ({ ...prev, age: null }));
                             }}
-                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-10 py-3 text-base sm:text-sm text-slate-900 dark:text-white appearance-none transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-10 py-3 text-base sm:text-sm text-slate-900 dark:text-white appearance-none transition-colors focus:outline-none focus:ring-1 ${
                               errors.age
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
                             }`}
                           >
                             <option value="" disabled className="text-slate-400">
                               Select Age
                             </option>
                             {AGES.map((a) => (
-                              <option key={a} value={a} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                              <option key={a} value={a} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                                 {a}
                               </option>
                             ))}
@@ -622,10 +610,10 @@ export default function ParentRegistrationPage() {
                               setParentName(e.target.value);
                               if (errors.parentName) setErrors((prev) => ({ ...prev, parentName: null }));
                             }}
-                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.parentName
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
                             }`}
                           />
                         </div>
@@ -652,10 +640,10 @@ export default function ParentRegistrationPage() {
                               setParentPhone(e.target.value);
                               if (errors.parentPhone) setErrors((prev) => ({ ...prev, parentPhone: null }));
                             }}
-                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                            className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.parentPhone
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
                             }`}
                           />
                         </div>
@@ -686,10 +674,10 @@ export default function ParentRegistrationPage() {
                             setEmergencyPhone(e.target.value);
                             if (errors.emergencyPhone) setErrors((prev) => ({ ...prev, emergencyPhone: null }));
                           }}
-                          className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
+                          className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                             errors.emergencyPhone
                               ? "border-crimson focus:border-crimson focus:ring-crimson"
-                              : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
+                              : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
                           }`}
                         />
                       </div>
@@ -716,10 +704,10 @@ export default function ParentRegistrationPage() {
                             <select
                               value={uniformSize}
                               onChange={(e) => setUniformSize(e.target.value)}
-                              className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-700/80 bg-white dark:bg-slate-800/50 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
+                              className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
                             >
                               {UNIFORM_SIZES.map((size) => (
-                                <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                <option key={size.value} value={size.value} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                                   {size.label}
                                 </option>
                               ))}
@@ -751,10 +739,10 @@ export default function ParentRegistrationPage() {
                               <select
                                 value={uniformSize}
                                 onChange={(e) => setUniformSize(e.target.value)}
-                                className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-700/80 bg-white dark:bg-slate-800/50 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
+                                className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
                               >
                                 {UNIFORM_SIZES.map((size) => (
-                                  <option key={size.value} value={size.value} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
+                                  <option key={size.value} value={size.value} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
                                     {size.label}
                                   </option>
                                 ))}
@@ -772,8 +760,8 @@ export default function ParentRegistrationPage() {
                 </div>
 
                 {/* 4. BANK & PAYMENT TRANSFER DETAILS SECTION */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 sm:p-8 shadow-xl transition-colors">
+                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0">
                         <CreditCard className="h-5 w-5" />
@@ -783,11 +771,28 @@ export default function ParentRegistrationPage() {
                         <p className="text-xs text-slate-500 dark:text-slate-400">Step 2: Bank & Mobile Transfer (CBE, Telebirr, Awash)</p>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="inline-flex items-center gap-1.5 rounded-lg bg-red-500/10 px-3 py-1.5 text-xs font-bold text-crimson dark:text-red-400 border border-red-500/20 self-start sm:self-auto shadow-xs">
-                      <Clock className="h-3.5 w-3.5 text-crimson shrink-0" />
-                      <span>Payment Deadline: Wednesday before 3:30 PM</span>
-                    </div>
+                  {/* Payment Method Quick Selector */}
+                  <div className="mt-4 flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
+                    {[
+                      { id: "Telebirr", label: "Telebirr" },
+                      { id: "CBE", label: "CBE" },
+                      { id: "Awash Bank", label: "Awash Bank" },
+                    ].map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setPaymentMethod(m.id)}
+                        className={`flex-1 min-h-[42px] py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
+                          paymentMethod === m.id
+                            ? "bg-crimson text-white shadow-md font-extrabold"
+                            : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
+                        }`}
+                      >
+                        {m.label}
+                      </button>
+                    ))}
                   </div>
 
                   <p className="mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -803,11 +808,11 @@ export default function ParentRegistrationPage() {
                       return (
                         <div
                           key={acc.id}
-                          className="rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-slate-50/70 dark:bg-slate-800/40 p-4 sm:p-5 transition-all hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
+                          className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/80 p-4 sm:p-5 transition-all hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div className="flex items-start gap-3">
-                              <div className={`rounded-xl ${acc.iconBg} p-2.5 ${acc.iconColor} border border-slate-200 dark:border-slate-700 shrink-0 mt-0.5`}>
+                              <div className={`rounded-xl ${acc.iconBg} p-2.5 ${acc.iconColor} border border-slate-200 dark:border-slate-800 shrink-0 mt-0.5`}>
                                 <IconComponent className="h-5 w-5" />
                               </div>
                               <div className="min-w-0 flex-1">
@@ -841,7 +846,7 @@ export default function ParentRegistrationPage() {
                               className={`w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all sm:self-center shrink-0 active:scale-95 ${
                                 isCopied
                                   ? "bg-emerald-600 text-white shadow-md"
-                                  : "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-700 dark:text-slate-200 hover:border-amber-500 hover:text-amber-800 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-slate-700/80"
+                                  : "border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 text-slate-700 dark:text-slate-200 hover:border-amber-500 hover:text-amber-800 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-slate-800"
                               }`}
                             >
                               {isCopied ? (
@@ -864,52 +869,19 @@ export default function ParentRegistrationPage() {
                 </div>
 
                 {/* 5. PAYMENT PROOF SCREENSHOT UPLOAD */}
-                <div id="receipt" className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 sm:p-8 shadow-xl dark:shadow-2xl transition-colors">
+                <div id="receipt" className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 sm:p-8 shadow-xl transition-colors">
                   <div className="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-crimson dark:text-red-400 border border-red-500/20 shrink-0">
                       <Upload className="h-5 w-5" />
                     </div>
                     <div>
                       <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Upload Bank / Telebirr Receipt</h2>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">Step 3: Reference Number & Transfer Screenshot</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Step 3: Transfer Screenshot</p>
                     </div>
                   </div>
 
-                  {/* Mandatory Field 1: Transaction ID / Reference Number */}
-                  <div id="transactionId" className="mt-5">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                      Transaction ID / Reference Number <span className="text-crimson">*</span>
-                    </label>
-                    <div className="relative">
-                      <Hash className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
-                      <input
-                        type="text"
-                        placeholder="e.g. FT26298XXXXX or Telebirr transaction reference"
-                        value={transactionId}
-                        onChange={(e) => {
-                          setTransactionId(e.target.value);
-                          if (errors.transactionId) setErrors((prev) => ({ ...prev, transactionId: null }));
-                        }}
-                        className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-800/50 pl-10 pr-4 py-3 text-base sm:text-sm font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
-                          errors.transactionId
-                            ? "border-crimson focus:border-crimson focus:ring-crimson"
-                            : "border-slate-300 dark:border-slate-700/80 focus:border-red-500 focus:ring-red-500"
-                        }`}
-                      />
-                    </div>
-                    <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                      Please enter the reference number from your bank or Telebirr SMS/receipt to confirm your payment.
-                    </p>
-                    {errors.transactionId && (
-                      <p className="mt-1.5 flex items-center gap-1 text-xs text-crimson font-medium">
-                        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-                        {errors.transactionId}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Mandatory Field 2: Transfer Receipt Screenshot */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
+                  {/* Transfer Receipt Screenshot */}
+                  <div className="mt-5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                       Upload Bank / Telebirr Receipt <span className="text-crimson">*</span>
                     </label>
@@ -931,10 +903,10 @@ export default function ParentRegistrationPage() {
                         className={`group relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 sm:p-8 text-center cursor-pointer transition-all min-h-[160px] ${
                           errors.receipt
                             ? "border-crimson bg-red-50/60 dark:bg-red-950/20 hover:bg-red-50"
-                            : "border-slate-300 dark:border-slate-700/80 hover:border-red-500 bg-slate-50 dark:bg-slate-800/30 hover:bg-slate-100/80 dark:hover:bg-slate-800/50"
+                            : "border-slate-300 dark:border-slate-800 hover:border-red-500 bg-slate-50 dark:bg-slate-900/80 hover:bg-slate-100/80 dark:hover:bg-slate-900"
                         }`}
                       >
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 group-hover:scale-110 transition-transform group-hover:border-red-500 shadow-sm">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 group-hover:scale-110 transition-transform group-hover:border-red-500 shadow-sm">
                           <Upload className="h-6 w-6 text-amber-500 dark:text-amber-400" />
                         </div>
                         <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
@@ -943,14 +915,14 @@ export default function ParentRegistrationPage() {
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                           Supports PNG, JPG, or JPEG (Max 8MB)
                         </p>
-                        <span className="mt-3 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:border-red-500 shadow-xs">
+                        <span className="mt-3 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:border-red-500 shadow-xs">
                           Select Image File
                         </span>
                       </div>
                     ) : (
                       /* Uploaded Preview with max-h-56 limit */
-                      <div className="rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/40 p-4">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700/80 mb-3">
+                      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 p-4">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800 mb-3">
                           <div className="flex items-center gap-2 min-w-0 flex-1 pr-2">
                             <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                             <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
@@ -969,7 +941,7 @@ export default function ParentRegistrationPage() {
                         </div>
 
                         {/* Image Preview limited to max-h-56 with object-contain */}
-                        <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700/80 max-h-56 flex items-center justify-center bg-white dark:bg-slate-950 p-2">
+                        <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 max-h-56 flex items-center justify-center bg-white dark:bg-[#0B0F17] p-2">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={receiptImage}
@@ -995,8 +967,8 @@ export default function ParentRegistrationPage() {
               <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
                 
                 {/* 3. LIVE FEE SUMMARY CARD (DYNAMIC) */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 dark:backdrop-blur-md p-6 sm:p-7 shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors">
-                  <div className="absolute top-0 right-0 bg-slate-100 dark:bg-slate-800 text-amber-700 dark:text-amber-400 font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl tracking-wider border-l border-b border-slate-200 dark:border-slate-700/80">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 sm:p-7 shadow-xl relative overflow-hidden transition-colors">
+                  <div className="absolute top-0 right-0 bg-slate-100 dark:bg-slate-900 text-amber-700 dark:text-amber-400 font-bold text-[10px] uppercase px-3 py-1 rounded-bl-xl tracking-wider border-l border-b border-slate-200 dark:border-slate-800">
                     {term} • 2026
                   </div>
 
@@ -1074,13 +1046,13 @@ export default function ParentRegistrationPage() {
                 </div>
 
                 {/* Helpful Contact Box */}
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 dark:backdrop-blur-md p-6 shadow-xl dark:shadow-2xl transition-colors">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 shadow-xl transition-colors">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
                     <Award className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                     <span>Instructor Inquiries</span>
                   </div>
-                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Have questions about sizing, dojang training, or medical clearance? Reach Master Daniel directly:
+                  <p className="mt-2 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Have questions about sizing or dojang training? Reach Master Daniel directly:
                   </p>
                   <div className="mt-4 space-y-2.5 text-xs">
                     <a
@@ -1143,7 +1115,7 @@ export default function ParentRegistrationPage() {
       {/* ========================================================= */}
       {showSuccessModal && submittedTicket && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/95 dark:backdrop-blur-xl p-6 sm:p-8 shadow-2xl text-left my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900 dark:text-white">
+          <div className="relative w-full max-w-lg rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-2xl text-left my-8 max-h-[90vh] overflow-y-auto slim-scrollbar text-slate-900 dark:text-white">
             <button
               type="button"
               onClick={() => setShowSuccessModal(false)}
@@ -1153,7 +1125,7 @@ export default function ParentRegistrationPage() {
               <X className="h-5 w-5" />
             </button>
 
-            <div className="text-center pb-5 border-b border-slate-200 dark:border-slate-700">
+            <div className="text-center pb-5 border-b border-slate-200 dark:border-slate-800">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 shadow-xs">
                 <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
               </div>
@@ -1165,7 +1137,7 @@ export default function ParentRegistrationPage() {
               </p>
             </div>
 
-            <div className="mt-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-4 sm:p-5 space-y-3">
+            <div className="mt-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 p-4 sm:p-5 space-y-3">
               <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Registration Ticket
@@ -1216,12 +1188,6 @@ export default function ParentRegistrationPage() {
                     {submittedTicket.totalAmount.toLocaleString()} ETB
                   </p>
                 </div>
-                <div className="col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-                  <span className="text-slate-500 dark:text-slate-400 font-medium">Transaction ID / Reference:</span>
-                  <p className="font-mono font-bold text-amber-600 dark:text-amber-400 mt-0.5 text-xs sm:text-sm select-all">
-                    {submittedTicket.transactionId || "N/A"}
-                  </p>
-                </div>
               </div>
 
               {submittedTicket.receiptImage && (
@@ -1230,7 +1196,7 @@ export default function ParentRegistrationPage() {
                   <img
                     src={submittedTicket.receiptImage}
                     alt="Receipt Thumbnail"
-                    className="h-12 w-12 rounded-lg object-cover border border-slate-200 dark:border-slate-700"
+                    className="h-12 w-12 rounded-lg object-cover border border-slate-200 dark:border-slate-800"
                   />
                   <div>
                     <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
@@ -1261,7 +1227,7 @@ export default function ParentRegistrationPage() {
                 href={getTelegramShareUrl(submittedTicket)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full min-h-[44px] inline-flex items-center justify-center gap-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors"
+                className="w-full min-h-[44px] inline-flex items-center justify-center gap-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-3 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
               >
                 <span>Share Confirmation via Telegram</span>
                 <ExternalLink className="h-3.5 w-3.5 text-slate-400" />
@@ -1272,7 +1238,7 @@ export default function ParentRegistrationPage() {
               <button
                 type="button"
                 onClick={() => setShowSuccessModal(false)}
-                className="w-full min-h-[44px] inline-flex items-center justify-center rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 text-sm font-bold hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors"
+                className="w-full min-h-[44px] inline-flex items-center justify-center rounded-xl bg-slate-900 dark:bg-slate-800 text-white px-5 py-2.5 text-sm font-bold hover:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
               >
                 Close
               </button>
@@ -1283,7 +1249,7 @@ export default function ParentRegistrationPage() {
 
       {/* Floating Copy Toast Notification */}
       {copiedToast && (
-        <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-slate-800 px-4 py-3 text-xs sm:text-sm font-bold text-slate-900 dark:text-white shadow-xl animate-fade-in max-w-sm">
+        <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex items-center gap-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-slate-900 px-4 py-3 text-xs sm:text-sm font-bold text-slate-900 dark:text-white shadow-xl animate-fade-in max-w-sm">
           <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-600 text-white shrink-0">
             <Check className="h-3.5 w-3.5" />
           </div>

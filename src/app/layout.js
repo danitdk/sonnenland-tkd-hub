@@ -2,7 +2,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metadata = {
-  title: "Sönnenland International Kindergarten After-School TKD Hub",
+  title: "Sönnenland International Kindergarten After-School TKD",
   description:
     "Official After-School Taekwondo Program for Sönnenland International Kindergarten led by Master Daniel.",
 };
