@@ -3,7 +3,7 @@ import { Mail, MapPin, Award } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-[#0B0F17] text-slate-600 dark:text-slate-400 transition-colors duration-200">
+    <footer className="border-t border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-[#1E2530] text-slate-600 dark:text-slate-400 transition-colors duration-200">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Column 1: Brand & Philosophy */}
@@ -55,17 +55,17 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm font-medium text-slate-600 dark:text-slate-400">
               <li>
-                <Link href="#program-details" className="hover:text-crimson dark:hover:text-amber-400 transition-colors">
+                <Link href="#program-details" className="hover:text-emerald-600 dark:hover:text-amber-400 transition-colors">
                   Program Highlights
                 </Link>
               </li>
               <li>
-                <Link href="#schedule" className="hover:text-crimson dark:hover:text-amber-400 transition-colors">
+                <Link href="#schedule" className="hover:text-emerald-600 dark:hover:text-amber-400 transition-colors">
                   Class Schedule & Fees
                 </Link>
               </li>
               <li>
-                <Link href="#registration" className="hover:text-crimson dark:hover:text-amber-400 transition-colors">
+                <Link href="#registration" className="hover:text-emerald-600 dark:hover:text-amber-400 transition-colors">
                   Online Registration
                 </Link>
               </li>
@@ -74,12 +74,12 @@ export default function Footer() {
 
           {/* Column 3: Contact Master Daniel & Location */}
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-crimson dark:text-red-400">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               Contact & Location
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
               <li className="flex items-start gap-2.5">
-                <MapPin className="h-4 w-4 mt-0.5 text-crimson shrink-0" />
+                <MapPin className="h-4 w-4 mt-0.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Sönnenland International Kindergarten Campus (Addis Ababa)</span>
               </li>
               <li className="flex items-center gap-2.5">
@@ -90,7 +90,7 @@ export default function Footer() {
                 <Mail className="h-4 w-4 text-slate-400 shrink-0" />
                 <a
                   href="mailto:danielteshome335@gmail.com"
-                  className="font-medium text-slate-700 dark:text-slate-200 hover:text-crimson dark:hover:text-amber-400 transition-colors underline-offset-2 hover:underline"
+                  className="font-medium text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-amber-400 transition-colors underline-offset-2 hover:underline"
                 >
                   danielteshome335@gmail.com
                 </a>

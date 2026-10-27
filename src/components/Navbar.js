@@ -9,7 +9,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0B0F17]/90 backdrop-blur-md shadow-sm transition-colors duration-200">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#1E2530]/90 backdrop-blur-md shadow-sm transition-colors duration-200">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6 lg:px-8">
         {/* Brand Logo & School Affiliation */}
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group">
@@ -45,19 +45,19 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-6">
           <Link
             href="#program-details"
-            className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-crimson dark:hover:text-amber-400"
+            className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-emerald-600 dark:hover:text-amber-400"
           >
             Program Info
           </Link>
           <Link
             href="#schedule"
-            className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-crimson dark:hover:text-amber-400"
+            className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-emerald-600 dark:hover:text-amber-400"
           >
             Schedule & Fees
           </Link>
           <Link
             href="#registration"
-            className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-crimson dark:hover:text-amber-400"
+            className="text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-emerald-600 dark:hover:text-amber-400"
           >
             Registration Flow
           </Link>
@@ -85,26 +85,26 @@ export default function Navbar() {
 
       {/* Mobile dropdown */}
       {mobileMenuOpen && (
-        <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0B0F17] px-4 py-4 md:hidden shadow-lg animate-fade-in">
+        <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1E2530] px-4 py-4 md:hidden shadow-lg animate-fade-in">
           <div className="flex flex-col space-y-2">
             <Link
               href="#program-details"
               onClick={() => setMobileMenuOpen(false)}
-              className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-crimson dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
+              className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
             >
               Program Info
             </Link>
             <Link
               href="#schedule"
               onClick={() => setMobileMenuOpen(false)}
-              className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-crimson dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
+              className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
             >
               Schedule & Fees
             </Link>
             <Link
               href="#registration"
               onClick={() => setMobileMenuOpen(false)}
-              className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-crimson dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
+              className="min-h-[44px] flex items-center px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-amber-400 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800"
             >
               Registration Flow
             </Link>

@@ -18,13 +18,13 @@
 }
 
 .dark {
-  --background-deep: #0B0F17;
-  --background-rich: #0B0F17;
+  --background-deep: #1E2530;
+  --background-rich: #1E2530;
   --surface-card: #0F172A;
-  --surface-border: #1E293B;
+  --surface-border: #334155;
   --surface-elevated: #1E293B;
-  --accent-crimson: #DC2626;
-  --accent-crimson-light: #EF4444;
+  --accent-crimson: #10B981;
+  --accent-crimson-light: #34D399;
   --accent-gold: #D97706;
   --accent-gold-dark: #B45309;
   --text-primary: #FFFFFF;
@@ -40,7 +40,7 @@ html, body {
 }
 
 html.dark, html.dark body {
-  background-color: #0B0F17;
+  background-color: #1E2530;
   color: #FFFFFF;
 }
 
@@ -70,16 +70,16 @@ html:not(.dark), html:not(.dark) body {
 
 /* Custom scrollbar (Dark Mode) */
 .dark ::-webkit-scrollbar-track {
-  background: #0B0F17;
+  background: #1E2530;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #334155;
   border-radius: 9999px;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #475569;
 }
 
 /* Slim scrollbar for tables and horizontal scrolling */
@@ -93,7 +93,7 @@ html:not(.dark), html:not(.dark) body {
 }
 
 .dark .slim-scrollbar::-webkit-scrollbar-track {
-  background: #0B0F17;
+  background: #1E2530;
 }
 
 .slim-scrollbar::-webkit-scrollbar-thumb {
@@ -102,7 +102,7 @@ html:not(.dark), html:not(.dark) body {
 }
 
 .dark .slim-scrollbar::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #334155;
 }
 
 .slim-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -110,7 +110,7 @@ html:not(.dark), html:not(.dark) body {
 }
 
 .dark .slim-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #475569;
 }
 
 /* Red/Gold gradient text helpers */

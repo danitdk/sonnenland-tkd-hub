@@ -359,7 +359,7 @@ export default function ParentRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#0B0F17] text-slate-800 dark:text-slate-300 selection:bg-crimson selection:text-white overflow-x-hidden transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#1E2530] text-slate-800 dark:text-slate-300 selection:bg-emerald-600 selection:text-white overflow-x-hidden transition-colors duration-200">
       {/* Top Navigation with Theme Switcher */}
       <Navbar />
 
@@ -367,7 +367,7 @@ export default function ParentRegistrationPage() {
         {/* ========================================================= */}
         {/* 1. HEADER / HERO SECTION                                  */}
         {/* ========================================================= */}
-        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800 bg-[#F8FAFC] dark:bg-[#0B0F17]">
+        <section className="pt-8 pb-10 sm:pt-12 sm:pb-14 border-b border-slate-200 dark:border-slate-800 bg-[#F8FAFC] dark:bg-[#1E2530]">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
@@ -387,7 +387,7 @@ export default function ParentRegistrationPage() {
               </div>
               <span className="hidden sm:inline text-slate-300 dark:text-slate-700">•</span>
               <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium text-xs sm:text-sm">
-                <MapPin className="h-4 w-4 text-crimson shrink-0" />
+                <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Sönnenland International Kindergarten</span>
               </div>
             </div>
@@ -408,7 +408,7 @@ export default function ParentRegistrationPage() {
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 sm:p-8 shadow-xl transition-colors">
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-crimson dark:text-red-400 border border-red-500/20 shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
                         <User className="h-5 w-5" />
                       </div>
                       <div>
@@ -428,7 +428,7 @@ export default function ParentRegistrationPage() {
                         {/* Student Type Selector */}
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                            Student Type <span className="text-crimson">*</span>
+                            Student Type <span className="text-emerald-600 dark:text-emerald-400">*</span>
                           </label>
                           <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
                             <button
@@ -436,7 +436,7 @@ export default function ParentRegistrationPage() {
                               onClick={() => handleStudentTypeChange("new")}
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 studentType === "new"
-                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/20 font-extrabold"
                                   : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
@@ -447,7 +447,7 @@ export default function ParentRegistrationPage() {
                               onClick={() => handleStudentTypeChange("returning")}
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 studentType === "returning"
-                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/20 font-extrabold"
                                   : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
@@ -459,7 +459,7 @@ export default function ParentRegistrationPage() {
                         {/* Term Selection */}
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                            Term Selection <span className="text-crimson">*</span>
+                            Term Selection <span className="text-emerald-600 dark:text-emerald-400">*</span>
                           </label>
                           <div className="flex rounded-xl bg-slate-100 dark:bg-slate-900/90 p-1 border border-slate-200 dark:border-slate-800">
                             <button
@@ -467,7 +467,7 @@ export default function ParentRegistrationPage() {
                               onClick={() => setTerm("Term 2")}
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 term === "Term 2"
-                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/20 font-extrabold"
                                   : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
@@ -478,7 +478,7 @@ export default function ParentRegistrationPage() {
                               onClick={() => setTerm("Term 3")}
                               className={`flex-1 min-h-[44px] py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center active:scale-[0.98] ${
                                 term === "Term 3"
-                                  ? "bg-crimson text-white shadow-md font-extrabold"
+                                  ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/20 font-extrabold"
                                   : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                               }`}
                             >
@@ -525,7 +525,7 @@ export default function ParentRegistrationPage() {
                       {/* Student Full Name */}
                       <div id="studentName">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Student Full Name <span className="text-crimson">*</span>
+                          Student Full Name <span className="text-emerald-600 dark:text-emerald-400">*</span>
                         </label>
                         <div className="relative">
                           <User className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -540,7 +540,7 @@ export default function ParentRegistrationPage() {
                             className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.studentName
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500"
                             }`}
                           />
                         </div>
@@ -555,7 +555,7 @@ export default function ParentRegistrationPage() {
                       {/* Age Selection */}
                       <div id="age">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Age <span className="text-crimson">*</span>
+                          Age <span className="text-emerald-600 dark:text-emerald-400">*</span>
                         </label>
                         <div className="relative">
                           <GraduationCap className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
@@ -568,7 +568,7 @@ export default function ParentRegistrationPage() {
                             className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-10 py-3 text-base sm:text-sm text-slate-900 dark:text-white appearance-none transition-colors focus:outline-none focus:ring-1 ${
                               errors.age
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500"
                             }`}
                           >
                             <option value="" disabled className="text-slate-400">
@@ -598,7 +598,7 @@ export default function ParentRegistrationPage() {
                       {/* Parent / Guardian Name */}
                       <div id="parentName">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Parent / Guardian Name <span className="text-crimson">*</span>
+                          Parent / Guardian Name <span className="text-emerald-600 dark:text-emerald-400">*</span>
                         </label>
                         <div className="relative">
                           <User className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -613,7 +613,7 @@ export default function ParentRegistrationPage() {
                             className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.parentName
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500"
                             }`}
                           />
                         </div>
@@ -628,7 +628,7 @@ export default function ParentRegistrationPage() {
                       {/* Parent Phone Number with Ethiopian validation */}
                       <div id="parentPhone">
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                          Parent Phone Number <span className="text-crimson">*</span>
+                          Parent Phone Number <span className="text-emerald-600 dark:text-emerald-400">*</span>
                         </label>
                         <div className="relative">
                           <Phone className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400" />
@@ -643,7 +643,7 @@ export default function ParentRegistrationPage() {
                             className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                               errors.parentPhone
                                 ? "border-crimson focus:border-crimson focus:ring-crimson"
-                                : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
+                                : "border-slate-300 dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500"
                             }`}
                           />
                         </div>
@@ -677,7 +677,7 @@ export default function ParentRegistrationPage() {
                           className={`w-full min-h-[46px] rounded-xl border bg-white dark:bg-slate-900/80 pl-10 pr-4 py-3 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-colors focus:outline-none focus:ring-1 ${
                             errors.emergencyPhone
                               ? "border-crimson focus:border-crimson focus:ring-crimson"
-                              : "border-slate-300 dark:border-slate-800 focus:border-red-500 focus:ring-red-500"
+                              : "border-slate-300 dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500"
                           }`}
                         />
                       </div>
@@ -697,14 +697,14 @@ export default function ParentRegistrationPage() {
                       {studentType === "new" ? (
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                            Dobok Uniform Size <span className="text-crimson">*</span>
+                            Dobok Uniform Size <span className="text-emerald-600 dark:text-emerald-400">*</span>
                           </label>
                           <div className="relative">
                             <Shirt className="h-4 w-4 absolute left-3.5 top-3.5 text-slate-400 pointer-events-none" />
                             <select
                               value={uniformSize}
                               onChange={(e) => setUniformSize(e.target.value)}
-                              className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
+                              className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
                             >
                               {UNIFORM_SIZES.map((size) => (
                                 <option key={size.value} value={size.value} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
@@ -727,7 +727,7 @@ export default function ParentRegistrationPage() {
                               type="checkbox"
                               checked={includeUniform}
                               onChange={(e) => setIncludeUniform(e.target.checked)}
-                              className="h-4 w-4 rounded border-slate-300 text-crimson focus:ring-crimson"
+                              className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                             />
                             <span className="font-semibold">
                               Request replacement / new Dobok uniform (+1,500 ETB)
@@ -739,7 +739,7 @@ export default function ParentRegistrationPage() {
                               <select
                                 value={uniformSize}
                                 onChange={(e) => setUniformSize(e.target.value)}
-                                className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-colors"
+                                className="w-full min-h-[46px] rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/80 pl-10 pr-10 py-2.5 text-base sm:text-sm text-slate-900 dark:text-white appearance-none focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-colors"
                               >
                                 {UNIFORM_SIZES.map((size) => (
                                   <option key={size.value} value={size.value} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
@@ -786,7 +786,7 @@ export default function ParentRegistrationPage() {
                         onClick={() => setPaymentMethod(m.id)}
                         className={`flex-1 min-h-[42px] py-2 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center ${
                           paymentMethod === m.id
-                            ? "bg-crimson text-white shadow-md font-extrabold"
+                            ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/20 font-extrabold"
                             : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-transparent"
                         }`}
                       >
@@ -871,7 +871,7 @@ export default function ParentRegistrationPage() {
                 {/* 5. PAYMENT PROOF SCREENSHOT UPLOAD */}
                 <div id="receipt" className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 p-6 sm:p-8 shadow-xl transition-colors">
                   <div className="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-crimson dark:text-red-400 border border-red-500/20 shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
                       <Upload className="h-5 w-5" />
                     </div>
                     <div>
@@ -883,7 +883,7 @@ export default function ParentRegistrationPage() {
                   {/* Transfer Receipt Screenshot */}
                   <div className="mt-5">
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
-                      Upload Bank / Telebirr Receipt <span className="text-crimson">*</span>
+                      Upload Bank / Telebirr Receipt <span className="text-emerald-600 dark:text-emerald-400">*</span>
                     </label>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
                       Upload screenshot of your CBE Birr, Telebirr, or Mobile Banking receipt.
@@ -903,10 +903,10 @@ export default function ParentRegistrationPage() {
                         className={`group relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-6 sm:p-8 text-center cursor-pointer transition-all min-h-[160px] ${
                           errors.receipt
                             ? "border-crimson bg-red-50/60 dark:bg-red-950/20 hover:bg-red-50"
-                            : "border-slate-300 dark:border-slate-800 hover:border-red-500 bg-slate-50 dark:bg-slate-900/80 hover:bg-slate-100/80 dark:hover:bg-slate-900"
+                            : "border-slate-300 dark:border-slate-800 hover:border-emerald-500 bg-slate-50 dark:bg-slate-900/80 hover:bg-slate-100/80 dark:hover:bg-slate-900"
                         }`}
                       >
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 group-hover:scale-110 transition-transform group-hover:border-red-500 shadow-sm">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 group-hover:scale-110 transition-transform group-hover:border-emerald-500 shadow-sm">
                           <Upload className="h-6 w-6 text-amber-500 dark:text-amber-400" />
                         </div>
                         <h3 className="mt-3 text-sm font-bold text-slate-900 dark:text-white group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
@@ -915,7 +915,7 @@ export default function ParentRegistrationPage() {
                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                           Supports PNG, JPG, or JPEG (Max 8MB)
                         </p>
-                        <span className="mt-3 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:border-red-500 shadow-xs">
+                        <span className="mt-3 min-h-[44px] inline-flex items-center gap-1.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 group-hover:border-emerald-500 shadow-xs">
                           Select Image File
                         </span>
                       </div>
@@ -941,7 +941,7 @@ export default function ParentRegistrationPage() {
                         </div>
 
                         {/* Image Preview limited to max-h-56 with object-contain */}
-                        <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 max-h-56 flex items-center justify-center bg-white dark:bg-[#0B0F17] p-2">
+                        <div className="relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 max-h-56 flex items-center justify-center bg-white dark:bg-[#1E2530] p-2">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={receiptImage}
@@ -973,7 +973,7 @@ export default function ParentRegistrationPage() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-crimson" />
+                    <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                     <h2 className="text-lg font-bold text-slate-900 dark:text-white">Live Fee Summary</h2>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -1024,7 +1024,7 @@ export default function ParentRegistrationPage() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full min-h-[52px] inline-flex items-center justify-center gap-2.5 rounded-xl bg-crimson hover:bg-red-600 px-6 py-4 text-base font-bold text-white shadow-lg shadow-red-950/40 hover:shadow-red-900/60 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
+                      className="w-full min-h-[52px] inline-flex items-center justify-center gap-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-6 py-4 text-base font-bold text-white shadow-lg shadow-emerald-950/30 hover:shadow-emerald-900/50 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
                     >
                       {isSubmitting ? (
                         <>
@@ -1057,14 +1057,14 @@ export default function ParentRegistrationPage() {
                   <div className="mt-4 space-y-2.5 text-xs">
                     <a
                       href="tel:+251935368595"
-                      className="min-h-[44px] flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-crimson dark:hover:text-white font-medium transition-colors"
+                      className="min-h-[44px] flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-white font-medium transition-colors"
                     >
-                      <Phone className="h-4 w-4 text-crimson shrink-0" />
+                      <Phone className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                       <span className="font-mono font-bold">+251 935 368 595</span>
                     </a>
                     <a
                       href="mailto:danielteshome335@gmail.com"
-                      className="min-h-[44px] flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-crimson dark:hover:text-white font-medium transition-colors"
+                      className="min-h-[44px] flex items-center gap-2.5 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-white font-medium transition-colors"
                     >
                       <Mail className="h-4 w-4 text-amber-500 shrink-0" />
                       <span className="font-mono font-medium">danielteshome335@gmail.com</span>
@@ -1086,7 +1086,7 @@ export default function ParentRegistrationPage() {
       {/* ========================================================= */}
       {/* STICKY TOTAL DUE BAR ON MOBILE BOTTOM (< lg: screens)     */}
       {/* ========================================================= */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#0B0F17]/95 px-5 py-3.5 backdrop-blur-md shadow-2xl safe-area-pb">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-[#1E2530]/95 px-5 py-3.5 backdrop-blur-md shadow-2xl safe-area-pb">
         <div className="flex items-center justify-between gap-4 max-w-md mx-auto">
           <div>
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 dark:text-slate-400 block leading-tight">
@@ -1102,7 +1102,7 @@ export default function ParentRegistrationPage() {
               const el = document.getElementById("receipt");
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }}
-            className="min-h-[46px] inline-flex items-center gap-2 rounded-xl bg-crimson px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-red-950/40 hover:bg-red-600 active:scale-95 transition-all"
+            className="min-h-[46px] inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-emerald-950/30 hover:bg-emerald-500 active:scale-95 transition-all"
           >
             <span>Submit Proof</span>
             <ArrowRight className="h-4 w-4" />
